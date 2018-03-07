@@ -1,9 +1,12 @@
 FROM python:3.6
 ENV PYTHONUNBUFFERED 1
 
+# Use pipenv
+RUN pip install -U pipenv
+
 # Allows docker to cache installed dependencies between builds
-COPY ./requirements.txt requirements.txt
-RUN pip install -r requirements.txt
+COPY ./Pipfile ./Pipfile.lock /
+RUN pipenv install --dev --system
 
 # Adds our application code to the image
 COPY . code
