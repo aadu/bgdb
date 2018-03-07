@@ -27,3 +27,16 @@ services:
       - ./:/code
     ports:
       - "8001:8001"
+  jupyter:
+    restart: always
+    environment:
+      - DJANGO_SECRET_KEY=local
+    build: ./
+    command: >
+      bash -c "./manage.py shell_plus --notebook"
+    volumes:
+      - ./:/code
+    ports:
+      - "8888:8888"
+    depends_on:
+      - web

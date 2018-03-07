@@ -22,6 +22,7 @@ django-filter = "*"
 django-storages = "*"
 "boto3" = "*"
 django-extensions = "*"
+"boardgamegeek2" = "*"
 
 
 [dev-packages]
@@ -36,6 +37,7 @@ django-nose = "*"
 nose-progressive = "*"
 coverage = "*"
 pylint = "*"
+jupyterlab = "*"
 
 
 [requires]

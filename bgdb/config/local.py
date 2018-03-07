@@ -8,7 +8,7 @@ class Local(Common):
 
     # Testing
     INSTALLED_APPS = Common.INSTALLED_APPS
-    INSTALLED_APPS += ('django_nose',)
+    INSTALLED_APPS += ('django_nose', 'django_extensions')
     TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
     NOSE_ARGS = [
         BASE_DIR,
@@ -23,3 +23,4 @@ class Local(Common):
     EMAIL_HOST = 'localhost'
     EMAIL_PORT = 1025
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+    NOTEBOOK_ARGUMENTS = ['--ip', '0.0.0.0', '--no-browser', '--allow-root']
