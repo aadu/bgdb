@@ -5,6 +5,7 @@ import sys
 if __name__ == "__main__":
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "bgdb.config")
     os.environ.setdefault("DJANGO_CONFIGURATION", "Local")
+    os.environ.setdefault("DJANGO_SECRET_KEY", "433ashd8a07$&SH$&*)@HF")
 
     try:
         from configurations.management import execute_from_command_line
