@@ -1,6 +1,9 @@
 #### joe made this: http://goel.io/joe
 
 #####=== Python ===#####
+# Ipython notebooks
+*.ipynb
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
