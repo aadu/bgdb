@@ -8,19 +8,21 @@ name = "pypi"
 [packages]
 
 pytz = "*"
-Django = "*"
+django = "*"
 django-configurations = "*"
 gunicorn = "*"
 newrelic = "*"
-"psycopg2" = "*"
+"psycopg2-binary" = "*"
 dj-database-url = "*"
 django-model-utils = "*"
 django-unique-upload = "*"
 djangorestframework = "*"
-Markdown = "*"
+markdown = "*"
 django-filter = "*"
 django-storages = "*"
 "boto3" = "*"
+django-extensions = "*"
+
 
 [dev-packages]
 
@@ -29,10 +31,12 @@ ipython = "*"
 mkdocs = "*"
 "flake8" = "*"
 mock = "*"
-factory_boy = "*"
+factory-boy = "*"
 django-nose = "*"
 nose-progressive = "*"
 coverage = "*"
+pylint = "*"
+
 
 [requires]
 
