@@ -23,6 +23,8 @@ django-storages = "*"
 "boto3" = "*"
 django-extensions = "*"
 "boardgamegeek2" = "*"
+shortuuid = "*"
+django-appconf = "*"
 
 
 [dev-packages]
