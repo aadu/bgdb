@@ -22,8 +22,9 @@ class Common(Configuration):
         'rest_framework.authtoken',  # token authentication
         'django_filters',            # for filtering rest endpoints
 
-        # Your apps
-        'bgdb.users',
+        # Board Game Database
+        'bgdb.user',
+        'bgdb.game',
 
     )
 
@@ -61,7 +62,7 @@ class Common(Configuration):
     # General
     APPEND_SLASH = False
     TIME_ZONE = 'UTC'
-    LANGUAGE_CODE = 'en-us'
+    LANGUAGE_CODE = 'en'
     # If you set this to False, Django will make some optimizations so as not
     # to load the internationalization machinery.
     USE_I18N = False
@@ -180,7 +181,7 @@ class Common(Configuration):
     }
 
     # Custom user app
-    AUTH_USER_MODEL = 'users.User'
+    AUTH_USER_MODEL = 'user.User'
 
     # Django Rest Framework
     REST_FRAMEWORK = {
