@@ -13,6 +13,10 @@ class User(AbstractUser):
     def __str__(self):
         return self.username
 
+    class Meta(AbstractUser.Meta):
+        default_related_name = 'users'
+        db_table = 'users'
+
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_auth_token(sender, instance=None, created=False, **kwargs):
