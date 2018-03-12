@@ -40,6 +40,7 @@ coverage = "*"
 pylint = "*"
 jupyterlab = "*"
 scrapy = "*"
+scrapy-djangoitem = "*"
 
 
 [requires]

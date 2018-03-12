@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "83b85f5985cab1043ff30eeb26fe8e1579587b42fc9b5ef566aa21e9cd33d17f"
+            "sha256": "deafbdd905e8f58a3bce80f658b54ba0e81aa6e94f3a15c21286c0a7883784e6"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
@@ -799,7 +799,6 @@
                 "sha256:e8c43b5eee76b2083a9badde89fd1bbce6c8942d1045146e100b7b5e014f4f1a",
                 "sha256:e64193f0047ad603b71f202332ab5527c5e52aa7c8b609704fc28c0dc20c4365"
             ],
-            "markers": "os_name != 'nt'",
             "version": "==0.5.2"
         },
         "pyasn1": {
@@ -951,6 +950,13 @@
                 "sha256:31a0bf05d43198afaf3acfb9b4fb0c09c1d7d7ff641e58c66e36117f26c4b755"
             ],
             "version": "==1.5.0"
+        },
+        "scrapy-djangoitem": {
+            "hashes": [
+                "sha256:58da093778f2cd92734b5539adcb60d59854475050d7511c42173bd8c104acef",
+                "sha256:2c633ae1559f6e3d43c9a5ebb19aa5a64152deef434aa3fa57168e6b002d9c50"
+            ],
+            "version": "==1.1.1"
         },
         "send2trash": {
             "hashes": [
