@@ -62,7 +62,7 @@ class Category(EntityModel):
         db_table = 'game_categories'
 
 
-class SubCategory(EntityModel):
+class Subcategory(EntityModel):
     # name = models.CharField(_("name"), max_length=255, db_index=True)
     # description = models.TextField(_("description"), blank=True, default='', db_index=True)
     # slug = AutoSlugField(_("slug"), populate_from=['name'], db_index=True)
