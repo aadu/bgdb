@@ -11,8 +11,8 @@
 
 BOT_NAME = 'bgdb'
 
-SPIDER_MODULES = ['bgdb.spiders']
-NEWSPIDER_MODULE = 'bgdb.spiders'
+SPIDER_MODULES = ['scrape.spiders']
+NEWSPIDER_MODULE = 'scrape.spiders'
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
