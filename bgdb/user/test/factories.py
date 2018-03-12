@@ -5,7 +5,7 @@ import factory
 class UserFactory(factory.django.DjangoModelFactory):
 
     class Meta:
-        model = 'users.User'
+        model = 'user.User'
         django_get_or_create = ('username',)
 
     id = factory.Sequence(lambda n: uuid.uuid4())
