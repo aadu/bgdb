@@ -21,7 +21,7 @@ services:
       - postgres
   documentation:
     restart: always
-    build: ./
+    image: web
     command: "mkdocs serve"
     volumes:
       - ./:/code
@@ -31,7 +31,7 @@ services:
     restart: always
     environment:
       - DJANGO_SECRET_KEY=local
-    build: ./
+    image: web
     command: >
       bash -c "./manage.py shell_plus --notebook"
     volumes:
