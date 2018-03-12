@@ -6,5 +6,6 @@ import os
 import django
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "bgdb.config.local")
+os.environ.setdefault("DJANGO_SECRET_KEY", "Local")
 
 django.setup()
