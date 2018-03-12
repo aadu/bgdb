@@ -14,6 +14,9 @@ WORKDIR code
 
 EXPOSE 8000
 
+RUN mkdir -p /root/.jupyter && \
+    echo "c.NotebookApp.token = ''" > /root/.jupyter/jupyter_notebook_config.py
+
 # Migrates the database, uploads staticfiles, and runs the production server
 CMD ./manage.py migrate && \
     ./manage.py collectstatic --noinput && \
