@@ -1,14 +1,21 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import menu from '../menu'
-import config from '../config'
+import createPersistedState from 'vuex-persistedstate'
+import { sync } from 'vuex-router-sync'
+import router from './router'
+import menu from './menu'
+import config from './config'
+
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
+  plugins: [
+    createPersistedState()
+  ],
   state: {
     nav: {
       mini: false,
-      clipped: false,
+      clipped: false
     },
     pageTitle: 'Home',
     menu: menu,
@@ -55,5 +62,7 @@ const store = new Vuex.Store({
     }
   }
 })
+
+sync(store, router)
 
 export default store
