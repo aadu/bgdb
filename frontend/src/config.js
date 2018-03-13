@@ -12,7 +12,8 @@ const config = {
   },
   api,
   authUrl: `${api}/api-token-auth/`,
-  authUserUrl: `${api}/user-data/`
+  authUserUrl: `${api}/user-data/`,
+  storageKey: 'bgdb'
 }
 global.config = config
 
