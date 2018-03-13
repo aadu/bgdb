@@ -8,6 +8,16 @@ services:
     environment:
       - DJANGO_SECRET_KEY=local
     image: web
+    build: ./frontend/
+    volumes:
+      - ./frontend:/code
+    ports:
+      - "8080:8080"
+  server:
+    restart: always
+    environment:
+      - DJANGO_SECRET_KEY=local
+    image: server
     build: ./
     command: >
       bash -c "python wait_for_postgres.py &&
@@ -21,7 +31,7 @@ services:
       - postgres
   documentation:
     restart: always
-    image: web
+    image: server
     command: "mkdocs serve"
     volumes:
       - ./:/code
@@ -31,7 +41,7 @@ services:
     restart: always
     environment:
       - DJANGO_SECRET_KEY=local
-    image: web
+    image: server
     command: >
       bash -c "./manage.py shell_plus --notebook"
     volumes:
@@ -39,4 +49,4 @@ services:
     ports:
       - "8888:8888"
     depends_on:
-      - web
+      - server
