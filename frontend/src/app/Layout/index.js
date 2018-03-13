@@ -1,6 +1,9 @@
-/* eslint-disable */
-import Header from './Header'
+import Footer from './Footer'
+import Toolbar from './Toolbar'
+import Sidebar from './Sidebar'
 
 export {
-  Header
+  Footer,
+  Toolbar,
+  Sidebar
 }

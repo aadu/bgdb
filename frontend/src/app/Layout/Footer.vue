@@ -1,25 +1,11 @@
 <template>
-  <v-app>
-    <Sidebar></Sidebar>
-    <Toolbar></Toolbar>
-    <v-content>
-      <router-view/>
-    </v-content>
-    <Footer></Footer>
-  </v-app>
+  <v-footer :fixed="fixed" app>
+    <span>&copy; 2017</span>
+  </v-footer>
 </template>
 
 <script>
-import { Footer, Toolbar, Sidebar } from './Layout'
-
-const components = {
-  Footer,
-  Toolbar,
-  Sidebar
-}
-
 export default {
-  components,
   data () {
     return {
       clipped: false,
@@ -32,9 +18,12 @@ export default {
       miniVariant: false,
       right: true,
       rightDrawer: false,
-      title: 'Vuetify.js'
+      title: 'Vuetify.js',
+      message: '',
+      hints: '',
+      fav: ''
     }
   },
-  name: 'App'
+  name: 'foot'
 }
 </script>
