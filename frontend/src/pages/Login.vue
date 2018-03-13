@@ -1,17 +1,28 @@
-<template lang="pug">
-div
-  v-dialog(:value='true', persistent='')
-    v-card(hover='', style='background:white')
-      v-card-row.deep-purple.darken-1
-        v-card-title.white--text
-          .text-xs-center  {{$t("Login")}}
-      v-card-row
-        v-card-text.pt-4
-          v-form(v-model='model', action='login', :fields='fields', @success='onSuccess', submitButtonText="Login")
-            .flex.pb-2
-              small {{$t("* Indicates required field")}}
+<template>
+  <form>
+    <v-text-field
+      label="Name"
+      v-model="name"
+      :error-messages="nameErrors"
+      :counter="10"
+      @input="$v.name.$touch()"
+      @blur="$v.name.$touch()"
+      required
+    ></v-text-field>
+    <v-text-field
+      label="E-mail"
+      v-model="email"
+      :error-messages="emailErrors"
+      @input="$v.email.$touch()"
+      @blur="$v.email.$touch()"
+      required
+    ></v-text-field>
 
+    <v-btn @click="submit">submit</v-btn>
+    <v-btn @click="clear">clear</v-btn>
+  </form>
 </template>
+
 
 <style>
   body{
@@ -20,31 +31,67 @@ div
 </style>
 
 <script>
+import { validationMixin } from 'vuelidate'
+import { required, maxLength, email } from 'vuelidate/lib/validators'
+
+
+const methods = {
+  onSuccess (data) {
+    this.$store.commit('setAuth', data)
+    this.$router.replace('/')
+  },
+  submit () {
+    this.$v.$touch()
+  },
+  clear () {
+    this.$v.$reset()
+    this.name = ''
+    this.email = ''
+    this.select = null
+    this.checkbox = false
+  }
+}
+
+const computed = {
+    checkboxErrors () {
+      const errors = []
+      if (!this.$v.checkbox.$dirty) return errors
+      !this.$v.checkbox.required && errors.push('You must agree to continue!')
+      return errors
+    },
+    selectErrors () {
+      const errors = []
+      if (!this.$v.select.$dirty) return errors
+      !this.$v.select.required && errors.push('Item is required')
+      return errors
+    },
+    nameErrors () {
+      const errors = []
+      if (!this.$v.name.$dirty) return errors
+      !this.$v.name.maxLength && errors.push('Name must be at most 10 characters long')
+      !this.$v.name.required && errors.push('Name is required.')
+      return errors
+    },
+    emailErrors () {
+      const errors = []
+      if (!this.$v.email.$dirty) return errors
+      !this.$v.email.email && errors.push('Must be valid e-mail')
+      !this.$v.email.required && errors.push('E-mail is required')
+      return errors
+    }
+}
 
 export default {
-
-  data () {
-    return {
-      model: {
-        username: 'admin',
-        password: '123456'
-      },
-
-      fields: {
-        username: { label: 'Username' },
-        password: { label: 'Password', type: 'password' }
-      },
-      show: true
-    }
+  mixins: [validationMixin],
+  validations: {
+    name: { required, maxLength: maxLength(10) },
+    email: { required, email },
   },
-  methods: {
-    onSuccess (data) {
-      this.$store.commit('setAuth', data)
-      this.$router.replace('/')
-    }
-  },
-
-  mounted () {
-  }
+  methods,
+  computed,
+  data: () => ({
+    name: '',
+    email: '',
+  }),
 }
 </script>

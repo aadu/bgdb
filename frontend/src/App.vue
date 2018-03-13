@@ -78,7 +78,7 @@ export default {
       fixed: false,
       items: [{
         icon: 'bubble_chart',
-        title: 'Inspire'
+        title: 'Board Game DataBase'
       }],
       miniVariant: false,
       right: true,
