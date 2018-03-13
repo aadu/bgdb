@@ -9,6 +9,7 @@ from scrape.items import SubcategoryItem
 class SubcategoryLoader(ItemLoader):
     default_output_processor = TakeFirst()
     default_input_processor = MapCompose(str.strip)
+    description_out = Join()
 
 
 class SubcategorySpider(CrawlSpider):
@@ -17,9 +18,14 @@ class SubcategorySpider(CrawlSpider):
     start_urls = ['http://boardgamegeek.com/browse/boardgamecategory/']
 
     rules = (
-        Rule(LinkExtractor(allow=('boardgamecategory', )), callback='parse_item'),
+        Rule(LinkExtractor(allow=('boardgamecategory', ), deny=('browse', )), callback='parse_item'),
     )
 
     def parse_item(self, response):
         self.logger.info('Hi, this is an item page! %s', response.url)
         loader = SubcategoryLoader(item=SubcategoryItem(), response=response)
+        loader.add_value('id', response.url, re='(\d+)')
+        loader.add_value('url', response.url)
+        loader.add_css('name', '.geekitem_name::text')
+        loader.add_css('description', '#editdesc > p')
+        yield loader.load_item()
