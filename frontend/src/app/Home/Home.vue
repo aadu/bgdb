@@ -13,7 +13,6 @@
         </blockquote>
       </v-layout>
     </v-slide-y-transition>
-    <Login></Login>
   </v-container>
 </template>
 
@@ -36,14 +35,5 @@ a {
 </style>
 
 <script>
-import Login from '@/pages/Login'
-
-const components = {
-  Login
-}
-
-export default {
-  components
-}
 </script>
 
