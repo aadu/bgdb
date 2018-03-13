@@ -5,23 +5,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from .conf import settings
 
-
-class EntityModel(models.Model):
-    name = models.CharField(_("name"), max_length=255, db_index=True)
-    description = models.TextField(_("description"), blank=True, default='', db_index=True)
-    slug = AutoSlugField(_("slug"), populate_from=['name'], db_index=True)
-    created = models.DateTimeField(_("created"), auto_now_add=True)
-    modified = models.DateTimeField(_("modified"), auto_now=True)
-
-    class Meta:
-        abstract = True
-        ordering = ('name',)
-        get_latest_by = 'modified'
-        indexes = [
-            models.Index(fields=['id', 'name']),
-            models.Index(fields=['-created']),
-            models.Index(fields=['-modified']),
-        ]
+from bgdb.mixins import EntityModel
 
 
 class Game(EntityModel):
@@ -30,6 +14,7 @@ class Game(EntityModel):
     # slug = AutoSlugField(_("slug"), populate_from=['name'], db_index=True)
     # created = models.DateTimeField(_("created"), auto_now_add=True)
     # modified = models.DateTimeField(_("modified"), auto_now=True)
+    # url = models.URLField(_('url'), blank=True, default='')
     type = models.CharField(max_length=24, choices=settings.GAME_TYPES, default=settings.GAME_TYPES.game, blank=True)
     year_published = models.PositiveIntegerField(_('year published'), blank=True, null=True)
     min_players = models.PositiveIntegerField(_('min players'), blank=True, null=True)
@@ -56,6 +41,7 @@ class Category(EntityModel):
     # slug = AutoSlugField(_("slug"), populate_from=['name'], db_index=True)
     # created = models.DateTimeField(_("created"), auto_now_add=True)
     # modified = models.DateTimeField(_("modified"), auto_now=True)
+    # url = models.URLField(_('url'), blank=True, default='')
 
     class Meta(EntityModel.Meta):
         default_related_name = 'categories'
@@ -68,6 +54,7 @@ class Subcategory(EntityModel):
     # slug = AutoSlugField(_("slug"), populate_from=['name'], db_index=True)
     # created = models.DateTimeField(_("created"), auto_now_add=True)
     # modified = models.DateTimeField(_("modified"), auto_now=True)
+    # url = models.URLField(_('url'), blank=True, default='')
 
     class Meta(EntityModel.Meta):
         default_related_name = 'subcategories'
