@@ -1,2 +1,5 @@
+import { vuex as layout } from './Layout'
 
-export default {}
+export default {
+  layout
+}

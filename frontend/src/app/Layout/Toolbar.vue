@@ -1,6 +1,6 @@
 <template>
   <v-toolbar app>
-    <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+    <v-toolbar-side-icon @click.stop="toggleSidebar"></v-toolbar-side-icon>
     <v-spacer></v-spacer>
     <v-btn icon @click.stop="miniVariant = !miniVariant">
       <v-icon v-html="miniVariant ? 'chevron_right' : 'chevron_left'"></v-icon>
@@ -65,7 +65,19 @@
 </template>
 
 <script>
+import {mapActions} from 'vuex'
+
+const name = 'toolbar'
+
+const methods = {
+  ...mapActions([
+    `toggleSidebar`
+  ])
+}
+
 export default {
+  name,
+  methods,
   data () {
     return {
       clipped: false,
@@ -83,7 +95,6 @@ export default {
       hints: '',
       fav: ''
     }
-  },
-  name: 'toolbar'
+  }
 }
 </script>

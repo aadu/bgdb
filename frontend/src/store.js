@@ -2,65 +2,23 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
 import { sync } from 'vuex-router-sync'
+import { vuex } from '@/app'
 import router from './router'
 import menu from './menu'
 import config from './config'
 
 Vue.use(Vuex)
 
+const modules = { ...vuex }
+
 const store = new Vuex.Store({
   plugins: [
-    createPersistedState()
+    createPersistedState({
+      key: config.storageKey,
+      paths: ['ux']
+    })
   ],
-  state: {
-    nav: {
-      mini: false,
-      clipped: false
-    },
-    pageTitle: 'Home',
-    menu: menu,
-    user: {},
-    token: null,
-    message: {
-      type: null,
-      body: null
-    },
-    config: config
-  },
-  mutations: {
-    setAuth (state, { user, token }) {
-      state.user = user
-      state.token = token
-      global.helper.ls.set('user', user)
-      global.helper.ls.set('token', token)
-    },
-    setMenu (state, data) {
-      state.menu = data
-    },
-    setPageTitle (state, data) {
-      state.pageTitle = data
-    },
-    showMessage (state, type, body) {
-      state.message = { type, body }
-    }
-  },
-  actions: {
-    checkAuth ({ commit }) {
-      let data = {
-        user: global.helper.ls.get('user'),
-        token: global.helper.ls.get('token')
-      }
-      commit('setAuth', data)
-    },
-    checkPageTitle ({ commit, state }, path) {
-      for (let k in state.menu) {
-        if (state.menu[k].href === path) {
-          commit('setPageTitle', state.menu[k].title)
-          break
-        }
-      }
-    }
-  }
+  modules
 })
 
 sync(store, router)

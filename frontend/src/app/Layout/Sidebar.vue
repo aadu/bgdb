@@ -26,7 +26,18 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
+
+const name = 'sidebar'
+const computed = {
+  ...mapGetters([
+    `sidebarVisibility`
+  ])
+}
+
 export default {
+  name,
+  computed,
   data () {
     return {
       clipped: false,
@@ -44,7 +55,6 @@ export default {
       hints: '',
       fav: ''
     }
-  },
-  name: 'sidebar'
+  }
 }
 </script>
