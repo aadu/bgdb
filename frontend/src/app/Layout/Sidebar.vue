@@ -5,6 +5,7 @@
     app
     enable-resize-watcher
     fixed
+    @input="handleInput"
   >
     <v-list>
       <v-list-tile
@@ -24,7 +25,7 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
+import {mapGetters, mapActions} from 'vuex'
 
 const name = 'sidebar'
 const computed = {
@@ -33,9 +34,21 @@ const computed = {
   ])
 }
 
+const methods = {
+  ...mapActions([
+    `toggleSidebar`
+  ]),
+  handleInput (event) {
+    if (event === false) {
+      this.toggleSidebar()
+    }
+  }
+}
+
 export default {
   name,
   computed,
+  methods,
   data () {
     return {
       items: [{

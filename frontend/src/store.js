@@ -12,12 +12,12 @@ Vue.use(Vuex)
 const modules = { ...vuex }
 
 const store = new Vuex.Store({
-  // plugins: [
-  //   createPersistedState({
-  //     key: config.storageKey,
-  //     paths: ['ux']
-  //   })
-  // ],
+  plugins: [
+    createPersistedState({
+      key: config.storageKey,
+      paths: ['ux']
+    })
+  ],
   modules
 })
 

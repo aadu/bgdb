@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app dark>
     <Sidebar></Sidebar>
     <Toolbar></Toolbar>
     <v-content>

@@ -1,9 +1,9 @@
 <template>
   <v-toolbar
     app
-    :clipped-left="sidebarVisible"
     >
     <v-toolbar-side-icon @click.stop="toggleSidebar"></v-toolbar-side-icon>
+    <v-toolbar-title>BGDB</v-toolbar-title>
     <v-spacer></v-spacer>
     <v-btn icon @click.stop="miniVariant = !miniVariant">
       <v-icon v-html="miniVariant ? 'chevron_right' : 'chevron_left'"></v-icon>
@@ -75,7 +75,10 @@ const name = 'toolbar'
 const methods = {
   ...mapActions([
     `toggleSidebar`
-  ])
+  ]),
+  handleInput (event) {
+    console.log(event)
+  }
 }
 
 const computed = {
@@ -86,6 +89,7 @@ const computed = {
 export default {
   name,
   methods,
+  computed,
   data () {
     return {
       clipped: false,
