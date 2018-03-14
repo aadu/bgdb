@@ -2,7 +2,7 @@
   <v-toolbar
     app
     >
-    <v-toolbar-side-icon @click.stop="toggleSidebar"></v-toolbar-side-icon>
+    <v-toolbar-side-icon @click.stop="handleToggle"></v-toolbar-side-icon>
     <v-toolbar-title>BGDB</v-toolbar-title>
     <v-spacer></v-spacer>
     <LoginMenu></LoginMenu>
@@ -17,22 +17,24 @@ const name = 'toolbar'
 const components = {
   LoginMenu
 }
-const methods = {
-  ...mapActions([
-    `toggleSidebar`
-  ])
-}
-
 const computed = {
   ...mapGetters([
     `sidebarVisible`
   ])
 }
+const methods = {
+  ...mapActions([
+    `toggleSidebar`
+  ]),
+  handleToggle () {
+    this.toggleSidebar(!this.sidebarVisible)
+  }
+}
 
 export default {
   name,
   methods,
-  computed,
-  components
+  components,
+  computed
 }
 </script>

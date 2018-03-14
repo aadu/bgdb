@@ -5,14 +5,14 @@ const initialState = {
 }
 
 const mutations = {
-  [types.TOGGLE_SIDEBAR] (state) {
-    state.sidebarVisible = !state.sidebarVisible
+  [types.TOGGLE_SIDEBAR] (state, visible) {
+    state.sidebarVisible = visible
   }
 }
 
 const actions = {
-  toggleSidebar: ({ commit }) => {
-    commit(types.TOGGLE_SIDEBAR)
+  toggleSidebar: ({ commit }, visible) => {
+    commit(types.TOGGLE_SIDEBAR, visible)
   }
 }
 const getters = {

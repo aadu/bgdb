@@ -39,9 +39,7 @@ const methods = {
     `toggleSidebar`
   ]),
   handleInput (event) {
-    if (event === false) {
-      this.toggleSidebar()
-    }
+    this.toggleSidebar(event)
   }
 }
 
