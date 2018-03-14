@@ -1,12 +1,10 @@
 <template>
   <v-navigation-drawer
     persistent
-    :mini-variant="miniVariant"
-    :clipped="clipped"
-    v-model="drawer"
+    :value="sidebarVisible"
+    app
     enable-resize-watcher
     fixed
-    app
   >
     <v-list>
       <v-list-tile
@@ -31,7 +29,7 @@ import {mapGetters} from 'vuex'
 const name = 'sidebar'
 const computed = {
   ...mapGetters([
-    `sidebarVisibility`
+    `sidebarVisible`
   ])
 }
 
@@ -40,20 +38,10 @@ export default {
   computed,
   data () {
     return {
-      clipped: false,
-      drawer: true,
-      fixed: false,
       items: [{
         icon: 'bubble_chart',
         title: 'Board Game DataBase'
-      }],
-      miniVariant: false,
-      right: true,
-      rightDrawer: false,
-      title: 'Vuetify.js',
-      message: '',
-      hints: '',
-      fav: ''
+      }]
     }
   }
 }

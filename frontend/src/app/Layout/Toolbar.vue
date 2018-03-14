@@ -1,5 +1,8 @@
 <template>
-  <v-toolbar app>
+  <v-toolbar
+    app
+    :clipped-left="sidebarVisible"
+    >
     <v-toolbar-side-icon @click.stop="toggleSidebar"></v-toolbar-side-icon>
     <v-spacer></v-spacer>
     <v-btn icon @click.stop="miniVariant = !miniVariant">
@@ -65,7 +68,7 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex'
+import {mapActions, mapGetters} from 'vuex'
 
 const name = 'toolbar'
 
@@ -75,6 +78,11 @@ const methods = {
   ])
 }
 
+const computed = {
+  ...mapGetters([
+    `sidebarVisible`
+  ])
+}
 export default {
   name,
   methods,

@@ -21,19 +21,7 @@ const components = {
 export default {
   components,
   data () {
-    return {
-      clipped: false,
-      drawer: true,
-      fixed: false,
-      items: [{
-        icon: 'bubble_chart',
-        title: 'Board Game DataBase'
-      }],
-      miniVariant: false,
-      right: true,
-      rightDrawer: false,
-      title: 'Vuetify.js'
-    }
+    return {}
   },
   name: 'App'
 }

@@ -4,7 +4,7 @@ import createPersistedState from 'vuex-persistedstate'
 import { sync } from 'vuex-router-sync'
 import { vuex } from '@/app'
 import router from './router'
-import menu from './menu'
+// import menu from './menu'
 import config from './config'
 
 Vue.use(Vuex)
@@ -12,12 +12,12 @@ Vue.use(Vuex)
 const modules = { ...vuex }
 
 const store = new Vuex.Store({
-  plugins: [
-    createPersistedState({
-      key: config.storageKey,
-      paths: ['ux']
-    })
-  ],
+  // plugins: [
+  //   createPersistedState({
+  //     key: config.storageKey,
+  //     paths: ['ux']
+  //   })
+  // ],
   modules
 })
 

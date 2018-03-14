@@ -1,12 +1,12 @@
 import * as types from './types'
 
 const initialState = {
-  sideBarVisible: true
+  sidebarVisible: true
 }
 
 const mutations = {
   [types.TOGGLE_SIDEBAR_VISIBILITY] (state) {
-    state.sideBarVisible = !state.sideBarVisible
+    state.sidebarVisible = !state.sidebarVisible
   }
 }
 const actions = {
@@ -19,8 +19,8 @@ const getters = {
 }
 
 export default {
+  state: initialState,
   getters,
   mutations,
-  actions,
-  state: initialState
+  actions
 }

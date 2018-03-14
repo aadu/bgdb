@@ -7,6 +7,7 @@ import { App } from './app'
 import router from './router'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
+import store from './store'
 
 Vue.use(VueAxios, axios)
 Vue.use(Vuetify)
@@ -17,5 +18,6 @@ new Vue({
   el: '#app',
   router,
   components: { App },
-  template: '<App/>'
+  template: '<App/>',
+  store
 })
