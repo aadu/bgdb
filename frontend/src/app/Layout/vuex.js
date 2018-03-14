@@ -1,7 +1,7 @@
 import * as types from './types'
 
 const initialState = {
-  sidebarVisible: true
+  sidebarVisible: false
 }
 
 const mutations = {

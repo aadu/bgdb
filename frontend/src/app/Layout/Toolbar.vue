@@ -11,7 +11,7 @@
 
 <script>
 import {mapActions, mapGetters} from 'vuex'
-import { LoginMenu } from '../Login'
+import { Menu as LoginMenu } from '../Login'
 
 const name = 'toolbar'
 const components = {
