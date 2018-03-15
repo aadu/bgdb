@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { Footer, Toolbar, Sidebar } from './Layout'
+import { Footer, Toolbar, Sidebar } from './layout'
 
 const components = {
   Footer,

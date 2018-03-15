@@ -1,9 +1,9 @@
-import { routes as Login } from './Login'
-import { routes as Home } from './Home'
+import { routes as user } from './user'
+import { routes as home } from './home'
 
 const routes = [
-  ...Login,
-  ...Home
+  ...user,
+  ...home
 ]
 
 export default routes
