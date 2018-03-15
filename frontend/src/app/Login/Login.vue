@@ -1,7 +1,7 @@
 
 <template>
   <v-container fluid>
-    <LoginForm></LoginForm>
+    <LoginForm class="ma-3"></LoginForm>
   </v-container>
 </template>
 

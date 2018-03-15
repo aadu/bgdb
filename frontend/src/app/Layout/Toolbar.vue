@@ -2,8 +2,8 @@
   <v-toolbar
     app
     >
-    <v-toolbar-side-icon @click.stop="handleToggle"></v-toolbar-side-icon>
-    <v-toolbar-title>BGDB</v-toolbar-title>
+    <v-toolbar-side-icon @click.stop="onToggle"></v-toolbar-side-icon>
+    <v-toolbar-title @click="onTitle">BGDB</v-toolbar-title>
     <v-spacer></v-spacer>
     <LoginMenu></LoginMenu>
   </v-toolbar>
@@ -26,8 +26,11 @@ const methods = {
   ...mapActions([
     `toggleSidebar`
   ]),
-  handleToggle () {
+  onToggle () {
     this.toggleSidebar(!this.sidebarVisible)
+  },
+  onTitle () {
+    this.$router.push({name: 'home'})
   }
 }
 
