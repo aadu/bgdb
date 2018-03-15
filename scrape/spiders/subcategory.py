@@ -22,7 +22,6 @@ class SubcategorySpider(CrawlSpider):
     )
 
     def parse_item(self, response):
-        self.logger.info('Hi, this is an item page! %s', response.url)
         loader = SubcategoryLoader(item=SubcategoryItem(), response=response)
         loader.add_value('id', response.url, re='(\d+)')
         loader.add_value('url', response.url)
