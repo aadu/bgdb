@@ -1,11 +1,4 @@
-import Footer from './Footer'
-import Toolbar from './Toolbar'
-import Sidebar from './Sidebar'
-import vuex from './vuex'
-
-export {
-  vuex,
-  Footer,
-  Toolbar,
-  Sidebar
-}
+export {default as Footer} from './Footer'
+export {default as Toolbar} from './Toolbar'
+export {default as Sidebar} from './Sidebar'
+export {default as vuex} from './vuex'
