@@ -1,18 +1,18 @@
 const port = process.env.API_PORT ? `:${process.env.API_PORT}` : ''
 const host = `${window.location.protocol}//${window.location.hostname}`
 const baseUrl = `${host}${port}`
-const api = `${baseUrl}/api/v1`
+const apiUrl = `${baseUrl}/api/v1`
 
 const config = {
   locale: 'en-US', // en-US, zh-CN
-  url: baseUrl,
+  baseUrl: baseUrl,
   debug: {
     mock: true, // enable mock
     http: false // http request log
   },
-  api,
-  authUrl: `${api}/api-token-auth/`,
-  authUserUrl: `${api}/user-data/`,
+  apiUrl,
+  authUrl: `${baseUrl}/api-token-auth/`,
+  registerUrl: `${apiUrl}/users/`,
   storageKey: 'bgdb'
 }
 global.config = config

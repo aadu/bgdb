@@ -11,25 +11,11 @@ console.log(config)
 Vue.use(Vuex)
 Vue.use(VueAxios, axios)
 
-// function Auth () {}
-
-// Object.defineProperty(Auth.prototype, 'vueAuth', {
-//   get: function () {
-//     const vueAuth = new VueAuthenticate(Vue.prototype.$http, {
-//       baseUrl: config.api
-//     })
-//     Object.defineProperty(this, 'vueAuth', {
-//       value: vueAuth
-//     })
-
-//     return vueAuth
-//   }
-// })
-
-// const auth = new Auth()
-
 const vueAuth = new VueAuthenticate(Vue.prototype.$http, {
-  baseUrl: config.api
+  baseUrl: config.baseUrl,
+  loginUrl: config.authUrl,
+  registerUrl: config.registerUrl,
+  storageNamespace: config.storageKey
 })
 
 const initialState = {
@@ -49,9 +35,9 @@ const mutations = {
 }
 
 const actions = {
-  login (context, payload) {
-    vueAuth.login(payload.user, payload.requestOptions).then((response) => {
-      context.commit(types.AUTHENTICATE, {
+  login({ commit }, user, requestOptions) {
+    vueAuth.login(user, requestOptions).then((response) => {
+      commit(types.AUTHENTICATE, {
         isAuthenticated: vueAuth.isAuthenticated()
       })
     })

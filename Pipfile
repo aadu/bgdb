@@ -41,6 +41,7 @@ pylint = "*"
 jupyterlab = "*"
 scrapy = "*"
 scrapy-djangoitem = "*"
+django-cors-headers = "*"
 
 
 [requires]

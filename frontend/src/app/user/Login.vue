@@ -2,13 +2,13 @@
   <v-container fluid class="ma-3">
     <v-form width="200">
       <v-text-field
-        label="Name"
-        v-model="name"
-        :error-messages="nameErrors"
+        label="Username"
+        v-model="username"
+        :error-messages="usernameErrors"
         :counter="10"
-        @input="$v.name.$touch()"
-        @blur="$v.name.$touch()"
-        autocomplete="name"
+        @input="$v.username.$touch()"
+        @blur="$v.username.$touch()"
+        autocomplete="username"
         required
       ></v-text-field>
       <v-text-field
@@ -65,7 +65,7 @@ const methods = {
   },
   clear () {
     this.$v.$reset()
-    this.name = ''
+    this.username = ''
     this.email = ''
     this.password = ''
   }
@@ -78,11 +78,11 @@ const computed = {
     !this.$v.password.required && errors.push('Password is required')
     return errors
   },
-  nameErrors () {
+  usernameErrors () {
     const errors = []
-    if (!this.$v.name.$dirty) return errors
-    !this.$v.name.maxLength && errors.push('Name must be at most 10 characters long')
-    !this.$v.name.required && errors.push('Name is required.')
+    if (!this.$v.username.$dirty) return errors
+    !this.$v.username.maxLength && errors.push('User name must be at most 10 characters long')
+    !this.$v.username.required && errors.push('User name is required.')
     return errors
   },
   emailErrors () {
@@ -94,8 +94,7 @@ const computed = {
   },
   user () {
     return {
-      name: this.name,
-      email: this.email,
+      username: this.username,
       password: this.password
     }
   }
@@ -104,14 +103,14 @@ const computed = {
 export default {
   mixins: [validationMixin],
   validations: {
-    name: { required, maxLength: maxLength(24) },
+    username: { required, maxLength: maxLength(24) },
     email: { required, email },
     password: { required }
   },
   methods,
   computed,
   data: () => ({
-    name: '',
+    username: '',
     email: '',
     password: ''
   })

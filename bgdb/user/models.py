@@ -15,6 +15,7 @@ class User(AbstractUser):
 
     class Meta(AbstractUser.Meta):
         default_related_name = 'users'
+        db_table = 'users'
 
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
