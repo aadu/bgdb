@@ -8,6 +8,7 @@
         :counter="10"
         @input="$v.name.$touch()"
         @blur="$v.name.$touch()"
+        autocomplete="name"
         required
       ></v-text-field>
       <v-text-field
@@ -16,7 +17,19 @@
         :error-messages="emailErrors"
         @input="$v.email.$touch()"
         @blur="$v.email.$touch()"
+        autocomplete="email"
         required
+      ></v-text-field>
+      <v-text-field
+        label="Password"
+        hint="At least 8 characters"
+        v-model="password"
+        :error-messages="passwordErrors"
+        @input="$v.password.$touch()"
+        @blur="$v.password.$touch()"
+        required
+        autocomplete="password"
+        type="password"
       ></v-text-field>
       <v-btn @click="submit">submit</v-btn>
       <v-btn @click="clear">clear</v-btn>
@@ -54,22 +67,15 @@ const methods = {
     this.$v.$reset()
     this.name = ''
     this.email = ''
-    this.select = null
-    this.checkbox = false
+    this.password = ''
   }
 }
 
 const computed = {
-  checkboxErrors () {
+  passwordErrors () {
     const errors = []
-    if (!this.$v.checkbox.$dirty) return errors
-    !this.$v.checkbox.required && errors.push('You must agree to continue!')
-    return errors
-  },
-  selectErrors () {
-    const errors = []
-    if (!this.$v.select.$dirty) return errors
-    !this.$v.select.required && errors.push('Item is required')
+    if (!this.$v.password.$dirty) return errors
+    !this.$v.password.required && errors.push('Password is required')
     return errors
   },
   nameErrors () {
@@ -89,7 +95,8 @@ const computed = {
   user () {
     return {
       name: this.name,
-      email: this.email
+      email: this.email,
+      password: this.password
     }
   }
 }
@@ -98,13 +105,15 @@ export default {
   mixins: [validationMixin],
   validations: {
     name: { required, maxLength: maxLength(24) },
-    email: { required, email }
+    email: { required, email },
+    password: { required }
   },
   methods,
   computed,
   data: () => ({
     name: '',
-    email: ''
+    email: '',
+    password: ''
   })
 }
 </script>

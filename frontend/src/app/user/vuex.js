@@ -6,6 +6,8 @@ import axios from 'axios'
 import * as types from './types'
 import config from '@/config'
 
+console.log(config)
+
 Vue.use(Vuex)
 Vue.use(VueAxios, axios)
 

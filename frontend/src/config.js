@@ -1,6 +1,6 @@
 const port = process.env.API_PORT ? `:${process.env.API_PORT}` : ''
 const host = `${window.location.protocol}//${window.location.hostname}`
-const baseUrl = `${port}${host}`
+const baseUrl = `${host}${port}`
 const api = `${baseUrl}/api/v1`
 
 const config = {

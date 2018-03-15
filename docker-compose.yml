@@ -9,6 +9,7 @@ services:
     restart: always
     environment:
       - DJANGO_SECRET_KEY=local
+      - API_PORT=8000
     image: web
     build: ./frontend/
     volumes:
