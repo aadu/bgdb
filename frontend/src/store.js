@@ -15,7 +15,7 @@ const store = new Vuex.Store({
   plugins: [
     createPersistedState({
       key: config.storageKey,
-      paths: ['layout']
+      paths: ['ux']
     })
   ],
   modules

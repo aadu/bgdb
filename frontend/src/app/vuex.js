@@ -1,2 +1,7 @@
-export { vuex as layout } from './layout'
-export { vuex as user } from './user'
+import { vuex as layout } from './layout'
+import { vuex as user } from './user'
+
+export default {
+  layout,
+  user
+}

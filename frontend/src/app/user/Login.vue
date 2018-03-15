@@ -36,14 +36,19 @@
 <script>
 import { validationMixin } from 'vuelidate'
 import { required, maxLength, email } from 'vuelidate/lib/validators'
+import { mapActions } from 'vuex'
 
 const methods = {
+  ...mapActions(
+    [`login`]
+  ),
   onSuccess (data) {
     this.$store.commit('setAuth', data)
     this.$router.replace('/')
   },
   submit () {
     this.$v.$touch()
+    this.login(this.user)
   },
   clear () {
     this.$v.$reset()
@@ -80,6 +85,12 @@ const computed = {
     !this.$v.email.email && errors.push('Must be valid e-mail')
     !this.$v.email.required && errors.push('E-mail is required')
     return errors
+  },
+  user () {
+    return {
+      name: this.name,
+      email: this.email
+    }
   }
 }
 
