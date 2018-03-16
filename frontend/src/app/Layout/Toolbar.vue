@@ -10,8 +10,8 @@
 </template>
 
 <script>
-import {mapActions, mapGetters} from 'vuex'
-import { Menu as LoginMenu } from '@/app/user'
+import { mapActions, mapGetters } from 'vuex'
+import { LoginMenu } from '@/app/user/components'
 
 const name = 'toolbar'
 const components = {

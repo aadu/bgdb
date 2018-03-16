@@ -1,5 +1,4 @@
 /* eslint-disable */
 export { default as routes } from './routes'
-export { default as Menu } from './Menu'
-export { default as Login } from './Login'
+export { default as components } from './components'
 export { default as vuex } from './vuex'
