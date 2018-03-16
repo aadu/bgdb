@@ -1,8 +1,16 @@
 import scrapy
-from scrapy_djangoitem import DjangoItem
-from bgdb.game.models import Subcategory
+
+from bgdb.game.serializers import GameSerializer, SubcategorySerializer
+from .utils import DRFItem
 
 
-class SubcategoryItem(DjangoItem):
-    id = scrapy.Field()
-    django_model = Subcategory
+class SubcategoryItem(DRFItem):
+    class Meta:
+        serializer = SubcategorySerializer
+        include = ['id']
+
+
+class GameItem(DRFItem):
+    class Meta:
+        serializer = GameSerializer
+        include = ['id']
