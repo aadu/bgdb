@@ -42,6 +42,7 @@ jupyterlab = "*"
 scrapy = "*"
 scrapy-djangoitem = "*"
 django-cors-headers = "*"
+yapf = "*"
 
 
 [requires]
