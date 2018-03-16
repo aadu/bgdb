@@ -1,10 +1,11 @@
-from django.urls import reverse
-from django.forms.models import model_to_dict
 from django.contrib.auth.hashers import check_password
-from nose.tools import ok_, eq_
-from rest_framework.test import APITestCase
-from rest_framework import status
+from django.forms.models import model_to_dict
+from django.urls import reverse
 from faker import Faker
+from nose.tools import eq_, ok_
+from rest_framework import status
+from rest_framework.test import APITestCase
+
 from ..models import User
 from .factories import UserFactory
 

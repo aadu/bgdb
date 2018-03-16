@@ -3,6 +3,9 @@
 class DjangoItemPipeline:
 
     def process_item(self, item, spider):
-        # print(f"\n\n{item['id']}: {item['name']}\n")
+        # try:
+        #     print(f"\n\n{item['id']}: {item['name']}\n")
+        # except:
+        #     pass
         # item.save()
         return item

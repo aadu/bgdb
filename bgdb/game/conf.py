@@ -1,6 +1,6 @@
+from appconf import AppConf
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
-from appconf import AppConf
 from model_utils import Choices
 
 

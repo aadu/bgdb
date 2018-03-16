@@ -1,11 +1,11 @@
-from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
-from django_extensions.db.fields import AutoSlugField
 from django.utils.translation import ugettext_lazy as _
-
-from .conf import settings
+from django_extensions.db.fields import AutoSlugField
 
 from bgdb.mixins import EntityModel
+
+from .conf import settings
 
 
 class Game(EntityModel):
@@ -32,8 +32,12 @@ class Game(EntityModel):
     publishers = models.ManyToManyField('game.Publisher', blank=True, verbose_name=_('publishers'))
     artists = models.ManyToManyField('game.Artist', blank=True, verbose_name=_('artists'))
     designers = models.ManyToManyField('game.Designer', blank=True, verbose_name=_('designers'))
-    reimplements = models.ManyToManyField('self', blank=True, symmetrical=False, related_name='reimplemented_by', verbose_name=_('reimplements'))
-    parent = models.ForeignKey('self', verbose_name=_('game'), on_delete=models.CASCADE, blank=True, null=True, related_name='children')
+    reimplements = models.ManyToManyField(
+        'self', blank=True, symmetrical=False, related_name='reimplemented_by', verbose_name=_('reimplements')
+    )
+    parent = models.ForeignKey(
+        'self', verbose_name=_('game'), on_delete=models.CASCADE, blank=True, null=True, related_name='children'
+    )
 
     class Meta(EntityModel.Meta):
         default_related_name = 'games'

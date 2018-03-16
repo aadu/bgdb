@@ -10,14 +10,7 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_ALLOW_ALL = bool(strtobool(os.getenv('CORS_ORIGIN_ALLOW_ALL', 'False')))
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
-NOSE_ARGS = [
-    BASE_DIR,
-    '-s',
-    '--nologcapture',
-    '--with-coverage',
-    '--with-progressive',
-    '--cover-package=bgdb'
-]
+NOSE_ARGS = [BASE_DIR, '-s', '--nologcapture', '--with-coverage', '--with-progressive', '--cover-package=bgdb']
 
 # Mail
 EMAIL_HOST = 'localhost'

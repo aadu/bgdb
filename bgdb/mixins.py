@@ -1,7 +1,7 @@
-from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
-from django_extensions.db.fields import AutoSlugField
 from django.utils.translation import ugettext_lazy as _
+from django_extensions.db.fields import AutoSlugField
 
 
 class EntityModel(models.Model):
@@ -14,7 +14,7 @@ class EntityModel(models.Model):
 
     class Meta:
         abstract = True
-        ordering = ('name',)
+        ordering = ('name', )
         get_latest_by = 'modified'
         indexes = [
             models.Index(fields=['id', 'name']),

@@ -1,16 +1,6 @@
 from rest_framework.serializers import ModelSerializer
 
-from .models import (
-    Game,
-    Category,
-    Subcategory,
-    Mechanic,
-    Tag,
-    Honor,
-    Publisher,
-    Designer,
-    Artist,
-)
+from .models import Artist, Category, Designer, Game, Honor, Mechanic, Publisher, Subcategory, Tag
 
 
 class GameSerializer(ModelSerializer):
