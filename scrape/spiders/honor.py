@@ -1,21 +1,21 @@
-CATEGORY = 'boardgamesubdomain'
+CATEGORY = 'boardgamehonor'
 
 import scrapy
 from scrapy.spiders import CrawlSpider, Rule
 from scrapy.loader import ItemLoader
 from scrapy.loader.processors import TakeFirst, MapCompose, Join, Identity
 from scrapy.linkextractors import LinkExtractor
-from scrape.items import CategoryItem
+from scrape.items import HonorItem
 
 
-class CategoryLoader(ItemLoader):
+class HonorLoader(ItemLoader):
     default_output_processor = TakeFirst()
     default_input_processor = MapCompose(str.strip)
     description_out = Join()
 
 
-class CategorySpider(CrawlSpider):
-    name = 'category'
+class HonorSpider(CrawlSpider):
+    name = 'honor'
     allowed_domains = ['boardgamegeek.com']
     start_urls = [f'http://boardgamegeek.com/browse/{CATEGORY}/']
 
@@ -24,7 +24,7 @@ class CategorySpider(CrawlSpider):
         callback='parse_item'), )
 
     def parse_item(self, response):
-        loader = CategoryLoader(item=CategoryItem(), response=response)
+        loader = HonorLoader(item=HonorItem(), response=response)
         loader.add_value('id', response.url, re=r'(\d+)')
         loader.add_value('url', response.url)
         loader.add_css('name', '.geekitem_name::text')
