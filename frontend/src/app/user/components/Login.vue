@@ -50,15 +50,18 @@ const methods = {
   ]),
   submit () {
     this.$v.$touch()
+    const self = this
     if (this.$v.$invalid) {
       this.displayMessage('Please fix the form')
-    } else {
-      this.login(this.user).then((response) => {
-        console.log(response)
-      })
-      this.displayMessage('Logged in')
-      this.$router.push({name: 'home'})
+      return
     }
+    this.login(this.user).then((response) => {
+      self.displayMessage('Logged in')
+      self.$router.push({name: 'home'})
+    }).catch((err) => {
+      self.displayMessage(`${err}`)
+      this.password = ''
+    })
   },
   clear () {
     this.$v.$reset()
@@ -99,9 +102,7 @@ export default {
   computed,
   data: () => ({
     username: '',
-    password: '',
-    text: '',
-    snackbar: false
+    password: ''
   })
 }
 </script>

@@ -53,14 +53,6 @@
       <v-btn @click="submit">submit</v-btn>
       <v-btn @click="clear">clear</v-btn>
     </v-form>
-    <v-snackbar
-      :top="true"
-      :timeout="6000"
-      v-model="snackbar"
-    >
-      {{ text }}
-      <v-btn flat color="pink" @click.native="snackbar = false">Close</v-btn>
-    </v-snackbar>
   </v-container>
 </template>
 
@@ -79,20 +71,23 @@ import { required, maxLength, email } from 'vuelidate/lib/validators'
 import { mapActions } from 'vuex'
 
 const methods = {
-  ...mapActions(
-    [`register`]
-  ),
+  ...mapActions([
+    `register`,
+    `displayMessage`
+  ]),
   submit () {
     this.$v.$touch()
+    const self = this
     if (this.$v.$invalid) {
-      this.text = 'Please fix the form'
-      this.snackbar = true
-    } else {
-      this.register(this.user)
-      this.text = 'Logged in succesfully'
-      this.snackbar = true
-      // this.$router.push({name: 'home'})
+      this.displayMessage('Please fix the form')
+      return
     }
+    this.register(this.user).then((response) => {
+      self.displayMessage('Successfully registered')
+      self.$router.push({name: 'home'})
+    }).catch((err) => {
+      self.displayMessage(`${err}`)
+    })
   },
   clear () {
     this.$v.$reset()
@@ -164,10 +159,7 @@ export default {
     email: '',
     fname: '',
     lname: '',
-    password: '',
-    response: '',
-    text: '',
-    snackbar: false
+    password: ''
   })
 }
 </script>

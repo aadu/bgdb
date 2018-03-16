@@ -30,29 +30,32 @@ const mutations = {
 
 const actions = {
   login ({ commit }, user, requestOptions) {
-    vueAuth.login(user, requestOptions).then((response) => {
+    return vueAuth.login(user, requestOptions).then((response) => {
       commit(types.CHECK_AUTH, {
         isAuthenticated: vueAuth.isAuthenticated(),
         username: user.username
       })
+      return response
     })
   },
   logout ({ commit }) {
-    vueAuth.logout().then((response) => {
+    return vueAuth.logout().then((response) => {
       if (!vueAuth.isAuthenticated()) {
         commit(types.CHECK_AUTH, {
           isAuthenticated: false,
           username: null
         })
+        return response
       }
     })
   },
   register ({ commit }, user, requestOptions) {
-    vueAuth.register(user).then((response) => {
+    return vueAuth.register(user).then((response) => {
       commit(types.CHECK_AUTH, {
         isAuthenticated: vueAuth.isAuthenticated(),
         username: user.username
       })
+      return response
     })
   }
 }
