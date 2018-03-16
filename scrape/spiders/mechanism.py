@@ -1,4 +1,4 @@
-CATEGORY = 'boardgamesubdomain'
+CATEGORY = 'boardgamemechanic'
 
 import scrapy
 from scrapy.spiders import CrawlSpider, Rule
@@ -8,23 +8,23 @@ from scrapy.linkextractors import LinkExtractor
 from scrape.items import MechanismItem
 
 
-class CategoryLoader(ItemLoader):
+class MechanismLoader(ItemLoader):
     default_output_processor = TakeFirst()
     default_input_processor = MapCompose(str.strip)
     description_out = Join()
 
 
-class CategorySpider(CrawlSpider):
+class MechanismSpider(CrawlSpider):
     name = 'subcategory'
     allowed_domains = ['boardgamegeek.com']
     start_urls = [f'http://boardgamegeek.com/browse/{CATEGORY}/']
 
-    rules = (Rule(
-        LinkExtractor(allow=(CATEGORY, ), deny=('browse', )),
-        callback='parse_item'), )
+    rules = (
+        Rule(LinkExtractor(allow=(CATEGORY, ), deny=('browse', )), callback='parse_item'),
+    )
 
     def parse_item(self, response):
-        loader = CategoryLoader(item=MechanismItem(), response=response)
+        loader = MechanismLoader(item=MechanismItem(), response=response)
         loader.add_value('id', response.url, re=r'(\d+)')
         loader.add_value('url', response.url)
         loader.add_css('name', '.geekitem_name::text')
