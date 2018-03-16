@@ -4,7 +4,7 @@ from bgdb.game.serializers import (
     CategorySerializer,
     GameSerializer,
     SubcategorySerializer,
-    MechanismSerializer,
+    MechanicSerializer,
     TagSerializer,
     HonorSerializer,
     PublisherSerializer,
@@ -26,9 +26,9 @@ class SubcategoryItem(DRFItem):
         include = ['id']
 
 
-class MechanismItem(DRFItem):
+class MechanicItem(DRFItem):
     class Meta:
-        serializer = MechanismSerializer
+        serializer = MechanicSerializer
         include = ['id']
 
 
