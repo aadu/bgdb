@@ -19,34 +19,42 @@ const vueAuth = new VueAuthenticate(Vue.prototype.$http, {
 })
 
 const initialState = {
+  username: null,
   isAuthenticated: false
 }
 
-const getters = {
-  isAuthenticated () {
-    return vueAuth.isAuthenticated()
-  }
-}
-
 const mutations = {
-  [types.AUTHENTICATE] (state, payload) {
+  [types.CHECK_AUTH] (state, payload) {
     state.isAuthenticated = payload.isAuthenticated
+    state.username = payload.username
   }
 }
 
 const actions = {
-  login({ commit }, user, requestOptions) {
+  login ({ commit }, user, requestOptions) {
     vueAuth.login(user, requestOptions).then((response) => {
-      commit(types.AUTHENTICATE, {
-        isAuthenticated: vueAuth.isAuthenticated()
+      commit(types.CHECK_AUTH, {
+        isAuthenticated: vueAuth.isAuthenticated(),
+        username: user.username
       })
+    })
+  },
+  logout ({ commit }) {
+    console.log('logout')
+    vueAuth.logout().then((response) => {
+      if (!vueAuth.isAuthenticated()) {
+        console.log('logout-commit')
+        commit(types.CHECK_AUTH, {
+          isAuthenticated: false,
+          username: null
+        })
+      }
     })
   }
 }
 
 export default {
   state: initialState,
-  getters,
   mutations,
   actions
 }
