@@ -1,5 +1,6 @@
 from collections import OrderedDict
 
+from django.core.exceptions import ValidationError
 from django.utils.functional import cached_property
 from scrapy.item import Field, Item, ItemMeta
 
@@ -31,8 +32,11 @@ class DRFItemMeta(ItemMeta):
 
 
 class DRFItem(Item, metaclass=DRFItemMeta):
-    def save(self, commit=True):
-        if commit:
+    def save(self, commit=True, skip_errors=False):
+        if not self.is_valid:
+            if not skip_errors:
+                raise ValidationError(f"{len(self.instance.errors)} errors found")
+        elif commit:
             self.instance.save()
         return self.instance
 
@@ -53,4 +57,3 @@ class DRFItem(Item, metaclass=DRFItemMeta):
 
     class Meta:
         abstract = True
-
