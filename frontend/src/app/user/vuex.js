@@ -46,6 +46,14 @@ const actions = {
         })
       }
     })
+  },
+  register ({ commit }, user, requestOptions) {
+    vueAuth.register(user).then((response) => {
+      commit(types.CHECK_AUTH, {
+        isAuthenticated: vueAuth.isAuthenticated(),
+        username: user.username
+      })
+    })
   }
 }
 

@@ -80,7 +80,7 @@ import { mapActions } from 'vuex'
 
 const methods = {
   ...mapActions(
-    [`login`]
+    [`register`]
   ),
   submit () {
     this.$v.$touch()
@@ -88,7 +88,7 @@ const methods = {
       this.text = 'Please fix the form'
       this.snackbar = true
     } else {
-      this.login(this.user)
+      this.register(this.user)
       this.text = 'Logged in succesfully'
       this.snackbar = true
       // this.$router.push({name: 'home'})
@@ -136,6 +136,14 @@ const computed = {
     !this.$v.email.email && errors.push('Must be valid e-mail')
     !this.$v.email.required && errors.push('E-mail is required')
     return errors
+  },
+    user () {
+    return {
+      username: this.username,
+      fname: this.fname,
+      lname: this.lname,
+      password: this.password
+    }
   }
 }
 
@@ -156,6 +164,7 @@ export default {
     fname: '',
     lname: '',
     password: '',
+    response: '',
     text: '',
     snackbar: false
   })
