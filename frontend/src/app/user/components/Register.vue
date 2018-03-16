@@ -142,6 +142,7 @@ const computed = {
       username: this.username,
       fname: this.fname,
       lname: this.lname,
+      email: this.email,
       password: this.password
     }
   }
