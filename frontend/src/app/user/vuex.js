@@ -6,8 +6,6 @@ import axios from 'axios'
 import * as types from './types'
 import config from '@/config'
 
-console.log(config)
-
 Vue.use(Vuex)
 Vue.use(VueAxios, axios)
 
@@ -40,10 +38,8 @@ const actions = {
     })
   },
   logout ({ commit }) {
-    console.log('logout')
     vueAuth.logout().then((response) => {
       if (!vueAuth.isAuthenticated()) {
-        console.log('logout-commit')
         commit(types.CHECK_AUTH, {
           isAuthenticated: false,
           username: null

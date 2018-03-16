@@ -27,6 +27,7 @@
         :error-messages="passwordErrors"
         @input="$v.password.$touch()"
         @blur="$v.password.$touch()"
+        @keyup.enter="submit"
         required
         autocomplete="password"
         type="password"
@@ -34,6 +35,13 @@
       <v-btn @click="submit">submit</v-btn>
       <v-btn @click="clear">clear</v-btn>
     </v-form>
+    <v-snackbar
+      :timeout="3"
+      v-model="snackbar"
+    >
+      {{ text }}
+      <v-btn flat color="pink" @click.native="snackbar = false">Close</v-btn>
+    </v-snackbar>
   </v-container>
 </template>
 
@@ -55,13 +63,17 @@ const methods = {
   ...mapActions(
     [`login`]
   ),
-  onSuccess (data) {
-    this.$store.commit('setAuth', data)
-    this.$router.replace('/')
-  },
   submit () {
     this.$v.$touch()
-    this.login(this.user)
+    if (this.$v.$invalid) {
+      this.text = 'Please fix the form'
+      this.snakebar = true
+    } else {
+      this.login(this.user)
+      this.text = 'Logged in succesfully'
+      this.snakebar = true
+      this.$router.push({name: 'home'})
+    }
   },
   clear () {
     this.$v.$reset()
@@ -112,7 +124,9 @@ export default {
   data: () => ({
     username: '',
     email: '',
-    password: ''
+    password: '',
+    text: '',
+    snakebar: false
   })
 }
 </script>
