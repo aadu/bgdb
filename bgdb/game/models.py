@@ -28,6 +28,10 @@ class Game(EntityModel):
     subcategories = models.ManyToManyField('game.SubCategory', blank=True, verbose_name=_('subcategories'))
     mechanisms = models.ManyToManyField('game.Mechanism', blank=True, verbose_name=_('mechanisms'))
     tags = models.ManyToManyField('game.Tag', blank=True, verbose_name=_('tags'))
+    honors = models.ManyToManyField('game.Honor', blank=True, verbose_name=_('honors'))
+    publishers = models.ManyToManyField('game.Publisher', blank=True, verbose_name=_('publishers'))
+    artists = models.ManyToManyField('game.Artist', blank=True, verbose_name=_('artists'))
+    designers = models.ManyToManyField('game.Designer', blank=True, verbose_name=_('designers'))
     reimplements = models.ManyToManyField('self', blank=True, symmetrical=False, related_name='reimplemented_by', verbose_name=_('reimplements'))
     parent = models.ForeignKey('self', verbose_name=_('game'), on_delete=models.CASCADE, blank=True, null=True, related_name='children')
 
