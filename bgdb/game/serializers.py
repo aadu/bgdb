@@ -4,7 +4,7 @@ from .models import (
     Game,
     Category,
     Subcategory,
-    Mechanism,
+    Mechanic,
     Tag,
     Honor,
     Publisher,
@@ -34,9 +34,9 @@ class SubcategorySerializer(ModelSerializer):
         read_only_fields = ('id', 'slug', 'modified', 'created')
 
 
-class MechanismSerializer(ModelSerializer):
+class MechanicSerializer(ModelSerializer):
     class Meta:
-        model = Mechanism
+        model = Mechanic
         fields = '__all__'
         read_only_fields = ('id', 'slug', 'modified', 'created')
 

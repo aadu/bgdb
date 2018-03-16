@@ -15,7 +15,7 @@ class MechanismLoader(ItemLoader):
 
 
 class MechanismSpider(CrawlSpider):
-    name = 'subcategory'
+    name = 'mechanic'
     allowed_domains = ['boardgamegeek.com']
     start_urls = [f'http://boardgamegeek.com/browse/{CATEGORY}/']
 

@@ -26,7 +26,7 @@ class Game(EntityModel):
     max_age = models.PositiveIntegerField(_('max age'), blank=True, null=True)
     categories = models.ManyToManyField('game.Category', blank=True, verbose_name=_('categories'))
     subcategories = models.ManyToManyField('game.SubCategory', blank=True, verbose_name=_('subcategories'))
-    mechanisms = models.ManyToManyField('game.Mechanism', blank=True, verbose_name=_('mechanisms'))
+    mechanics = models.ManyToManyField('game.Mechanic', blank=True, verbose_name=_('mechanics'))
     tags = models.ManyToManyField('game.Tag', blank=True, verbose_name=_('tags'))
     honors = models.ManyToManyField('game.Honor', blank=True, verbose_name=_('honors'))
     publishers = models.ManyToManyField('game.Publisher', blank=True, verbose_name=_('publishers'))
@@ -66,7 +66,7 @@ class Subcategory(EntityModel):
         db_table = 'game_subcategories'
 
 
-class Mechanism(EntityModel):
+class Mechanic(EntityModel):
     # name = models.CharField(_("name"), max_length=255, db_index=True)
     # description = models.TextField(_("description"), blank=True, default='', db_index=True)
     # slug = AutoSlugField(_("slug"), populate_from=['name'], db_index=True)
@@ -74,8 +74,8 @@ class Mechanism(EntityModel):
     # modified = models.DateTimeField(_("modified"), auto_now=True)
 
     class Meta(EntityModel.Meta):
-        default_related_name = 'mechanisms'
-        db_table = 'game_mechanisms'
+        default_related_name = 'mechanics'
+        db_table = 'game_mechanics'
 
 
 class Tag(EntityModel):
