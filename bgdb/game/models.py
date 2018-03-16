@@ -27,6 +27,7 @@ class Game(EntityModel):
     categories = models.ManyToManyField('game.Category', blank=True, verbose_name=_('categories'))
     subcategories = models.ManyToManyField('game.SubCategory', blank=True, verbose_name=_('subcategories'))
     mechanisms = models.ManyToManyField('game.Mechanism', blank=True, verbose_name=_('mechanisms'))
+    tags = models.ManyToManyField('game.Tag', blank=True, verbose_name=_('tags'))
     reimplements = models.ManyToManyField('self', blank=True, symmetrical=False, related_name='reimplemented_by', verbose_name=_('reimplements'))
     parent = models.ForeignKey('self', verbose_name=_('game'), on_delete=models.CASCADE, blank=True, null=True, related_name='children')
 
@@ -71,3 +72,63 @@ class Mechanism(EntityModel):
     class Meta(EntityModel.Meta):
         default_related_name = 'mechanisms'
         db_table = 'game_mechanisms'
+
+
+class Tag(EntityModel):
+    # name = models.CharField(_("name"), max_length=255, db_index=True)
+    # description = models.TextField(_("description"), blank=True, default='', db_index=True)
+    # slug = AutoSlugField(_("slug"), populate_from=['name'], db_index=True)
+    # created = models.DateTimeField(_("created"), auto_now_add=True)
+    # modified = models.DateTimeField(_("modified"), auto_now=True)
+
+    class Meta(EntityModel.Meta):
+        default_related_name = 'tags'
+        db_table = 'game_tags'
+
+
+class Honor(EntityModel):
+    # name = models.CharField(_("name"), max_length=255, db_index=True)
+    # description = models.TextField(_("description"), blank=True, default='', db_index=True)
+    # slug = AutoSlugField(_("slug"), populate_from=['name'], db_index=True)
+    # created = models.DateTimeField(_("created"), auto_now_add=True)
+    # modified = models.DateTimeField(_("modified"), auto_now=True)
+
+    class Meta(EntityModel.Meta):
+        default_related_name = 'honors'
+        db_table = 'game_honors'
+
+
+class Publisher(EntityModel):
+    # name = models.CharField(_("name"), max_length=255, db_index=True)
+    # description = models.TextField(_("description"), blank=True, default='', db_index=True)
+    # slug = AutoSlugField(_("slug"), populate_from=['name'], db_index=True)
+    # created = models.DateTimeField(_("created"), auto_now_add=True)
+    # modified = models.DateTimeField(_("modified"), auto_now=True)
+
+    class Meta(EntityModel.Meta):
+        default_related_name = 'publishers'
+        db_table = 'game_publishers'
+
+
+class Designer(EntityModel):
+    # name = models.CharField(_("name"), max_length=255, db_index=True)
+    # description = models.TextField(_("description"), blank=True, default='', db_index=True)
+    # slug = AutoSlugField(_("slug"), populate_from=['name'], db_index=True)
+    # created = models.DateTimeField(_("created"), auto_now_add=True)
+    # modified = models.DateTimeField(_("modified"), auto_now=True)
+
+    class Meta(EntityModel.Meta):
+        default_related_name = 'designers'
+        db_table = 'game_designers'
+
+
+class Artist(EntityModel):
+    # name = models.CharField(_("name"), max_length=255, db_index=True)
+    # description = models.TextField(_("description"), blank=True, default='', db_index=True)
+    # slug = AutoSlugField(_("slug"), populate_from=['name'], db_index=True)
+    # created = models.DateTimeField(_("created"), auto_now_add=True)
+    # modified = models.DateTimeField(_("modified"), auto_now=True)
+
+    class Meta(EntityModel.Meta):
+        default_related_name = 'artists'
+        db_table = 'game_artists'
