@@ -5,7 +5,7 @@
         label="Username"
         v-model="username"
         :error-messages="usernameErrors"
-        :counter="10"
+        :counter="24"
         @input="$v.username.$touch()"
         @blur="$v.username.$touch()"
         autocomplete="username"
@@ -19,6 +19,24 @@
         @blur="$v.email.$touch()"
         autocomplete="email"
         required
+      ></v-text-field>
+      <v-text-field
+        label="First Name"
+        v-model="fname"
+        :error-messages="fnameErrors"
+        :counter="64"
+        @input="$v.fname.$touch()"
+        @blur="$v.fname.$touch()"
+        autocomplete="fname"
+      ></v-text-field>
+      <v-text-field
+        label="Last Name"
+        v-model="lname"
+        :error-messages="lnameErrors"
+        :counter="64"
+        @input="$v.lname.$touch()"
+        @blur="$v.lname.$touch()"
+        autocomplete="lname"
       ></v-text-field>
       <v-text-field
         label="Password"
@@ -80,6 +98,8 @@ const methods = {
     this.$v.$reset()
     this.username = ''
     this.email = ''
+    this.fname = ''
+    this.lname = ''
     this.password = ''
   }
 }
@@ -98,18 +118,24 @@ const computed = {
     !this.$v.username.required && errors.push('User name is required.')
     return errors
   },
+  fnameErrors () {
+    const errors = []
+    if (!this.$v.fname.$dirty) return errors
+    !this.$v.fname.maxLength && errors.push('First name must be at most 64 characters long')
+    return errors
+  },
+  lnameErrors () {
+    const errors = []
+    if (!this.$v.lname.$dirty) return errors
+    !this.$v.lname.maxLength && errors.push('User name must be at most 64 characters long')
+    return errors
+  },
   emailErrors () {
     const errors = []
     if (!this.$v.email.$dirty) return errors
     !this.$v.email.email && errors.push('Must be valid e-mail')
     !this.$v.email.required && errors.push('E-mail is required')
     return errors
-  },
-  user () {
-    return {
-      username: this.username,
-      password: this.password
-    }
   }
 }
 
@@ -118,6 +144,8 @@ export default {
   validations: {
     username: { required, maxLength: maxLength(24) },
     email: { required, email },
+    fname: { maxLength: maxLength(64) },
+    lname: { maxLength: maxLength(64) },
     password: { required }
   },
   methods,
@@ -125,6 +153,8 @@ export default {
   data: () => ({
     username: '',
     email: '',
+    fname: '',
+    lname: '',
     password: '',
     text: '',
     snackbar: false

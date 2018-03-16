@@ -12,9 +12,13 @@
         <v-icon>person</v-icon>
       </v-btn>
       <v-list class="menu">
-        <v-list-tile @click="onLogin" class="login">
+        <v-list-tile @click="onLogin" class="link">
           <v-list-tile-title>{{ user.isAuthenticated ? 'Logout' : 'Login' }}</v-list-tile-title>
         </v-list-tile>
+        <v-list-tile class="link" v-if="!user.isAuthenticated" :to="{name: 'register'}">
+          <v-list-tile-title>Register</v-list-tile-title>
+        </v-list-tile>
+
       </v-list>
     </v-menu>
   </div>
@@ -51,7 +55,7 @@ export default {
 </script>
 
 <style scoped>
-.login {
+.link {
   width: 160px;
 }
 .menu {

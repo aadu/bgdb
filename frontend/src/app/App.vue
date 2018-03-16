@@ -2,10 +2,10 @@
   <v-app dark>
     <Sidebar></Sidebar>
     <Toolbar></Toolbar>
-    <v-content>
-    <transition name="fade" mode="out-in">
-          <router-view/>
-        </transition>
+    <v-content fluid>
+      <v-fade-transition mode="out-in">
+          <router-view></router-view>
+      </v-fade-transition>
     </v-content>
     <Footer></Footer>
   </v-app>
@@ -28,12 +28,4 @@ export default {
   name: 'App'
 }
 </script>
-<style>
-  .fade-enter-active, .fade-leave-active {
-    transition: opacity .3s;
-  }
-  .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-    opacity: 0;
-  }
-</style>
 
