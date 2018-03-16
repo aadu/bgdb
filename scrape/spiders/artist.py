@@ -19,9 +19,12 @@ class ArtistSpider(CrawlSpider):
     allowed_domains = ['boardgamegeek.com']
     start_urls = [f'http://boardgamegeek.com/browse/{CATEGORY}/']
 
-    rules = (Rule(
-        LinkExtractor(allow=(CATEGORY, ), deny=('browse', )),
-        callback='parse_item'), )
+    rules = (
+        Rule(
+            LinkExtractor(allow=(CATEGORY, ), deny=('browse', )),
+            callback='parse_item'),
+        Rule(LinkExtractor(allow=(f'{CATEGORY}/page/\d+', ), ), follow=True),
+    )
 
     def parse_item(self, response):
         loader = ArtistLoader(item=ArtistItem(), response=response)

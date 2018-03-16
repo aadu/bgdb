@@ -21,6 +21,7 @@ class MechanicSpider(CrawlSpider):
 
     rules = (
         Rule(LinkExtractor(allow=(CATEGORY, ), deny=('browse', )), callback='parse_item'),
+        Rule(LinkExtractor(allow=(f'{CATEGORY}/page/\d+', ),), follow=True),
     )
 
     def parse_item(self, response):
