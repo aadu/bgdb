@@ -137,7 +137,7 @@ const computed = {
     !this.$v.email.required && errors.push('E-mail is required')
     return errors
   },
-    user () {
+  user () {
     return {
       username: this.username,
       fname: this.fname,

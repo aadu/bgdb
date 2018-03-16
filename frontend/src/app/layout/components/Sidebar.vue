@@ -1,7 +1,7 @@
 <template>
   <v-navigation-drawer
     persistent
-    :value="sidebarVisible"
+    :value="layout.sidebarVisible"
     app
     enable-resize-watcher
     fixed
@@ -25,12 +25,12 @@
 </template>
 
 <script>
-import {mapGetters, mapActions} from 'vuex'
+import {mapState, mapActions} from 'vuex'
 
 const name = 'sidebar'
 const computed = {
-  ...mapGetters([
-    `sidebarVisible`
+  ...mapState([
+    `layout`
   ])
 }
 

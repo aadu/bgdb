@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 import { LoginMenu } from '@/app/user/components'
 
 const name = 'toolbar'
@@ -18,8 +18,8 @@ const components = {
   LoginMenu
 }
 const computed = {
-  ...mapGetters([
-    `sidebarVisible`
+  ...mapState([
+    `layout`
   ])
 }
 const methods = {
@@ -27,7 +27,7 @@ const methods = {
     `toggleSidebar`
   ]),
   onToggle () {
-    this.toggleSidebar(!this.sidebarVisible)
+    this.toggleSidebar(!this.layout.sidebarVisible)
   },
   onTitle () {
     this.$router.push({name: 'home'})

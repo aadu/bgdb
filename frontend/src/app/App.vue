@@ -6,26 +6,25 @@
       <v-fade-transition mode="out-in">
           <router-view></router-view>
       </v-fade-transition>
+      <Notifier></Notifier>
     </v-content>
     <Footer></Footer>
   </v-app>
 </template>
 
 <script>
-import { Footer, Toolbar, Sidebar } from './layout'
+import { Footer, Notifier, Toolbar, Sidebar } from './layout/components'
 
 const components = {
   Footer,
+  Notifier,
   Toolbar,
   Sidebar
 }
 
 export default {
-  components,
-  data () {
-    return {}
-  },
-  name: 'App'
+  name: 'App',
+  components
 }
 </script>
 
