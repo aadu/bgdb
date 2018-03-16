@@ -24,11 +24,11 @@ class Game(EntityModel):
     max_play_time = models.PositiveIntegerField(_('max play time'), blank=True, null=True)
     min_age = models.PositiveIntegerField(_('min age'), blank=True, null=True)
     max_age = models.PositiveIntegerField(_('max age'), blank=True, null=True)
-    game = models.ForeignKey('self', verbose_name=_('game'), on_delete=models.CASCADE)
     categories = models.ManyToManyField('game.Category', blank=True, verbose_name=_('categories'))
     subcategories = models.ManyToManyField('game.SubCategory', blank=True, verbose_name=_('subcategories'))
     mechanisms = models.ManyToManyField('game.Mechanism', blank=True, verbose_name=_('mechanisms'))
     reimplements = models.ManyToManyField('self', blank=True, symmetrical=False, related_name='reimplemented_by', verbose_name=_('reimplements'))
+    parent = models.ForeignKey('self', verbose_name=_('game'), on_delete=models.CASCADE, blank=True, null=True, related_name='children')
 
     class Meta(EntityModel.Meta):
         default_related_name = 'games'
