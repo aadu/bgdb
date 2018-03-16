@@ -36,7 +36,8 @@
       <v-btn @click="clear">clear</v-btn>
     </v-form>
     <v-snackbar
-      :timeout="3"
+      :top="true"
+      :timeout="6000"
       v-model="snackbar"
     >
       {{ text }}
@@ -67,12 +68,12 @@ const methods = {
     this.$v.$touch()
     if (this.$v.$invalid) {
       this.text = 'Please fix the form'
-      this.snakebar = true
+      this.snackbar = true
     } else {
       this.login(this.user)
       this.text = 'Logged in succesfully'
-      this.snakebar = true
-      this.$router.push({name: 'home'})
+      this.snackbar = true
+      // this.$router.push({name: 'home'})
     }
   },
   clear () {
@@ -126,7 +127,7 @@ export default {
     email: '',
     password: '',
     text: '',
-    snakebar: false
+    snackbar: false
   })
 }
 </script>
