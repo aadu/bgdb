@@ -42,7 +42,7 @@ class GameSpider(CrawlSpider):
 
     def parse_item(self, response):
         l = GameLoader(item=GameItem(), response=response)
-        l.add_value('id', response.url, re=r'(\d+)')
+        l.add_value('pk', response.url, re=r'(\d+)')
         l.add_value('url', response.url)
         jsondata = response.css('script').re(r'(?<=geekitemPreload = ).*(?=;)')
         if not jsondata:
