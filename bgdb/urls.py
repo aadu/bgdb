@@ -6,11 +6,13 @@ from django.views.generic.base import RedirectView
 from rest_framework.authtoken import views
 from rest_framework.routers import DefaultRouter
 
+from .game.views import GameViewSet
 from .user.views import UserCreateViewSet, UserViewSet
 
 router = DefaultRouter()
 router.register(r'users', UserViewSet)
 router.register(r'users', UserCreateViewSet)
+router.register(r'games', GameViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
