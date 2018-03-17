@@ -2,7 +2,7 @@
   <v-app dark>
     <Sidebar></Sidebar>
     <Toolbar></Toolbar>
-    <v-content fluid>
+    <v-content>
       <v-fade-transition mode="out-in">
           <router-view></router-view>
       </v-fade-transition>

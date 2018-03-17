@@ -1,10 +1,8 @@
+import config from '@/config'
 import * as types from './types'
 
 const initialState = {
-  list: [
-    { name: 'HELLO' },
-    { name: 'HELLO2' }
-  ]
+  list: []
 }
 
 const mutations = {
@@ -14,8 +12,12 @@ const mutations = {
 }
 
 const actions = {
-  updateGames: ({ commit }, text) => {
-    commit(types.SET_GAMES, text)
+  updateGames: ({ commit }, context) => {
+    return context.$http.get(config.gamesUrl).then(({ data }) => {
+      commit(types.SET_GAMES, data.results)
+    }).catch((err) => {
+      return err
+    })
   }
 }
 

@@ -1,23 +1,27 @@
 <template>
-  <v-container>
-    <v-list>
-      <v-list-tile v-for="(game, ix) in games" :key="ix">
-        <v-list-tile-title v-text="game.name"></v-list-tile-title>
-      </v-list-tile>
-    </v-list>
+  <v-container class="ma3">
+    <ul>
+      <Card v-for="(game, ix) in games" :key="ix" :game="game" class="ma3"></Card>
+    </ul>
   </v-container>
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import Card from './Card'
 
 const name = 'games'
+
+const components = {
+  Card
+}
 
 const computed = {
   ...mapGetters([
     `games`
   ])
 }
+
 const methods = {
   ...mapActions([
     `updateGames`
@@ -27,6 +31,10 @@ const methods = {
 export default {
   name,
   methods,
-  computed
+  components,
+  computed,
+  beforeMount () {
+    this.updateGames(this)
+  }
 }
 </script>
