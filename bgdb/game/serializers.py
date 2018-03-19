@@ -13,6 +13,7 @@ class GameSerializer(ModelSerializer):
 
 
 class CategorySerializer(ModelSerializer):
+    pk = IntegerField(read_only=False)
     class Meta:
         model = Category
         fields = '__all__'
@@ -20,6 +21,7 @@ class CategorySerializer(ModelSerializer):
 
 
 class SubcategorySerializer(ModelSerializer):
+    pk = IntegerField(read_only=False)
     class Meta:
         model = Subcategory
         fields = '__all__'
@@ -27,6 +29,8 @@ class SubcategorySerializer(ModelSerializer):
 
 
 class MechanicSerializer(ModelSerializer):
+    pk = IntegerField(read_only=False)
+
     class Meta:
         model = Mechanic
         fields = '__all__'
@@ -34,6 +38,8 @@ class MechanicSerializer(ModelSerializer):
 
 
 class TagSerializer(ModelSerializer):
+    pk = IntegerField(read_only=False)
+
     class Meta:
         model = Tag
         fields = '__all__'
@@ -41,6 +47,8 @@ class TagSerializer(ModelSerializer):
 
 
 class HonorSerializer(ModelSerializer):
+    pk = IntegerField(read_only=False)
+
     class Meta:
         model = Honor
         fields = '__all__'
@@ -48,6 +56,8 @@ class HonorSerializer(ModelSerializer):
 
 
 class PublisherSerializer(ModelSerializer):
+    pk = IntegerField(read_only=False)
+
     class Meta:
         model = Publisher
         fields = '__all__'
@@ -55,6 +65,8 @@ class PublisherSerializer(ModelSerializer):
 
 
 class ArtistSerializer(ModelSerializer):
+    pk = IntegerField(read_only=False)
+
     class Meta:
         model = Artist
         fields = '__all__'
@@ -62,6 +74,8 @@ class ArtistSerializer(ModelSerializer):
 
 
 class DesignerSerializer(ModelSerializer):
+    pk = IntegerField(read_only=False)
+
     class Meta:
         model = Designer
         fields = '__all__'

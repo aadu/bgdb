@@ -28,7 +28,7 @@ class DesignerSpider(CrawlSpider):
 
     def parse_item(self, response):
         loader = DesignerLoader(item=DesignerItem(), response=response)
-        loader.add_value('id', response.url, re=r'(\d+)')
+        loader.add_value('pk', response.url, re=r'(\d+)')
         loader.add_value('url', response.url)
         loader.add_css('name', '.geekitem_name::text')
         loader.add_css('description', '#editdesc > p')

@@ -17,6 +17,8 @@ class GameLoader(ItemLoader):
     default_output_processor = TakeFirst()
     default_input_processor = MapCompose(str.strip)
     description_out = Join()
+    mechanics_out = Identity()
+    subcategories_out = Identity()
 
 
 # def process_link(value):
@@ -59,6 +61,9 @@ class GameSpider(CrawlSpider):
         l.add_xpath('min_play_time', 'minplaytime/@value')
         l.add_xpath('max_play_time', 'maxplaytime/@value')
         l.add_xpath('min_age', 'minage/@value')
+        l.add_xpath('mechanics', 'link[@type="boardgamemechanic"]/@id')
+        l.add_xpath('subcategories', 'link[@type="boardgamecategory"]/@id')
+
         # from scrapy.shell import inspect_response
         # inspect_response(response, self)
         yield l.load_item()
