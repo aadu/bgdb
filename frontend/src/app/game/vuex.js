@@ -31,12 +31,16 @@ const mutations = {
 }
 
 const formatFilterOptions = (pagination) => {
-  const { sortBy, descending } = pagination
+  const { sortBy, descending, page, rowsPerPage } = pagination
   const params = {}
-  // console.log(page)
-  // console.log(rowsPerPage)
   if (sortBy) {
     params['order_by'] = descending === true ? '-' + sortBy : sortBy
+  }
+  if (typeof page !== 'undefined') {
+    params.page = page
+  }
+  if (typeof rowsPerPage !== 'undefined') {
+    params.page_size = rowsPerPage
   }
   return params
 }
@@ -44,10 +48,9 @@ const formatFilterOptions = (pagination) => {
 const actions = {
   async getGames ({ commit, dispatch }, options) {
     const params = formatFilterOptions(options)
-    console.log(params)
+    console.log('params', params)
     try {
       const { data } = await axios.get(`${config.apiUrl}/games/`, {params})
-      console.log(data)
       return commit(types.SET_GAMES, { items: data.results, count: data.count })
     } catch (err) {
       console.log(err)

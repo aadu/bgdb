@@ -186,7 +186,8 @@ AUTH_USER_MODEL = 'user.User'
 # Django Rest Framework
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS':
-        'rest_framework.pagination.PageNumberPagination',
+        # 'rest_framework.pagination.PageNumberPagination',
+        'bgdb.config.pagination.CustomPageNumberPagination',
     'PAGE_SIZE':
         int(os.getenv('DJANGO_PAGINATION_LIMIT', 50)),
     'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend', ),

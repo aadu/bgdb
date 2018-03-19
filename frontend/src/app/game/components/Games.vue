@@ -5,8 +5,10 @@
       :items="games"
       :loading="loading"
       :pagination.sync="pagination"
+      @update:pagination="onPageUpdate($event)"
+      :search="search"
+      :rows-per-page-items="[50, 100, 500]"
       :total-items="game.count"
-      hide-actions
       class="elevation-1"
       >
       <template slot="items" slot-scope="props">
@@ -16,7 +18,7 @@
         <td class="text-xs-right">{{ props.item.max_players }}</td>
         <td class="text-xs-right">{{ props.item.min_play_time }}</td>
         <td class="text-xs-right">{{ props.item.max_play_time }}</td>
-        </template>
+      </template>
     </v-data-table>
   </v-container>
 </template>
@@ -44,6 +46,16 @@ const methods = {
   ...mapActions([
     `getGames`
   ]),
+  onPageUpdate (pagination) {
+    if (pagination.totalItems === 0) {
+      return
+    }
+    if (!pagination.initialized) {
+      this.pagination.initialized = true
+      return
+    }
+    this.getDataFromApi()
+  },
   getDataFromApi () {
     this.loading = true
     this.getGames(this.pagination).then(() => {
@@ -70,21 +82,22 @@ export default {
   methods,
   components,
   computed,
-  data () {
-    return {
-      loading: true,
-      pagination: {},
-      headers
-    }
-  },
   mounted () {
     this.getDataFromApi()
   },
-  watch: {
-    pagination: {
-      handler () {
-        this.getDataFromApi()
-      }
+  data () {
+    return {
+      loading: true,
+      pagination: {
+        page: 1,
+        rowsPerPage: 50,
+        totalItems: 0,
+        sortBy: 'name',
+        descending: false,
+        initialized: false
+      },
+      search: '',
+      headers
     }
   }
 }
