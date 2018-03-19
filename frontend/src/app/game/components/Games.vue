@@ -1,25 +1,42 @@
 <template>
   <v-container class="ma3">
-    <v-data-table
-      :headers="headers"
-      :items="games"
-      :loading="loading"
-      :pagination.sync="pagination"
-      @update:pagination="onPageUpdate($event)"
-      :search="search"
-      :rows-per-page-items="[50, 100, 500]"
-      :total-items="game.count"
-      class="elevation-1"
-      >
-      <template slot="items" slot-scope="props">
-        <td>{{ props.item.name }}</td>
-        <td class="text-xs-right">{{ props.item.min_age }}</td>
-        <td class="text-xs-right">{{ props.item.min_players }}</td>
-        <td class="text-xs-right">{{ props.item.max_players }}</td>
-        <td class="text-xs-right">{{ props.item.min_play_time }}</td>
-        <td class="text-xs-right">{{ props.item.max_play_time }}</td>
-      </template>
-    </v-data-table>
+    <v-card>
+      <v-card-title>
+        Games
+        <v-spacer></v-spacer>
+        <v-text-field
+          append-icon="search"
+          label="Search"
+          single-line
+          hide-details
+          v-model="search"
+          @keyup.enter="getDataFromApi"
+        ></v-text-field>
+      </v-card-title>
+      <v-data-table
+        :headers="headers"
+        :items="games"
+        :loading="loading"
+        :pagination.sync="pagination"
+        @update:pagination="onPageUpdate($event)"
+        :search="search"
+        :rows-per-page-items="[25, 50, 100, 500]"
+        :total-items="game.count"
+        class="elevation-1"
+        >
+        <template slot="items" slot-scope="props">
+          <td>{{ props.item.name }}</td>
+          <td class="text-xs-right">{{ props.item.min_age }}</td>
+          <td class="text-xs-right">{{ props.item.min_players }}</td>
+          <td class="text-xs-right">{{ props.item.max_players }}</td>
+          <td class="text-xs-right">{{ props.item.min_play_time }}</td>
+          <td class="text-xs-right">{{ props.item.max_play_time }}</td>
+        </template>
+        <v-alert slot="no-results" :value="true" color="error" icon="warning">
+          Your search for "{{ search }}" found no results.
+        </v-alert>
+      </v-data-table>
+    </v-card>
   </v-container>
 </template>
 
@@ -39,7 +56,25 @@ const computed = {
   ]),
   ...mapState([
     `game`
-  ])
+  ]),
+  params () {
+    const { sortBy, descending, page, rowsPerPage } = this.pagination
+    const output = {}
+    if (sortBy) {
+      output['order_by'] = descending === true ? '-' + sortBy : sortBy
+    }
+    if (typeof page !== 'undefined') {
+      output.page = page
+    }
+    if (typeof rowsPerPage !== 'undefined') {
+      output.page_size = rowsPerPage
+    }
+    if (this.search) {
+      console.log('search', this.search)
+      output.name__icontains = this.search
+    }
+    return output
+  }
 }
 
 const methods = {
@@ -58,7 +93,7 @@ const methods = {
   },
   getDataFromApi () {
     this.loading = true
-    this.getGames(this.pagination).then(() => {
+    this.getGames(this.params).then(() => {
       this.loading = false
     })
   }
@@ -90,7 +125,7 @@ export default {
       loading: true,
       pagination: {
         page: 1,
-        rowsPerPage: 50,
+        rowsPerPage: 25,
         totalItems: 0,
         sortBy: 'name',
         descending: false,
