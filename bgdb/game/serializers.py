@@ -1,4 +1,4 @@
-from rest_framework.serializers import ModelSerializer, IntegerField
+from rest_framework.serializers import IntegerField, ModelSerializer
 
 from .models import Artist, Category, Designer, Game, Honor, Mechanic, Publisher, Subcategory, Tag
 
@@ -14,6 +14,7 @@ class GameSerializer(ModelSerializer):
 
 class CategorySerializer(ModelSerializer):
     pk = IntegerField(read_only=False)
+
     class Meta:
         model = Category
         fields = '__all__'
@@ -22,6 +23,7 @@ class CategorySerializer(ModelSerializer):
 
 class SubcategorySerializer(ModelSerializer):
     pk = IntegerField(read_only=False)
+
     class Meta:
         model = Subcategory
         fields = '__all__'
