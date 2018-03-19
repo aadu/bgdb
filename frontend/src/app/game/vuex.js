@@ -4,6 +4,7 @@ import * as types from './types'
 
 const initialState = {
   items: [],
+  count: 0,
   mechanics: [],
   categories: [],
   subcategories: [],
@@ -11,8 +12,9 @@ const initialState = {
 }
 
 const mutations = {
-  [types.SET_GAMES]: (state, items) => {
+  [types.SET_GAMES]: (state, { items, count }) => {
     state.items = items
+    state.count = count
   },
   [types.SET_MECHANICS]: (state, mechanics) => {
     state.mechanics = mechanics
@@ -28,12 +30,28 @@ const mutations = {
   }
 }
 
+const formatFilterOptions = (pagination) => {
+  const { sortBy, descending } = pagination
+  const params = {}
+  // console.log(page)
+  // console.log(rowsPerPage)
+  if (sortBy) {
+    params['order_by'] = descending === true ? '-' + sortBy : sortBy
+  }
+  return params
+}
+
 const actions = {
-  async getGames ({ commit }) {
+  async getGames ({ commit, dispatch }, options) {
+    const params = formatFilterOptions(options)
+    console.log(params)
     try {
-      const { data } = await axios.get(config.gamesUrl)
-      return commit(types.SET_GAMES, data.results)
+      const { data } = await axios.get(`${config.apiUrl}/games/`, {params})
+      console.log(data)
+      return commit(types.SET_GAMES, { items: data.results, count: data.count })
     } catch (err) {
+      console.log(err)
+      dispatch('displayMessage', err)
       return err
     }
   },

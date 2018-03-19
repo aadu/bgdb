@@ -13,7 +13,6 @@ const config = {
   apiUrl,
   authUrl: `${baseUrl}/api-token-auth/`,
   registerUrl: `${apiUrl}/users/`,
-  gamesUrl: `${apiUrl}/games/`,
   storageKey: 'bgdb'
 }
 global.config = config

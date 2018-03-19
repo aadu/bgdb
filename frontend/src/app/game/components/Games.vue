@@ -4,6 +4,8 @@
       :headers="headers"
       :items="games"
       :loading="loading"
+      :pagination.sync="pagination"
+      :total-items="game.count"
       hide-actions
       class="elevation-1"
       >
@@ -20,7 +22,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters, mapState } from 'vuex'
 import Card from './Card'
 
 const name = 'games'
@@ -32,14 +34,36 @@ const components = {
 const computed = {
   ...mapGetters([
     `games`
+  ]),
+  ...mapState([
+    `game`
   ])
 }
 
 const methods = {
   ...mapActions([
     `getGames`
-  ])
+  ]),
+  getDataFromApi () {
+    this.loading = true
+    this.getGames(this.pagination).then(() => {
+      this.loading = false
+    })
+  }
 }
+
+const headers = [
+  {
+    text: 'Name',
+    align: 'left',
+    value: 'name'
+  },
+  { text: 'Minimum Age', value: 'min_age', sortable: false },
+  { text: 'Min Players', value: 'min_players', sortable: false },
+  { text: 'Max Players', value: 'max_players', sortable: false },
+  { text: 'Min Play Time', value: 'min_play_time', sortable: false },
+  { text: 'Max Play Time', value: 'max_play_time', sortable: false }
+]
 
 export default {
   name,
@@ -49,26 +73,19 @@ export default {
   data () {
     return {
       loading: true,
-      headers: [
-        {
-          text: 'Name',
-          align: 'left',
-          sortable: false,
-          value: 'name'
-        },
-        { text: 'Minimum Age', value: 'min_age' },
-        { text: 'Min Players', value: 'min_players' },
-        { text: 'Max Players', value: 'max_players' },
-        { text: 'Min Play Time', value: 'min_play_time' },
-        { text: 'Max Play Time', value: 'max_play_time' }
-      ]
+      pagination: {},
+      headers
     }
   },
   mounted () {
-    this.loading = true
-    this.getGames(this).then(() => {
-      this.loading = false
-    })
+    this.getDataFromApi()
+  },
+  watch: {
+    pagination: {
+      handler () {
+        this.getDataFromApi()
+      }
+    }
   }
 }
 </script>
