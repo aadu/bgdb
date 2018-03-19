@@ -189,7 +189,7 @@ REST_FRAMEWORK = {
         'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE':
         int(os.getenv('DJANGO_PAGINATION_LIMIT', 50)),
-    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
+    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend', ),
     'DATETIME_FORMAT':
         '%Y-%m-%dT%H:%M:%S%z',
     'DEFAULT_RENDERER_CLASSES':
