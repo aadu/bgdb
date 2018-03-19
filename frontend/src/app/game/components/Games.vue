@@ -3,6 +3,7 @@
     <v-data-table
       :headers="headers"
       :items="games"
+      :loading="loading"
       hide-actions
       class="elevation-1"
       >
@@ -36,7 +37,7 @@ const computed = {
 
 const methods = {
   ...mapActions([
-    `updateGames`
+    `getGames`
   ])
 }
 
@@ -47,6 +48,7 @@ export default {
   computed,
   data () {
     return {
+      loading: true,
       headers: [
         {
           text: 'Name',
@@ -59,11 +61,14 @@ export default {
         { text: 'Max Players', value: 'max_players' },
         { text: 'Min Play Time', value: 'min_play_time' },
         { text: 'Max Play Time', value: 'max_play_time' }
-      ],
+      ]
     }
   },
-  beforeMount () {
-    this.updateGames(this)
+  mounted () {
+    this.loading = true
+    this.getGames(this).then(() => {
+      this.loading = false
+    })
   }
 }
 </script>
