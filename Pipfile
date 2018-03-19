@@ -25,6 +25,7 @@ django-extensions = "*"
 shortuuid = "*"
 django-appconf = "*"
 coreapi = "*"
+djangorestframework-filters = "*"
 
 
 [dev-packages]
