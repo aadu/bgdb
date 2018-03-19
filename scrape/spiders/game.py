@@ -17,7 +17,7 @@ class GameLoader(ItemLoader):
 
 
 class GameSpider(CrawlSpider):
-    name = 'game'
+    name = 'game2'
     allowed_domains = ['boardgamegeek.com']
     start_urls = [f'http://boardgamegeek.com/browse/{CATEGORY}/']
 
@@ -44,19 +44,24 @@ class GameSpider(CrawlSpider):
         l = GameLoader(item=GameItem(), response=response)
         l.add_value('pk', response.url, re=r'(\d+)')
         l.add_value('url', response.url)
-        jsondata = response.css('script').re(r'(?<=geekitemPreload = ).*(?=;)')
-        if not jsondata:
-            return
-        data = self.load_data(jsondata[0])
-        item = data['item']
-        l.add_value('name', item.get('name'))
-        l.add_value('description', item.get('description'))
-        l.add_value('year_published', item.get('yearpublished'))
-        l.add_value('min_players', item.get('minplayers'))
-        l.add_value('max_players', item.get('maxplayers'))
-        l.add_value('min_play_time', item.get('minplaytime'))
-        l.add_value('max_play_time', item.get('maxplaytime'))
-        l.add_value('min_age', item.get('minage'))
+        from scrapy.shell import inspect_response
+        inspect_response(response, self)
+
+
+
+        # jsondata = response.css('script').re(r'(?<=geekitemPreload = ).*(?=;)')
+        # if not jsondata:
+        #     return
+        # data = self.load_data(jsondata[0])
+        # item = data['item']
+        # l.add_value('name', item.get('name'))
+        # l.add_value('description', item.get('description'))
+        # l.add_value('year_published', item.get('yearpublished'))
+        # l.add_value('min_players', item.get('minplayers'))
+        # l.add_value('max_players', item.get('maxplayers'))
+        # l.add_value('min_play_time', item.get('minplaytime'))
+        # l.add_value('max_play_time', item.get('maxplaytime'))
+        # l.add_value('min_age', item.get('minage'))
         yield l.load_item()
 
 #     categories = models.ManyToManyField('game.Category', blank=True, verbose_name=_('categories'))
