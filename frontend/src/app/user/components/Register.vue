@@ -1,6 +1,6 @@
 <template>
   <v-container fluid class="ma-3">
-    <v-form width="200">
+    <v-form>
       <v-text-field
         label="Username"
         v-model="username"
@@ -58,7 +58,7 @@
 
 <style scoped>
   form {
-    width: 640px;
+    width: fit-content;
   }
   body{
     background: #666 !important;
