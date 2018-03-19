@@ -5,18 +5,24 @@ from django.urls import include, path, re_path, reverse_lazy
 from django.views.generic.base import RedirectView
 from rest_framework.authtoken import views
 from rest_framework.routers import DefaultRouter
+from rest_framework.schemas import get_schema_view
 
-from .game.views import GameViewSet
+from .game.views import GameViewSet, MechanicViewSet, SubcategoryViewSet
 from .user.views import UserCreateViewSet, UserViewSet
 
 router = DefaultRouter()
 router.register(r'users', UserViewSet)
 router.register(r'users', UserCreateViewSet)
 router.register(r'games', GameViewSet)
+router.register(r'mechanics', MechanicViewSet)
+router.register(r'subcategories', SubcategoryViewSet)
+
+schema_view = get_schema_view(title='BGDB API')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include(router.urls)),
+    path('schema/', schema_view),
     path('api-token-auth/', views.obtain_auth_token),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 
