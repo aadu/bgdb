@@ -1,1 +1,5 @@
 export const SET_GAMES = `SET_GAMES`
+export const SET_MECHANICS = `SET_MECHANICS`
+export const SET_CATEGORIES = `SET_CATEGORIES`
+export const SET_SUBCATEGORIES = `SET_SUBCATEGORIES`
+export const SET_TAGS = `SET_TAGS`
