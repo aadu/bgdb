@@ -26,6 +26,7 @@ shortuuid = "*"
 django-appconf = "*"
 coreapi = "*"
 djangorestframework-filters = "*"
+pillow = "*"
 
 
 [dev-packages]
