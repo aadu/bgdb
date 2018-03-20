@@ -19,6 +19,8 @@ class GameLoader(ItemLoader):
     description_out = Join()
     mechanics_out = Identity()
     subcategories_out = Identity()
+    image_urls_out = Identity()
+    images_out = Identity()
 
 
 # def process_link(value):
@@ -36,7 +38,9 @@ class GameSpider(CrawlSpider):
     name = 'game'
     allowed_domains = ['boardgamegeek.com']
     start_urls = [f'http://boardgamegeek.com/browse/{CATEGORY}/']
-
+    custom_settings = {
+        'IMAGES_STORE': 'media/games',
+    }
     rules = (
         Rule(LinkExtractor(allow=(r'boardgame/\d+/', ), deny=('browse', )), callback='parse_id'),
         # Rule(LinkExtractor(allow=(r'boardgame/page/\d+', ),), follow=True),
@@ -44,15 +48,21 @@ class GameSpider(CrawlSpider):
 
     def parse_id(self, response):
         match = re.search(r'/boardgame/(\d+)/', response.url)
-        if match:
-            params = {'id': match.groups()[0]}
-            api_url = API_URL + ('&' if urlparse(API_URL).query else '?') + urlencode(params)
-            yield scrapy.Request(api_url, callback=self.parse_item)
+        if not match:
+            return
+        params = {'id': match.groups()[0]}
+        api_url = API_URL + ('&' if urlparse(API_URL).query else '?') + urlencode(params)
+        request = scrapy.Request(api_url, callback=self.parse_item)
+        request.meta['url'] = response.url
+        request.meta['id'] = params['id']
+        yield request
 
     def parse_item(self, response):
         l = GameLoader(item=GameItem(), selector=response.xpath('/items/item[1]'))
-        l.add_value('pk', response.url, re=r'id=(\d+)')
-        l.add_value('url', response.url)
+        l.add_value('id', response.url, re=r'id=(\d+)')
+        l.add_value('url', response.meta['url'])
+        l.add_value('api_url', response.url)
+        l.add_xpath('image_urls', 'image/text()')
         l.add_xpath('name', 'name[@type="primary"]/@value')
         l.add_xpath('description', 'description/text()')
         l.add_xpath('year_published', 'yearpublished/@value')
