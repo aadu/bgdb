@@ -20,11 +20,11 @@ router.register(r'subcategories', SubcategoryViewSet)
 schema_view = get_schema_view(title='BGDB API')
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/v1/', include(router.urls)),
-    path('schema/', schema_view),
-    path('api-token-auth/', views.obtain_auth_token),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path(r'schema/', schema_view),
+    path(r'admin/', admin.site.urls),
+    path(r'api/v1/', include(router.urls)),
+    path(r'api-token-auth/', views.obtain_auth_token),
+    path(r'api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 
     # the 'api-root' from django rest-frameworks default router
     # http://www.django-rest-framework.org/api-guide/routers/#defaultrouter
