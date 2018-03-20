@@ -6,18 +6,16 @@
     enable-resize-watcher
     fixed
     @input="handleInput"
+    width="220"
   >
-    <v-list>
-      <v-list-tile
-        value="true"
-        v-for="(item, i) in items"
-        :key="i"
-      >
+    <v-list class="pt-0" dense>
+      <v-divider light></v-divider>
+      <v-list-tile v-for="item in items" :key="item.title" :to="{name: item.route}">
         <v-list-tile-action>
-          <v-icon v-html="item.icon"></v-icon>
+          <v-icon>{{ item.icon }}</v-icon>
         </v-list-tile-action>
         <v-list-tile-content>
-          <v-list-tile-title v-text="item.title"></v-list-tile-title>
+          <v-list-tile-title>{{ item.title }}</v-list-tile-title>
         </v-list-tile-content>
       </v-list-tile>
     </v-list>
@@ -49,10 +47,18 @@ export default {
   methods,
   data () {
     return {
-      items: [{
-        icon: 'bubble_chart',
-        title: 'Board Game DataBase'
-      }]
+      items: [
+        {
+          icon: 'apps',
+          title: 'Board Games',
+          route: 'games'
+        },
+        {
+          icon: 'build',
+          title: 'Mechanisms',
+          route: 'mechanisms'
+        }
+      ]
     }
   }
 }
