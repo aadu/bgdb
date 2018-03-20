@@ -4,7 +4,7 @@ from .models import Artist, Category, Designer, Game, Honor, Mechanic, Publisher
 
 
 class GameSerializer(ModelSerializer):
-    pk = IntegerField(read_only=False)
+    id = IntegerField(read_only=False)
 
     class Meta:
         model = Game
@@ -13,7 +13,7 @@ class GameSerializer(ModelSerializer):
 
 
 class CategorySerializer(ModelSerializer):
-    pk = IntegerField(read_only=False)
+    id = IntegerField(read_only=False)
 
     class Meta:
         model = Category
@@ -22,7 +22,7 @@ class CategorySerializer(ModelSerializer):
 
 
 class SubcategorySerializer(ModelSerializer):
-    pk = IntegerField(read_only=False)
+    id = IntegerField(read_only=False)
 
     class Meta:
         model = Subcategory
@@ -31,7 +31,7 @@ class SubcategorySerializer(ModelSerializer):
 
 
 class MechanicSerializer(ModelSerializer):
-    pk = IntegerField(read_only=False)
+    id = IntegerField(read_only=False)
 
     class Meta:
         model = Mechanic
@@ -40,7 +40,7 @@ class MechanicSerializer(ModelSerializer):
 
 
 class TagSerializer(ModelSerializer):
-    pk = IntegerField(read_only=False)
+    id = IntegerField(read_only=False)
 
     class Meta:
         model = Tag
@@ -49,7 +49,7 @@ class TagSerializer(ModelSerializer):
 
 
 class HonorSerializer(ModelSerializer):
-    pk = IntegerField(read_only=False)
+    id = IntegerField(read_only=False)
 
     class Meta:
         model = Honor
@@ -58,7 +58,7 @@ class HonorSerializer(ModelSerializer):
 
 
 class PublisherSerializer(ModelSerializer):
-    pk = IntegerField(read_only=False)
+    id = IntegerField(read_only=False)
 
     class Meta:
         model = Publisher
@@ -67,7 +67,7 @@ class PublisherSerializer(ModelSerializer):
 
 
 class ArtistSerializer(ModelSerializer):
-    pk = IntegerField(read_only=False)
+    id = IntegerField(read_only=False)
 
     class Meta:
         model = Artist
@@ -76,7 +76,7 @@ class ArtistSerializer(ModelSerializer):
 
 
 class DesignerSerializer(ModelSerializer):
-    pk = IntegerField(read_only=False)
+    id = IntegerField(read_only=False)
 
     class Meta:
         model = Designer

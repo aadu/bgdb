@@ -16,7 +16,7 @@ class Game(EntityModel):
     # modified = models.DateTimeField(_("modified"), auto_now=True)
     # url = models.URLField(_('url'), blank=True, default='')
     type = models.CharField(_('type'), max_length=24, choices=settings.GAME_TYPES, default=settings.GAME_TYPES.game, blank=True)
-    image = models.ImageField(verbose_name=_('image'), upload_to='games', blank=True, null=True)
+    image = models.ImageField(verbose_name=_('image'), upload_to='games/full', blank=True, null=True)
     image_url = models.URLField(_('image url'), blank=True, null=True)
     num_votes = models.PositiveIntegerField(_('number of votes'), blank=True, default=0)
     average_rating = models.FloatField(_('average rating'), blank=True, null=True)
