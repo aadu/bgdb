@@ -65,11 +65,13 @@ EXTENSIONS = {
 
 # CLOSESPIDER_PAGECOUNT = 3
 CLOSESPIDER_ERRORCOUNT = 1
-# CLOSESPIDER_ITEMCOUNT = 1
+CLOSESPIDER_ITEMCOUNT = 1
 
+IMAGES_STORE = 'images'
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
+    'scrapy.pipelines.images.ImagesPipeline': 1,
     'scrape.pipelines.DjangoItemPipeline': 300,
 }
 

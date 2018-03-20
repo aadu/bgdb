@@ -33,6 +33,9 @@ class MechanicItem(DRFItem):
 
 
 class GameItem(DRFItem):
+    image_urls = scrapy.Field()
+    images = scrapy.Field()
+
     class Meta:
         serializer = GameSerializer
         include = ['id']
