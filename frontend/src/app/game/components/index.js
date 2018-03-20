@@ -1,2 +1,2 @@
-export { default as Games } from './Games'
-export { default as Card } from './Card'
+export { default as GameList } from './GameList'
+export { default as GameDetail } from './GameDetail'

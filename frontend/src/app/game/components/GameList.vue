@@ -43,13 +43,8 @@
 
 <script>
 import { mapActions, mapGetters, mapState } from 'vuex'
-import Card from './Card'
 
-const name = 'games'
-
-const components = {
-  Card
-}
+const name = 'gamesList'
 
 const computed = {
   ...mapGetters([
@@ -125,7 +120,6 @@ const headers = [
 export default {
   name,
   methods,
-  components,
   computed,
   mounted () {
     this.fetchData()

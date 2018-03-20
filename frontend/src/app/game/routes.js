@@ -1,10 +1,16 @@
-import { Games } from './components'
+import { GameList, GameDetail } from './components'
 
 export default [
   {
-    component: Games,
+    component: GameList,
     path: '/games',
     name: 'games',
+    meta: { auth: false }
+  },
+  {
+    component: GameDetail,
+    path: '/game/:id',
+    name: 'game',
     meta: { auth: false }
   }
 ]
