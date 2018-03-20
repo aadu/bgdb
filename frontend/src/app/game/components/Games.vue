@@ -10,7 +10,8 @@
           single-line
           hide-details
           v-model="search"
-          @keyup.enter="getDataFromApi"
+          @input="onSearchChange($event)"
+          @keyup.enter="fetchData"
         ></v-text-field>
       </v-card-title>
       <v-data-table
@@ -18,7 +19,7 @@
         :items="games"
         :loading="loading"
         :pagination.sync="pagination"
-        @update:pagination="onPageUpdate($event)"
+        @update:pagination="onPageChange($event)"
         :search="search"
         :rows-per-page-items="[25, 50, 100, 500]"
         :total-items="game.count"
@@ -70,7 +71,6 @@ const computed = {
       output.page_size = rowsPerPage
     }
     if (this.search) {
-      console.log('search', this.search)
       output.name__icontains = this.search
     }
     return output
@@ -81,17 +81,27 @@ const methods = {
   ...mapActions([
     `getGames`
   ]),
-  onPageUpdate (pagination) {
-    if (pagination.totalItems === 0) {
+  onSearchChange (text) {
+    if (this.searchDebounce !== null) {
+      clearTimeout(this.searchDebounce)
+    }
+    this.searchDebounce = setTimeout(() => {
+      this.search = text
+      this.fetchData()
+    }, 500)
+  },
+  onPageChange (pagination) {
+    // console.log('page change', pagination)
+    if (this.game.count === 0) {
       return
     }
     if (!pagination.initialized) {
       this.pagination.initialized = true
       return
     }
-    this.getDataFromApi()
+    this.fetchData()
   },
-  getDataFromApi () {
+  fetchData () {
     this.loading = true
     this.getGames(this.params).then(() => {
       this.loading = false
@@ -118,7 +128,7 @@ export default {
   components,
   computed,
   mounted () {
-    this.getDataFromApi()
+    this.fetchData()
   },
   data () {
     return {
@@ -132,6 +142,7 @@ export default {
         initialized: false
       },
       search: '',
+      searchDebounce: null,
       headers
     }
   }

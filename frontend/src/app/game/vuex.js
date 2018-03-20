@@ -32,8 +32,8 @@ const mutations = {
 
 const actions = {
   async getGames ({ commit, dispatch }, params) {
-    console.log('params', params)
     try {
+      // console.log('fetch', params)
       const { data } = await axios.get(`${config.apiUrl}/games/`, {params})
       return commit(types.SET_GAMES, { items: data.results, count: data.count })
     } catch (err) {
