@@ -35,7 +35,8 @@ class DRFItem(Item, metaclass=DRFItemMeta):
     def save(self, commit=True, skip_errors=False):
         if not self.is_valid:
             if not skip_errors:
-                raise ValidationError(f"{len(self.instance.errors)} errors found")
+                msg = '\n'.join([f'{k}: {v}' for k, v in self.instance.errors.items()])
+                raise ValidationError(f"{len(self.instance.errors)} errors found: {msg}")
         elif commit:
             self.instance.save()
         return self.instance
@@ -51,9 +52,18 @@ class DRFItem(Item, metaclass=DRFItemMeta):
         return None
 
     @cached_property
+    def model(self):
+        return self._meta.serializer.Meta.model
+
+    @cached_property
     def instance(self):
         data = dict((k, self.get(k)) for k in self._values if k in self._meta.model_fields)
-        return self._meta.serializer(data=data)
+        if 'id' in data:
+            try:
+                obj = self.model.objects.get(pk=data['id'])
+            except self.model.DoesNotExist:
+                obj = None
+        return self._meta.serializer(data=data, instance=obj)
 
     class Meta:
         abstract = True
