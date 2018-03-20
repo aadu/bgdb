@@ -10,6 +10,7 @@ class GameSerializer(ModelSerializer):
         model = Game
         fields = '__all__'
         read_only_fields = ('slug', 'modified', 'created')
+        # depth = 1
 
 
 class CategorySerializer(ModelSerializer):
