@@ -1,9 +1,18 @@
 <template>
   <v-slide-y-transition mode="out-in">
-    <div class="game">
-      <h2>{{ detail.name }}</h2>
-      <div v-html="detail.description"></div>
-    </div>
+    <v-container>
+      <v-card class="game">
+        <v-card-media :src="game.image" height="400"></v-card-media>
+        <v-card-title primary-title>
+          <h1>{{ game.name }}</h1>
+          <div v-html="game.description"></div>
+        </v-card-title>
+        <v-card-actions>
+          <v-btn flat color="orange">Share</v-btn>
+          <v-btn flat color="orange">Explore</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-container>
   </v-slide-y-transition>
 </template>
 
@@ -19,12 +28,10 @@ const methods = {
 }
 
 const computed = {
-  ...mapState([
-    `game`
-  ]),
-  detail () {
-    return this.game.detail
-  }
+  ...mapState({
+    game: state => state.game.detail
+
+  })
 }
 
 export default {
@@ -47,30 +54,9 @@ export default {
 
 <style scoped>
   .game {
-    background-color: rgb(109, 31, 31);
-    border-radius: 15px;
-    padding: 15px;
-    margin: 30px;
-    box-shadow: ghostwhite;
-  }
-  .game h2 {
-    font-size: 20px;
-    margin-bottom: 15px;
+    width: 60%;
+    flex: 2, 2, auto;
   }
 
-  .game:hover {
-    background-color: rgb(91, 9, 9);
-  }
-  .game ::selection {
-    background-color: rgba(255, 255, 0, 0.728);
-  }
-
-  .game div::first-letter {
-    font-size: 200%
-  }
-
-  .game div::first-line {
-    font-weight: bold;
-  }
 
 </style>

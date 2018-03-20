@@ -26,12 +26,15 @@
         class="elevation-1"
         >
         <template slot="items" slot-scope="props">
-          <td>{{ props.item.name }}</td>
-          <td class="text-xs-right">{{ props.item.min_age }}</td>
-          <td class="text-xs-right">{{ props.item.min_players }}</td>
-          <td class="text-xs-right">{{ props.item.max_players }}</td>
-          <td class="text-xs-right">{{ props.item.min_play_time }}</td>
-          <td class="text-xs-right">{{ props.item.max_play_time }}</td>
+          <tr @click="onClickRow(props.item.id)">
+            <td>{{ props.item.name }}</td>
+            <td class="text-xs-right">{{ props.item.id }}</td>
+            <td class="text-xs-right">{{ props.item.min_age }}</td>
+            <td class="text-xs-right">{{ props.item.min_players }}</td>
+            <td class="text-xs-right">{{ props.item.max_players }}</td>
+            <td class="text-xs-right">{{ props.item.min_play_time }}</td>
+            <td class="text-xs-right">{{ props.item.max_play_time }}</td>
+          </tr>
         </template>
         <v-alert slot="no-results" :value="true" color="error" icon="warning">
           Your search for "{{ search }}" found no results.
@@ -84,6 +87,10 @@ const methods = {
       this.search = text
       this.fetchData()
     }, 500)
+  },
+  onClickRow (id) {
+    console.log(event)
+    this.$router.push({ name: 'game', params: { id } })
   },
   onPageChange (pagination) {
     // console.log('page change', pagination)
