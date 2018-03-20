@@ -5,6 +5,7 @@ import * as types from './types'
 const initialState = {
   items: [],
   count: 0,
+  detail: {},
   mechanics: [],
   categories: [],
   subcategories: [],
@@ -15,6 +16,9 @@ const mutations = {
   [types.SET_GAMES]: (state, { items, count }) => {
     state.items = items
     state.count = count
+  },
+  [types.SET_GAME_DETAIL]: (state, data) => {
+    state.detail = data
   },
   [types.SET_MECHANICS]: (state, mechanics) => {
     state.mechanics = mechanics
@@ -36,6 +40,16 @@ const actions = {
       // console.log('fetch', params)
       const { data } = await axios.get(`${config.apiUrl}/games/`, {params})
       return commit(types.SET_GAMES, { items: data.results, count: data.count })
+    } catch (err) {
+      console.log(err)
+      dispatch('displayMessage', err)
+      return err
+    }
+  },
+  async getGameDetail ({ commit, dispatch }, id) {
+    try {
+      const { data } = await axios.get(`${config.apiUrl}/games/${id}/`)
+      return commit(types.SET_GAME_DETAIL, data)
     } catch (err) {
       console.log(err)
       dispatch('displayMessage', err)

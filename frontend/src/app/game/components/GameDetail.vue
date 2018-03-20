@@ -1,22 +1,47 @@
 <template>
   <v-slide-y-transition mode="out-in">
     <div class="game">
-      <h2>{{ game.name }}</h2>
-      <div v-html="game.description"></div>
+      <h2>{{ detail.name }}</h2>
+      <div v-html="detail.description"></div>
     </div>
   </v-slide-y-transition>
 </template>
 
 <script>
+import { mapActions, mapState } from 'vuex'
+
 const name = 'gameCard'
 
-const props = {
-  game: { required: true }
+const methods = {
+  ...mapActions([
+    `getGameDetail`
+  ])
+}
+
+const computed = {
+  ...mapState([
+    `game`
+  ]),
+  detail () {
+    return this.game.detail
+  }
 }
 
 export default {
   name,
-  props
+  computed,
+  methods,
+  data () {
+    return {
+      loading: false
+    }
+  },
+  mounted () {
+    this.loading = true
+    this.getGameDetail(this.$route.params.id).then(() => {
+      this.loading = false
+    })
+  }
 }
 </script>
 

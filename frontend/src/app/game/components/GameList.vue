@@ -110,6 +110,7 @@ const headers = [
     align: 'left',
     value: 'name'
   },
+  { text: 'ID', value: 'pk', sortable: false },
   { text: 'Minimum Age', value: 'min_age', sortable: false },
   { text: 'Min Players', value: 'min_players', sortable: false },
   { text: 'Max Players', value: 'max_players', sortable: false },
