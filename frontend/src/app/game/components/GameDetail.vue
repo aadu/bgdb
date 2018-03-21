@@ -9,6 +9,9 @@
               <h1>{{ game.name }}</h1>
               <div v-html="game.description"></div>
             </v-card-title>
+            <v-card-text>
+              <GameStats :game="game"></GameStats>
+            </v-card-text>
             <v-card-actions>
               <v-btn flat color="orange">Share</v-btn>
               <v-btn flat color="orange">Explore</v-btn>
@@ -49,7 +52,6 @@
             </v-list>
           </v-card>
         </v-flex>
-
       </v-layout>
     </v-container>
   </v-slide-y-transition>
@@ -57,8 +59,13 @@
 
 <script>
 import { mapActions, mapState } from 'vuex'
+import GameStats from './GameStats'
 
 const name = 'gameCard'
+
+const components = {
+  GameStats
+}
 
 const props = {
   id: {required: true}
@@ -154,6 +161,7 @@ const computed = {
 
 export default {
   name,
+  components,
   computed,
   methods,
   props,
@@ -177,6 +185,3 @@ export default {
 }
 </script>
 
-<style scoped>
-
-</style>
