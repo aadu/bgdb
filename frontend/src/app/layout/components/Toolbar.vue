@@ -30,7 +30,7 @@ const methods = {
     this.toggleSidebar(!this.layout.sidebarVisible)
   },
   onTitle () {
-    this.$router.push({name: 'home'})
+    this.$router.push({path: '/'})
   }
 }
 
