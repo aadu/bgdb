@@ -4,7 +4,7 @@ import Vue from 'vue'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import Vuetify from 'vuetify'
-import * as Offline from 'offline-plugin/runtime'
+// import * as Offline from 'offline-plugin/runtime'
 import 'vuetify/dist/vuetify.min.css'
 import { App } from './app'
 import router from './router'
@@ -24,21 +24,21 @@ new Vue({
   store
 })
 
-Offline.install({
-  onUpdating: () => {
-    console.log('SW Event:', 'onUpdating')
-  },
-  onUpdateReady: () => {
-    console.log('SW Event:', 'onUpdateReady')
-    // Tells to new SW to take control immediately
-    Offline.applyUpdate();
-  },
-  onUpdated: () => {
-    console.log('SW Event:', 'onUpdated')
-    // Reload the webpage to load into the new version
-    window.location.reload()
-  },
-  onUpdateFailed: () => {
-    console.log('SW Event:', 'onUpdateFailed')
-  }
-})
+// Offline.install({
+//   onUpdating: () => {
+//     console.log('SW Event:', 'onUpdating')
+//   },
+//   onUpdateReady: () => {
+//     console.log('SW Event:', 'onUpdateReady')
+//     // Tells to new SW to take control immediately
+//     Offline.applyUpdate()
+//   },
+//   onUpdated: () => {
+//     console.log('SW Event:', 'onUpdated')
+//     // Reload the webpage to load into the new version
+//     window.location.reload()
+//   },
+//   onUpdateFailed: () => {
+//     console.log('SW Event:', 'onUpdateFailed')
+//   }
+// })
