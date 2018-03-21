@@ -4,7 +4,11 @@ import * as types from './types'
 
 const initialState = {
   items: [],
+  lookup: {},
   count: 0,
+  params: {},
+  next: null,
+  previous: null,
   detail: {},
   mechanics: [],
   categories: [],
@@ -13,9 +17,13 @@ const initialState = {
 }
 
 const mutations = {
-  [types.SET_GAMES]: (state, { items, count }) => {
-    state.items = items
-    state.count = count
+  [types.SET_GAMES]: (state, { data, params }) => {
+    state.items = data.results
+    state.count = data.count
+    state.next = data.next
+    state.previous = data.previous
+    state.params = params
+    state.lookup = Object.assign(...state.items.map((item, ix) => ({ [item.id]: ix })))
   },
   [types.SET_GAME_DETAIL]: (state, data) => {
     state.detail = data
@@ -39,7 +47,7 @@ const actions = {
     try {
       // console.log('fetch', params)
       const { data } = await axios.get(`${config.apiUrl}/games/`, {params})
-      return commit(types.SET_GAMES, { items: data.results, count: data.count })
+      return commit(types.SET_GAMES, { data, params })
     } catch (err) {
       console.log(err)
       dispatch('displayMessage', err)

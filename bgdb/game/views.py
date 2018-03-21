@@ -16,10 +16,13 @@ class GameFilter(django_filters.FilterSet):
             'name': ['exact', 'icontains'],
         }
 
-    order_by = OrderingFilter(fields=(
-        ('name', 'name'),
-        ('modified', 'modified'),
-    ))
+    order_by = OrderingFilter(
+        fields=(
+            ('name', 'name'),
+            ('modified', 'modified'),
+            ('year_published', 'year_published'),
+        )
+    )
 
 
 class GameViewSet(viewsets.ModelViewSet):

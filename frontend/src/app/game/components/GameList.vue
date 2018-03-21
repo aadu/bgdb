@@ -28,7 +28,7 @@
         <template slot="items" slot-scope="props">
           <tr @click="onClickRow(props.item.id)">
             <td>{{ props.item.name }}</td>
-            <td class="text-xs-right">{{ props.item.id }}</td>
+            <td class="text-xs-right">{{ props.item.year_published }}</td>
             <td class="text-xs-right">{{ props.item.min_age }}</td>
             <td class="text-xs-right">{{ props.item.min_players }}</td>
             <td class="text-xs-right">{{ props.item.max_players }}</td>
@@ -115,7 +115,7 @@ const headers = [
     align: 'left',
     value: 'name'
   },
-  { text: 'ID', value: 'pk', sortable: false },
+  { text: 'Year Published', value: 'year_published', sortable: true },
   { text: 'Minimum Age', value: 'min_age', sortable: false },
   { text: 'Min Players', value: 'min_players', sortable: false },
   { text: 'Max Players', value: 'max_players', sortable: false },
