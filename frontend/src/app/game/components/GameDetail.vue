@@ -24,12 +24,12 @@
               </v-list-tile-title>
               </v-list-tile>
               <v-divider></v-divider>
-              <v-list-tile :href="game.url" color="grey">
+              <v-list-tile :href="game.url" color="grey" target="_blank">
                 <v-list-tile-title>
                   BoardGameGeeks
                 </v-list-tile-title>
               </v-list-tile>
-              <v-list-tile :href="game.api_url" color="grey">
+              <v-list-tile :href="game.api_url" color="grey" target="_blank">
                 <v-list-tile-title>
                   API
                 </v-list-tile-title>

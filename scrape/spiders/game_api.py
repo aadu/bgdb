@@ -23,17 +23,6 @@ class GameLoader(ItemLoader):
     images_out = Identity()
 
 
-# def process_link(value):
-#     print()
-#     print(value)
-#     print()
-#     match = re.search(r'/boardgame/(\d+)/', response.url)
-#     if match:
-#         params = {'id': match.groups()[0]}
-#         api_url = API_URL + ('&' if urlparse(API_URL).query else '?') + urlencode(params)
-#         return api_url
-
-
 class GameSpider(CrawlSpider):
     name = 'game'
     allowed_domains = ['boardgamegeek.com']
@@ -43,7 +32,7 @@ class GameSpider(CrawlSpider):
     }
     rules = (
         Rule(LinkExtractor(allow=(r'boardgame/\d+/', ), deny=('browse', )), callback='parse_id'),
-        # Rule(LinkExtractor(allow=(r'boardgame/page/\d+', ),), follow=True),
+        Rule(LinkExtractor(allow=(r'boardgame/page/\d+', ),), follow=True),
     )
 
     def parse_id(self, response):
@@ -73,6 +62,7 @@ class GameSpider(CrawlSpider):
         l.add_xpath('min_age', 'minage/@value')
         l.add_xpath('mechanics', 'link[@type="boardgamemechanic"]/@id')
         l.add_xpath('subcategories', 'link[@type="boardgamecategory"]/@id')
+        # l.add_xpath('tags', 'link[@type="boardgamefamily"]/@id')
 
         # from scrapy.shell import inspect_response
         # inspect_response(response, self)

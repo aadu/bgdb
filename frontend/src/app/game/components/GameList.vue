@@ -89,11 +89,9 @@ const methods = {
     }, 500)
   },
   onClickRow (id) {
-    console.log(event)
     this.$router.push({ name: 'game', params: { id } })
   },
   onPageChange (pagination) {
-    // console.log('page change', pagination)
     if (this.game.count === 0) {
       return
     }

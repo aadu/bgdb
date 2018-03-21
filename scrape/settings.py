@@ -22,7 +22,7 @@ NEWSPIDER_MODULE = 'scrape.spiders'
 ROBOTSTXT_OBEY = True
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
-CONCURRENT_REQUESTS = 1
+# CONCURRENT_REQUESTS = 1
 
 # Configure a delay for requests for the same website (default: 0)
 # See https://doc.scrapy.org/en/latest/topics/settings.html#download-delay
@@ -65,7 +65,7 @@ EXTENSIONS = {
 
 # CLOSESPIDER_PAGECOUNT = 3
 CLOSESPIDER_ERRORCOUNT = 1
-CLOSESPIDER_ITEMCOUNT = 1
+# CLOSESPIDER_ITEMCOUNT = 1
 
 IMAGES_STORE = 'images'
 # Configure item pipelines
