@@ -3,7 +3,8 @@ import { GameList, GameDetail } from './components'
 export default [
   {
     component: GameList,
-    path: '/games',
+    // path: '/games',
+    path: '/',
     name: 'games',
     meta: { auth: false }
   },

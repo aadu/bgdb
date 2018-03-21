@@ -52,12 +52,12 @@ export default {
           icon: 'apps',
           title: 'Board Games',
           route: 'games'
-        },
-        {
-          icon: 'build',
-          title: 'Mechanisms',
-          route: 'mechanisms'
         }
+        // {
+        //   icon: 'build',
+        //   title: 'Mechanics',
+        //   route: 'mechanisms'
+        // }
       ]
     }
   }
