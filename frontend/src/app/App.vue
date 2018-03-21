@@ -4,7 +4,7 @@
     <Toolbar></Toolbar>
     <v-content>
       <v-fade-transition mode="out-in">
-          <router-view></router-view>
+          <router-view :key="$route.fullPath"></router-view>
       </v-fade-transition>
       <Notifier></Notifier>
     </v-content>

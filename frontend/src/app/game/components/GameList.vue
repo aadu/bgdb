@@ -53,9 +53,10 @@ const computed = {
   ...mapGetters([
     `games`
   ]),
-  ...mapState([
-    `game`
-  ]),
+  ...mapState({
+    game: 'game',
+    lookup: state => state.game.lookup
+  }),
   params () {
     const { sortBy, descending, page, rowsPerPage } = this.pagination
     const output = {}
@@ -89,7 +90,7 @@ const methods = {
     }, 500)
   },
   onClickRow (id) {
-    this.$router.push({ name: 'game', params: { id } })
+    this.$router.push({ name: 'game', params: { id }, query: { index: this.lookup[id] } })
   },
   onPageChange (pagination) {
     if (this.game.count === 0) {

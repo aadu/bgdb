@@ -11,6 +11,7 @@ export default [
     component: GameDetail,
     path: '/game/:id',
     name: 'game',
+    props: true,
     meta: { auth: false }
   }
 ]
