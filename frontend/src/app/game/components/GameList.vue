@@ -16,17 +16,17 @@
       </v-card-title>
       <v-data-table
         :headers="headers"
-        :items="games"
+        :items="items"
         :loading="loading"
         :pagination.sync="pagination"
         @update:pagination="onPageChange($event)"
         :search="search"
         :rows-per-page-items="[25, 50, 100, 500]"
-        :total-items="game.count"
+        :total-items="count"
         class="elevation-1"
         >
         <template slot="items" slot-scope="props">
-          <tr @click="onClickRow(props.item.id)">
+          <tr @click="onClickRow(props.item.id, props.index)">
             <td>{{ props.item.name }}</td>
             <td class="text-xs-right">{{ props.item.year_published }}</td>
             <td class="text-xs-right">{{ props.item.min_age }}</td>
@@ -45,19 +45,15 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapState } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 
 const name = 'gamesList'
 
 const computed = {
-  ...mapGetters([
-    `games`
+  ...mapState(`entities/games`, [
+    `count`, `params`
   ]),
-  ...mapState({
-    game: 'game',
-    lookup: state => state.game.lookup
-  }),
-  params () {
+  queryParams () {
     const { sortBy, descending, page, rowsPerPage } = this.pagination
     const output = {}
     if (sortBy) {
@@ -77,8 +73,8 @@ const computed = {
 }
 
 const methods = {
-  ...mapActions([
-    `getGames`
+  ...mapActions(`entities/games`, [
+    `fetch`
   ]),
   onSearchChange (text) {
     if (this.searchDebounce !== null) {
@@ -89,11 +85,11 @@ const methods = {
       this.fetchData()
     }, 500)
   },
-  onClickRow (id) {
-    this.$router.push({ name: 'game', params: { id }, query: { index: this.lookup[id] } })
+  onClickRow (id, index) {
+    this.$router.push({ name: 'game', params: { id }, query: { index } })
   },
   onPageChange (pagination) {
-    if (this.game.count === 0) {
+    if (this.count === 0) {
       return
     }
     if (!pagination.initialized) {
@@ -104,7 +100,8 @@ const methods = {
   },
   fetchData () {
     this.loading = true
-    this.getGames(this.params).then(() => {
+    this.fetch(this.queryParams).then((items) => {
+      this.items = items
       this.loading = false
     })
   }
@@ -129,11 +126,13 @@ export default {
   methods,
   computed,
   mounted () {
+    console.log(this)
     this.fetchData()
   },
   data () {
     return {
       loading: true,
+      items: [],
       pagination: {
         page: 1,
         rowsPerPage: 25,

@@ -10,7 +10,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
-const OfflinePlugin = require('offline-plugin')
+// const OfflinePlugin = require('offline-plugin')
 
 const env = process.env.NODE_ENV === 'testing'
   ? require('../config/test.env')
@@ -120,40 +120,40 @@ const webpackConfig = merge(baseWebpackConfig, {
         to: config.build.assetsSubDirectory,
         ignore: ['.*']
       }
-    ]),
+    ])
 
-    // offline plugin
-    new OfflinePlugin({
-      publicPath: '/',
-      excludes: ['**/*.map'],
-      updateStrategy: 'changed',
-      autoUpdate: 1000 * 60 * 2,
-      caches: {
-        main: [
-          'app.*.css',
-          'vendor.*.js',
-          'app.*.js',
-        ],
-        additional: [
-          ':externals:'
-        ],
-        optional: [
-          ':rest:'
-        ]
-      },
-      externals: [
-        '/'
-      ],
-      ServiceWorker: {
-        events: true,
-        navigateFallbackURL: '/'
-      },
-      AppCache: {
-        FALLBACK: {
-          '/': '/offline-page.html'
-        }
-      }
-    })
+    // // offline plugin
+    // new OfflinePlugin({
+    //   publicPath: '/',
+    //   excludes: ['**/*.map'],
+    //   updateStrategy: 'changed',
+    //   autoUpdate: 1000 * 60 * 2,
+    //   caches: {
+    //     main: [
+    //       'app.*.css',
+    //       'vendor.*.js',
+    //       'app.*.js',
+    //     ],
+    //     additional: [
+    //       ':externals:'
+    //     ],
+    //     optional: [
+    //       ':rest:'
+    //     ]
+    //   },
+    //   externals: [
+    //     '/'
+    //   ],
+    //   ServiceWorker: {
+    //     events: true,
+    //     navigateFallbackURL: '/'
+    //   },
+    //   AppCache: {
+    //     FALLBACK: {
+    //       '/': '/offline-page.html'
+    //     }
+    //   }
+    // })
   ]
 })
 
