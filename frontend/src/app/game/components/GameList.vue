@@ -18,7 +18,7 @@
         :headers="headers"
         :items="items"
         :loading="loading"
-        :pagination.sync="pagination"
+        :pagination="pagination"
         @update:pagination="onPageChange($event)"
         :search="search"
         :rows-per-page-items="[25, 50, 100, 500]"
@@ -51,7 +51,7 @@ const name = 'gamesList'
 
 const computed = {
   ...mapState(`entities/games`, [
-    `count`, `params`, `sequence`
+    `count`, `params`, `items`, `pagination`
   ]),
   queryParams () {
     const { sortBy, descending, page, rowsPerPage } = this.pagination
@@ -74,9 +74,10 @@ const computed = {
 
 const methods = {
   ...mapActions(`entities/games`, [
-    `fetch`
+    `fetch`, `insertOrUpdate`
   ]),
   onSearchChange (text) {
+    this.loading = true
     if (this.searchDebounce !== null) {
       clearTimeout(this.searchDebounce)
     }
@@ -85,25 +86,26 @@ const methods = {
       this.fetchData()
     }, 500)
   },
-  onClickRow (id) {
-    this.$router.push({ name: 'game', params: { id }, query: { index: this.sequence.findIndex(id) } })
+  onClickRow (id, index) {
+    this.$router.push({ name: 'game', params: { id }, query: { index: this.rowIndex(index) } })
   },
   onPageChange (pagination) {
-    if (this.count === 0) {
+    if (this.loading) {
+      console.log('loading')
       return
     }
-    if (!pagination.initialized) {
-      this.pagination.initialized = true
-      return
-    }
+    this.$store.commit('entities/games/updatePagination', pagination)
     this.fetchData()
   },
   fetchData () {
     this.loading = true
-    this.fetch(this.queryParams).then((items) => {
-      this.items = items
+    this.fetch(this.queryParams).then((results) => {
       this.loading = false
+      return this.insertOrUpdate({data: results})
     })
+  },
+  rowIndex (index) {
+    return index + ((this.pagination.page - 1) * this.pagination.rowsPerPage)
   }
 }
 
@@ -126,22 +128,12 @@ export default {
   methods,
   computed,
   mounted () {
-    // console.log(this)
-    this.$store.commit('entities/games/clearSequence')
+    // this.$store.commit('entities/games/clearSequence')
     this.fetchData()
   },
   data () {
     return {
       loading: true,
-      items: [],
-      pagination: {
-        page: 1,
-        rowsPerPage: 25,
-        totalItems: 0,
-        sortBy: 'name',
-        descending: false,
-        initialized: false
-      },
       search: '',
       searchDebounce: null,
       headers

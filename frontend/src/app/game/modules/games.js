@@ -3,7 +3,14 @@ import config from '@/config'
 
 const state = {
   count: 0,
+  pagination: {
+    page: 1,
+    rowsPerPage: 25,
+    sortBy: 'name',
+    descending: false
+  },
   params: {},
+  items: [],
   sequence: [],
   index: null,
   next: null,
@@ -11,22 +18,18 @@ const state = {
 }
 
 const mutations = {
-  updateParams (state, payload) {
-    let { params, count, sequence, direction, next, previous } = payload
+  updatePagination (state, { page, rowsPerPage, sortBy, descending }) {
+    state.pagination = { page, rowsPerPage, sortBy, descending }
+  },
+  updateItems (state, payload) {
+    console.log('FETCH')
+    const { data, params } = payload
     state.params = params
-    state.next = next
-    state.previous = previous
-    state.count = count
-    if (typeof direction === 'undefined') {
-      direction = 'next'
-    }
-    let newSequence = []
-    if (direction === 'next') {
-      newSequence = state.sequence.concat(sequence)
-    } else {
-      newSequence = sequence.concat(state.sequence)
-    }
-    state.sequence = newSequence.filter((el, i, arr) => arr.indexOf(el) === i)
+    state.next = data.next
+    state.previous = data.previous
+    state.count = data.count
+    state.items = data.results
+    state.sequence = state.sequence.concat(data.results.map(item => item.id))
   },
   clearSequence (state) {
     state.sequence = []
@@ -34,14 +37,11 @@ const mutations = {
 }
 
 const actions = {
-  async fetch ({ commit, dispatch }, params, direction) {
+  async fetch ({ commit, dispatch }, params) {
     try {
       const { data } = await axios.get(`${config.apiUrl}/games/`, { params })
-      const { next, previous, count, results } = data
-      const sequence = results.map((item) => item.id)
-      commit('updateParams', { count, params, sequence, direction, next, previous })
-      await dispatch('insertOrUpdate', {data: results})
-      return results
+      commit('updateItems', { data, params })
+      return data.results
     } catch (err) {
       console.log(err)
       dispatch('displayMessage', err)
