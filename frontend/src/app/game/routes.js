@@ -1,4 +1,4 @@
-import { GameList, GameDetail } from './components'
+import { GameList, GameDetail, MechanicList } from './components'
 
 export default [
   {
@@ -13,6 +13,12 @@ export default [
     path: '/game/:id',
     name: 'game',
     props: true,
+    meta: { auth: false }
+  },
+  {
+    component: MechanicList,
+    path: '/mechanics',
+    name: 'mechanics',
     meta: { auth: false }
   }
 ]
