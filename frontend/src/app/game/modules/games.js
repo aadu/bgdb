@@ -5,21 +5,28 @@ const state = {
   count: 0,
   params: {},
   sequence: [],
-  index: null
+  index: null,
+  next: null,
+  previous: null
 }
 
 const mutations = {
-  updateParams (state, { params, count, sequence, direction }) {
+  updateParams (state, payload) {
+    let { params, count, sequence, direction, next, previous } = payload
     state.params = params
+    state.next = next
+    state.previous = previous
     state.count = count
     if (typeof direction === 'undefined') {
       direction = 'next'
     }
+    let newSequence = []
     if (direction === 'next') {
-      state.sequence = state.sequence.concat(sequence)
+      newSequence = state.sequence.concat(sequence)
     } else {
-      state.sequence = sequence.concat(state.sequence)
+      newSequence = sequence.concat(state.sequence)
     }
+    state.sequence = newSequence.filter((el, i, arr) => arr.indexOf(el) === i)
   },
   clearSequence (state) {
     state.sequence = []
@@ -30,10 +37,11 @@ const actions = {
   async fetch ({ commit, dispatch }, params, direction) {
     try {
       const { data } = await axios.get(`${config.apiUrl}/games/`, { params })
-      const sequence = data.results.map((item) => item.id)
-      commit('updateParams', { count: data.count, params, sequence, direction })
-      await dispatch('insertOrUpdate', {data: data.results})
-      return data.results
+      const { next, previous, count, results } = data
+      const sequence = results.map((item) => item.id)
+      commit('updateParams', { count, params, sequence, direction, next, previous })
+      await dispatch('insertOrUpdate', {data: results})
+      return results
     } catch (err) {
       console.log(err)
       dispatch('displayMessage', err)

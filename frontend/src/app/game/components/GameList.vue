@@ -51,7 +51,7 @@ const name = 'gamesList'
 
 const computed = {
   ...mapState(`entities/games`, [
-    `count`, `params`
+    `count`, `params`, `sequence`
   ]),
   queryParams () {
     const { sortBy, descending, page, rowsPerPage } = this.pagination
@@ -85,8 +85,8 @@ const methods = {
       this.fetchData()
     }, 500)
   },
-  onClickRow (id, index) {
-    this.$router.push({ name: 'game', params: { id }, query: { index } })
+  onClickRow (id) {
+    this.$router.push({ name: 'game', params: { id }, query: { index: this.sequence.findIndex(id) } })
   },
   onPageChange (pagination) {
     if (this.count === 0) {
@@ -126,7 +126,8 @@ export default {
   methods,
   computed,
   mounted () {
-    console.log(this)
+    // console.log(this)
+    this.$store.commit('entities/games/clearSequence')
     this.fetchData()
   },
   data () {

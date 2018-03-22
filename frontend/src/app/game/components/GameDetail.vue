@@ -60,8 +60,8 @@
 <script>
 import { mapActions, mapState } from 'vuex'
 import GameStats from './GameStats'
-
-const name = 'gameCard'
+import { Game } from '../models'
+const name = 'gameDetail'
 
 const components = {
   GameStats
@@ -72,45 +72,44 @@ const props = {
 }
 
 const methods = {
-  ...mapActions([
-    `getGameDetail`,
-    `getGames`
+  ...mapActions(`entities/games`, [
+    `fetch`
   ]),
   getPrevious () {
     if (this.index === 0) {
       const self = this
       const params = this.params
       params['page'] = params['page'] - 1
-      return this.getGames(params).then(() => {
+      return this.fetch(params, 'previous').then((results) => {
         self.$router.push({
           name: 'game',
-          params: { id: self.items[self.items.length - 1].id },
-          query: {index: self.items.length - 1}
+          params: { id: self.sequence[results.length - 1] },
+          query: {index: results.length - 1}
         })
       })
     }
     this.$router.push({
       name: 'game',
-      params: { id: this.items[this.index - 1].id },
+      params: { id: this.sequence[this.index - 1] },
       query: {index: this.index - 1}
     })
   },
   getNext () {
-    if (this.index + 1 === this.items.length) {
+    if (this.index + 1 === this.sequence.length) {
       const self = this
       const params = this.params
       params['page'] = params['page'] + 1
-      return this.getGames(params).then(() => {
+      return this.fetch(params, 'next').then(() => {
         self.$router.push({
           name: 'game',
-          params: { id: self.items[0].id },
-          query: { index: 0 }
+          params: { id: self.sequence[this.index + 1] },
+          query: { index: this.index + 1 }
         })
       })
     }
     this.$router.push({
       name: 'game',
-      params: { id: this.items[this.index + 1].id },
+      params: { id: this.sequence[this.index + 1] },
       query: {index: this.index + 1}
     })
   },
@@ -126,21 +125,17 @@ const methods = {
 }
 
 const computed = {
-  ...mapState({
-    game: state => state.game.detail,
-    items: state => state.game.items,
-    next: state => state.game.next,
-    previous: state => state.game.previous,
-    params: state => state.game.params
-  }),
+  ...mapState(`entities/games`, [
+    `sequence`, `next`, `previous`, `data`, `params`
+  ]),
   nextItem () {
     if (typeof this.index === 'undefined') {
       return false
     }
-    if (this.index + 1 < this.items.length) {
+    if (this.index + 1 < this.sequence.length) {
       return true
     }
-    if (this.index + 1 === this.items.length && this.next) {
+    if (this.index + 1 === this.sequence.length && this.next) {
       return true
     }
     return false
@@ -149,10 +144,10 @@ const computed = {
     if (typeof this.index === 'undefined') {
       return false
     }
-    if (this.items.length > this.index - 1 && this.index - 1 >= 0) {
+    if (this.sequence.length > this.index - 1 && this.index - 1 >= 0) {
       return true
     }
-    if (this.index === 0 && this.previous) {
+    if (this.sequence === 0 && this.previous) {
       return true
     }
     return false
@@ -168,16 +163,21 @@ export default {
   data () {
     return {
       loading: false,
-      index: null
+      index: null,
+      game: {}
     }
   },
   mounted () {
     document.addEventListener('keyup', this.keyUp)
     this.index = this.$route.query.index
-    this.loading = true
-    this.getGameDetail(this.id).then(() => {
-      this.loading = false
-    })
+    this.game = Game.getters('find')(this.id)
+    if (!this.game) {
+      this.loading = true
+      this.fetch({id: this.id}).then((results) => {
+        this.game = results[0]
+        this.loading = false
+      })
+    }
   },
   destroyed () {
     document.removeEventListener('keyup', this.keyUp)
