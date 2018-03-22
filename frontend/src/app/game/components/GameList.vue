@@ -51,7 +51,7 @@ const name = 'gamesList'
 
 const computed = {
   ...mapState(`entities/games`, [
-    `count`, `params`, `items`, `pagination`
+    `count`, `params`, `items`, `pagination`, `next`, `previous`
   ]),
   queryParams () {
     const { sortBy, descending, page, rowsPerPage } = this.pagination
@@ -90,6 +90,7 @@ const methods = {
     this.$router.push({ name: 'game', params: { id }, query: { index: this.rowIndex(index) } })
   },
   onPageChange (pagination) {
+    console.log(pagination)
     if (this.loading) {
       console.log('loading')
       return
@@ -106,6 +107,32 @@ const methods = {
   },
   rowIndex (index) {
     return index + ((this.pagination.page - 1) * this.pagination.rowsPerPage)
+  },
+  keyUp ({ keyCode }) {
+    if (keyCode !== 39 && keyCode !== 37) {
+      return
+    }
+    const { rowsPerPage, descending, sortBy, page, totalItems } = this.pagination
+    const newPagination = {
+      rowsPerPage,
+      sortBy,
+      descending,
+      totalItems
+    }
+    if (keyCode === 39 && this.nextItem) {
+      if (!this.next) {
+        return
+      }
+      newPagination.page = page + 1
+      // right
+    } else if (keyCode === 37 && this.previousItem) {
+      if (!this.previous) {
+        return
+      }
+      newPagination.page = page - 1
+    // left
+    }
+    this.onPageChange(newPagination)
   }
 }
 
@@ -128,7 +155,7 @@ export default {
   methods,
   computed,
   mounted () {
-    // this.$store.commit('entities/games/clearSequence')
+    document.addEventListener('keyup', this.keyUp)
     this.fetchData()
   },
   data () {
@@ -138,6 +165,9 @@ export default {
       searchDebounce: null,
       headers
     }
+  },
+  destroyed () {
+    document.removeEventListener('keyup', this.keyUp)
   }
 }
 </script>
