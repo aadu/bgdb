@@ -3,8 +3,10 @@ import Vuex from 'vuex'
 import VueAxios from 'vue-axios'
 import axios from 'axios'
 import createPersistedState from 'vuex-persistedstate'
+import VuexORM from '@vuex-orm/core'
 import { sync } from 'vuex-router-sync'
 import { vuex } from '@/app'
+import { database } from '@/app/vuex'
 import router from './router'
 import config from '@/config'
 
@@ -18,7 +20,8 @@ const store = new Vuex.Store({
     createPersistedState({
       key: config.storageKey,
       paths: ['ux']
-    })
+    }),
+    VuexORM.install(database)
   ],
   modules
 })

@@ -16,17 +16,17 @@
       </v-card-title>
       <v-data-table
         :headers="headers"
-        :items="games"
+        :items="items"
         :loading="loading"
-        :pagination.sync="pagination"
+        :pagination="pagination"
         @update:pagination="onPageChange($event)"
         :search="search"
         :rows-per-page-items="[25, 50, 100, 500]"
-        :total-items="game.count"
+        :total-items="count"
         class="elevation-1"
         >
         <template slot="items" slot-scope="props">
-          <tr @click="onClickRow(props.item.id)">
+          <tr @click="onClickRow(props.item.id, props.index)">
             <td>{{ props.item.name }}</td>
             <td class="text-xs-right">{{ props.item.year_published }}</td>
             <td class="text-xs-right">{{ props.item.min_age }}</td>
@@ -45,19 +45,15 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapState } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 
 const name = 'gamesList'
 
 const computed = {
-  ...mapGetters([
-    `games`
+  ...mapState(`entities/games`, [
+    `count`, `params`, `items`, `pagination`, `next`, `previous`
   ]),
-  ...mapState({
-    game: 'game',
-    lookup: state => state.game.lookup
-  }),
-  params () {
+  queryParams () {
     const { sortBy, descending, page, rowsPerPage } = this.pagination
     const output = {}
     if (sortBy) {
@@ -77,10 +73,11 @@ const computed = {
 }
 
 const methods = {
-  ...mapActions([
-    `getGames`
+  ...mapActions(`entities/games`, [
+    `fetch`, `insertOrUpdate`
   ]),
   onSearchChange (text) {
+    this.loading = true
     if (this.searchDebounce !== null) {
       clearTimeout(this.searchDebounce)
     }
@@ -89,24 +86,53 @@ const methods = {
       this.fetchData()
     }, 500)
   },
-  onClickRow (id) {
-    this.$router.push({ name: 'game', params: { id }, query: { index: this.lookup[id] } })
+  onClickRow (id, index) {
+    this.$router.push({ name: 'game', params: { id }, query: { index: this.rowIndex(index) } })
   },
   onPageChange (pagination) {
-    if (this.game.count === 0) {
+    console.log(pagination)
+    if (this.loading) {
+      console.log('loading')
       return
     }
-    if (!pagination.initialized) {
-      this.pagination.initialized = true
-      return
-    }
+    this.$store.commit('entities/games/updatePagination', pagination)
     this.fetchData()
   },
   fetchData () {
     this.loading = true
-    this.getGames(this.params).then(() => {
+    this.fetch(this.queryParams).then((results) => {
       this.loading = false
+      return this.insertOrUpdate({data: results})
     })
+  },
+  rowIndex (index) {
+    return index + ((this.pagination.page - 1) * this.pagination.rowsPerPage)
+  },
+  keyUp ({ keyCode }) {
+    if (keyCode !== 39 && keyCode !== 37) {
+      return
+    }
+    const { rowsPerPage, descending, sortBy, page, totalItems } = this.pagination
+    const newPagination = {
+      rowsPerPage,
+      sortBy,
+      descending,
+      totalItems
+    }
+    if (keyCode === 39 && this.nextItem) {
+      if (!this.next) {
+        return
+      }
+      newPagination.page = page + 1
+      // right
+    } else if (keyCode === 37 && this.previousItem) {
+      if (!this.previous) {
+        return
+      }
+      newPagination.page = page - 1
+    // left
+    }
+    this.onPageChange(newPagination)
   }
 }
 
@@ -129,23 +155,19 @@ export default {
   methods,
   computed,
   mounted () {
+    document.addEventListener('keyup', this.keyUp)
     this.fetchData()
   },
   data () {
     return {
       loading: true,
-      pagination: {
-        page: 1,
-        rowsPerPage: 25,
-        totalItems: 0,
-        sortBy: 'name',
-        descending: false,
-        initialized: false
-      },
       search: '',
       searchDebounce: null,
       headers
     }
+  },
+  destroyed () {
+    document.removeEventListener('keyup', this.keyUp)
   }
 }
 </script>
