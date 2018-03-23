@@ -35,20 +35,6 @@ class GameSpider(CrawlSpider):
         Rule(LinkExtractor(allow=(r'boardgame/page/\d+', ),), follow=True),
     )
 
-    @staticmethod
-    def escape(start, stop, data):
-        regex = r'(?<={start}":")(.*)(?=","{stop}":)'.format(start=start, stop=stop)
-        target = re.search(regex, data).groups()[0]
-        escaped = re.sub(r'([^\\]")', r'\"', target)
-        # escaped = re.sub(r'([^\\]\\n)', r'\\n', escaped)
-        replacement = r'\1{escaped}\3'.format(escaped=escaped)
-        return re.sub(r'(.*){regex}(.*)'.format(regex=regex), replacement, data)
-
-    def load_data(self, data):
-        data = self.escape('description', 'wiki', data)
-        data = self.escape('wiki', 'website', data)
-        return json.loads(data, strict=False)
-
     def parse_item(self, response):
         match = re.search(r'/boardgame/(\d+)/', response.url)
         if not match:
@@ -57,20 +43,22 @@ class GameSpider(CrawlSpider):
         api_url = API_URL + ('&' if urlparse(API_URL).query else '?') + urlencode(params)
         request = scrapy.Request(api_url, callback=self.parse_api)
         l = GameLoader(item=GameItem(), response=response)
-        l.add_value('id', response.url, re=r'id=(\d+)')
+        l.add_value('id', response.url, re=r'/(\d+)/')
         l.add_value('url', response.url)
-        jsondata = response.css('script').re(r'(?<=geekitemPreload = ).*(?=;)')
-        if jsondata:
+        script = response.xpath('//script[contains(text(), "var GEEK")][1]/text()').extract_first()
+        if script:
             try:
-                data = self.load_data(jsondata[0])
-                l = self.parse_json_data(l, data)
-            except:
-                self.logger.warning("json fail")
-                pass
+                l = self.parse_script(script, l)
+            except Exception:
+                self.logger.exception('json fail')
         request.meta['item'] = l.load_item()
         yield request
 
-    def parse_json_data(self, l, data):
+    def parse_script(self, script, l):
+        lines = re.split(r'(?<!\\)\n', script)
+        data = [l for l in lines if 'GEEK.geekitemPreload' in l][0]
+        jsondata = data.strip().strip(';').strip('GEEK.geekitemPreload = ')
+        data = json.loads(jsondata)
         item = data['item']
         stats = item.get('stats')
         if stats:
@@ -81,6 +69,7 @@ class GameSpider(CrawlSpider):
 
     def parse_api(self, response):
         item = response.meta['item']
+        # import ipdb; ipdb.set_trace()
         l = GameLoader(item=item, selector=response.xpath('/items/item[1]'))
         l.add_value('api_url', response.url)
         l.add_xpath('image_urls', 'image/text()')
