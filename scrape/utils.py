@@ -58,11 +58,12 @@ class DRFItem(Item, metaclass=DRFItemMeta):
     @cached_property
     def instance(self):
         data = dict((k, self.get(k)) for k in self._values if k in self._meta.model_fields)
+        obj = None
         if 'id' in data:
             try:
                 obj = self.model.objects.get(pk=data['id'])
             except self.model.DoesNotExist:
-                obj = None
+                pass
         return self._meta.serializer(data=data, instance=obj)
 
     class Meta:
