@@ -1,6 +1,9 @@
 CATEGORY = 'boardgame'
+API_URL = 'https://www.boardgamegeek.com/xmlapi2/thing'
 import json
 import re
+import urllib.parse as urlparse
+from urllib.parse import urlparse, urlencode
 
 import scrapy
 from scrapy.spiders import CrawlSpider, Rule
@@ -14,16 +17,22 @@ class GameLoader(ItemLoader):
     default_output_processor = TakeFirst()
     default_input_processor = MapCompose(str.strip)
     description_out = Join()
+    mechanics_out = Identity()
+    subcategories_out = Identity()
+    image_urls_out = Identity()
+    images_out = Identity()
 
 
 class GameSpider(CrawlSpider):
-    name = 'game2'
+    name = 'game'
     allowed_domains = ['boardgamegeek.com']
     start_urls = [f'http://boardgamegeek.com/browse/{CATEGORY}/']
-
+    custom_settings = {
+        'IMAGES_STORE': 'media/games',
+    }
     rules = (
         Rule(LinkExtractor(allow=(r'boardgame/\d+/', ), deny=('browse', )), callback='parse_item'),
-        # Rule(LinkExtractor(allow=(r'boardgame/page/\d+', ),), follow=True),
+        Rule(LinkExtractor(allow=(r'boardgame/page/\d+', ),), follow=True),
     )
 
     @staticmethod
@@ -41,28 +50,56 @@ class GameSpider(CrawlSpider):
         return json.loads(data, strict=False)
 
     def parse_item(self, response):
+        match = re.search(r'/boardgame/(\d+)/', response.url)
+        if not match:
+            return
+        params = {'id': match.groups()[0]}
+        api_url = API_URL + ('&' if urlparse(API_URL).query else '?') + urlencode(params)
+        request = scrapy.Request(api_url, callback=self.parse_api)
         l = GameLoader(item=GameItem(), response=response)
-        l.add_value('pk', response.url, re=r'(\d+)')
+        l.add_value('id', response.url, re=r'id=(\d+)')
         l.add_value('url', response.url)
-        from scrapy.shell import inspect_response
-        inspect_response(response, self)
+        jsondata = response.css('script').re(r'(?<=geekitemPreload = ).*(?=;)')
+        if jsondata:
+            try:
+                data = self.load_data(jsondata[0])
+                l = self.parse_json_data(l, data)
+            except:
+                self.logger.warning("json fail")
+                pass
+        request.meta['item'] = l.load_item()
+        yield request
 
+    def parse_json_data(self, l, data):
+        item = data['item']
+        stats = item.get('stats')
+        if stats:
+            l.add_value('average_rating', stats.get('average'))
+            l.add_value('num_votes', stats.get('usersrated'))
+            l.add_value('complexity', stats.get('avgweight'))
+        return l
 
+    def parse_api(self, response):
+        item = response.meta['item']
+        l = GameLoader(item=item, selector=response.xpath('/items/item[1]'))
+        l.add_value('api_url', response.url)
+        l.add_xpath('image_urls', 'image/text()')
+        l.add_xpath('name', 'name[@type="primary"]/@value')
+        l.add_xpath('description', 'description/text()')
+        l.add_xpath('year_published', 'yearpublished/@value')
+        l.add_xpath('min_players', 'minplayers/@value')
+        l.add_xpath('max_players', 'maxplayers/@value')
+        l.add_xpath('min_play_time', 'minplaytime/@value')
+        l.add_xpath('max_play_time', 'maxplaytime/@value')
+        l.add_xpath('min_age', 'minage/@value')
+        l.add_xpath('mechanics', 'link[@type="boardgamemechanic"]/@id')
+        l.add_xpath('subcategories', 'link[@type="boardgamecategory"]/@id')
+        # l.add_xpath('tags', 'link[@type="boardgamefamily"]/@id')
 
-        # jsondata = response.css('script').re(r'(?<=geekitemPreload = ).*(?=;)')
-        # if not jsondata:
-        #     return
-        # data = self.load_data(jsondata[0])
-        # item = data['item']
-        # l.add_value('name', item.get('name'))
-        # l.add_value('description', item.get('description'))
-        # l.add_value('year_published', item.get('yearpublished'))
-        # l.add_value('min_players', item.get('minplayers'))
-        # l.add_value('max_players', item.get('maxplayers'))
-        # l.add_value('min_play_time', item.get('minplaytime'))
-        # l.add_value('max_play_time', item.get('maxplaytime'))
-        # l.add_value('min_age', item.get('minage'))
+        # from scrapy.shell import inspect_response
+        # inspect_response(response, self)
         yield l.load_item()
+
 
 #     categories = models.ManyToManyField('game.Category', blank=True, verbose_name=_('categories'))
 #     subcategories = models.ManyToManyField('game.SubCategory', blank=True, verbose_name=_('subcategories'))
