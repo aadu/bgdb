@@ -2,7 +2,37 @@
   <v-container class="ma3">
     <v-card>
       <v-card-title>
-        {{ title }}
+        <h2>{{ title }}</h2>
+        <v-dialog v-model="columnToggle" scrollable max-width="650px" origin="top left">
+          <v-btn color="primary" dark slot="activator">Open Dialog</v-btn>
+          <v-card>
+            <v-card-title>Select Columns</v-card-title>
+            <v-divider></v-divider>
+            <v-card-text>
+              <v-checkbox
+                v-for="field in headers"
+                :label="field.text"
+                :key="field.value"
+                v-model="fields"
+                :value="field.value">
+                </v-checkbox>
+              <v-select
+                label="Select"
+                :items="headers"
+                v-model="fields"
+                multiple
+                chips
+                hint="Select columns to display"
+                persistent-hint
+              ></v-select>
+            </v-card-text>
+            <v-divider></v-divider>
+            <v-card-actions>
+              <v-btn color="blue darken-1" flat @click.native="columnToggle = false">Close</v-btn>
+              <v-btn color="blue darken-1" flat @click.native="columnToggle = false">Save</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
         <v-spacer></v-spacer>
         <v-text-field
           append-icon="search"
@@ -156,7 +186,9 @@ export default {
         rowsPerPage: 25,
         descending: false
       },
-      items: []
+      items: [],
+      columnToggle: false,
+      fields: []
     }
   },
   destroyed () {

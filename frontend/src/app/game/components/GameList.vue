@@ -2,7 +2,7 @@
   <ModelTable
     :fetch="fetch"
     :headers="headers"
-    title="GamesList2"
+    title="Games"
     :count="count"
     @click="onClick($event)"
     :next="next"
