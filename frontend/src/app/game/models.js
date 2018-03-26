@@ -17,7 +17,10 @@ export class Game extends Model {
       min_players: this.attr(null),
       max_players: this.attr(null),
       min_age: this.attr(null),
-      max_age: this.attr(null)
+      max_age: this.attr(null),
+      average_rating: this.attr(null),
+      num_votes: this.attr(null),
+      complexity: this.attr(null)
     }
   }
 }

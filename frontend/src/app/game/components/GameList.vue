@@ -29,6 +29,9 @@
           <tr @click="onClickRow(props.item.id, props.index)">
             <td>{{ props.item.name }}</td>
             <td class="text-xs-right">{{ props.item.year_published }}</td>
+            <td class="text-xs-right">{{ props.item.average_rating }}</td>
+            <td class="text-xs-right">{{ props.item.num_votes }}</td>
+            <td class="text-xs-right">{{ props.item.complexity }}</td>
             <td class="text-xs-right">{{ props.item.min_age }}</td>
             <td class="text-xs-right">{{ props.item.min_players }}</td>
             <td class="text-xs-right">{{ props.item.max_players }}</td>
@@ -143,6 +146,9 @@ const headers = [
     value: 'name'
   },
   { text: 'Year Published', value: 'year_published', sortable: true },
+  { text: 'Average Rating', value: 'average_rating', sortable: true },
+  { text: 'Number of Ratings', value: 'num_votes', sortable: true },
+  { text: 'Complexity', value: 'complexity', sortable: true },
   { text: 'Minimum Age', value: 'min_age', sortable: false },
   { text: 'Min Players', value: 'min_players', sortable: false },
   { text: 'Max Players', value: 'max_players', sortable: false },

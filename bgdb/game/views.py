@@ -21,6 +21,9 @@ class GameFilter(django_filters.FilterSet):
             ('name', 'name'),
             ('modified', 'modified'),
             ('year_published', 'year_published'),
+            ('complexity', 'complexity'),
+            ('average_rating', 'average_rating'),
+            ('num_votes', 'num_votes'),
         )
     )
 
