@@ -5,6 +5,7 @@ from rest_framework.permissions import AllowAny
 
 from .models import Game, Mechanic, Subcategory
 from .serializers import GameSerializer, MechanicSerializer, SubcategorySerializer
+from ..filters import CustomOrderingFilter
 
 
 class GameFilter(django_filters.FilterSet):
@@ -16,7 +17,7 @@ class GameFilter(django_filters.FilterSet):
             'name': ['exact', 'icontains'],
         }
 
-    order_by = OrderingFilter(
+    order_by = CustomOrderingFilter(
         fields=(
             ('name', 'name'),
             ('modified', 'modified'),
