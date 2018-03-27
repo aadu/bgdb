@@ -1,1 +1,1 @@
-export { default as ModelTable } from './ModelTable'
+export { default } from './ModelTable'

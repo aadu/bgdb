@@ -48,15 +48,15 @@ const fields = [
     value: 'name',
     type: String
   },
-  { text: 'Year Published', value: 'year_published', sortable: true, type: Number },
-  { text: 'Average Rating', value: 'average_rating', sortable: true, type: Number },
-  { text: 'Number of Ratings', value: 'num_votes', sortable: true, type: Number },
-  { text: 'Complexity', value: 'complexity', sortable: true, type: Number },
-  { text: 'Minimum Age', value: 'min_age', sortable: false },
-  { text: 'Min Players', value: 'min_players', sortable: false },
-  { text: 'Max Players', value: 'max_players', sortable: false },
-  { text: 'Min Play Time', value: 'min_play_time', sortable: false },
-  { text: 'Max Play Time', value: 'max_play_time', sortable: false }
+  { text: 'Year Published', value: 'year_published', sortable: true, type: Number, min: 1800, max: 2020 },
+  { text: 'Average Rating', value: 'average_rating', sortable: true, type: Number, min: 0, max: 10 },
+  { text: 'Number of Ratings', value: 'num_votes', sortable: true, type: Number, min: 0, max: 1000 },
+  { text: 'Complexity', value: 'complexity', sortable: true, type: Number, min: 0, max: 5 },
+  { text: 'Minimum Age', value: 'min_age', sortable: false, type: Number, min: 4, max: 18 },
+  { text: 'Min Players', value: 'min_players', sortable: false, type: Number, min: 1, max: 10 },
+  { text: 'Max Players', value: 'max_players', sortable: false, type: Number, min: 1, max: 20 },
+  { text: 'Min Play Time', value: 'min_play_time', sortable: false, type: Number, min: 1, max: 300 },
+  { text: 'Max Play Time', value: 'max_play_time', sortable: false, type: Number, min: 1, max: 1000 }
 ]
 
 export default {
