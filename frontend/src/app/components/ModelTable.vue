@@ -3,30 +3,11 @@
     <v-card>
       <v-card-title>
         <h2>{{ title }}</h2>
-        <v-btn icon flat @click.stop="columnToggle = !columnToggle">
-          <v-icon>list</v-icon>
-        </v-btn>
-        <v-spacer></v-spacer>
-        <v-fade-transition mode="out-in">
-          <v-card v-if="columnToggle" class="column-select">
-            <v-card-title>Select Columns</v-card-title>
-            <v-divider></v-divider>
-            <v-card-text>
-              <v-checkbox
-                v-for="field in fields"
-                :label="field.text"
-                :key="field.value"
-                @change="$emit('update:list', $event)"
-                :inputValue="list"
-                :value="field.value">
-                </v-checkbox>
-            </v-card-text>
-            <v-divider></v-divider>
-            <v-card-actions>
-              <v-btn color="blue darken-1" flat @click.native="columnToggle = false">Close</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-fade-transition>
+        <ColumnSelect
+          :list="list"
+          @update:list="$emit('update:list', $event)"
+          :fields="fields">
+        </ColumnSelect>
         <v-spacer></v-spacer>
         <v-text-field
           append-icon="search"
@@ -54,15 +35,18 @@
             <td v-for="field in headers" :key="field.value">{{ props.item[field.value] }}</td>
           </tr>
         </template>
-        <v-alert slot="no-results" :value="true" color="error" icon="warning">
-          Your search for "{{ search }}" found no results.
-        </v-alert>
       </v-data-table>
     </v-card>
   </v-container>
 </template>
 
 <script>
+import ColumnSelect from './ColumnSelect'
+
+const components = {
+  ColumnSelect
+}
+
 const props = {
   title: {
     default: '',
@@ -173,6 +157,7 @@ const methods = {
 export default {
   name: 'modelTable',
   methods,
+  components,
   computed,
   mounted () {
     this.loading = true
@@ -206,12 +191,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.column-select {
-  position: absolute;
-  top: 70px;
-  min-width: 200px;
-  max-width: 650px;
-}
-</style>
