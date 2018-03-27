@@ -3,9 +3,12 @@
     <v-card>
       <v-card-title>
         <h2>{{ title }}</h2>
-        <v-dialog v-model="columnToggle" scrollable max-width="650px" origin="top left">
-          <v-btn color="primary" dark slot="activator">Open Dialog</v-btn>
-          <v-card>
+        <v-btn icon flat @click.stop="columnToggle = !columnToggle">
+          <v-icon>list</v-icon>
+        </v-btn>
+        <v-spacer></v-spacer>
+        <v-fade-transition mode="out-in">
+          <v-card v-if="columnToggle" class="column-select">
             <v-card-title>Select Columns</v-card-title>
             <v-divider></v-divider>
             <v-card-text>
@@ -16,23 +19,13 @@
                 v-model="fields"
                 :value="field.value">
                 </v-checkbox>
-              <v-select
-                label="Select"
-                :items="headers"
-                v-model="fields"
-                multiple
-                chips
-                hint="Select columns to display"
-                persistent-hint
-              ></v-select>
             </v-card-text>
             <v-divider></v-divider>
             <v-card-actions>
               <v-btn color="blue darken-1" flat @click.native="columnToggle = false">Close</v-btn>
-              <v-btn color="blue darken-1" flat @click.native="columnToggle = false">Save</v-btn>
             </v-card-actions>
           </v-card>
-        </v-dialog>
+        </v-fade-transition>
         <v-spacer></v-spacer>
         <v-text-field
           append-icon="search"
@@ -196,3 +189,12 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.column-select {
+  position: absolute;
+  top: 70px;
+  min-width: 200px;
+  max-width: 650px;
+}
+</style>
