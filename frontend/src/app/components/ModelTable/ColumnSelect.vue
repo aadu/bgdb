@@ -10,7 +10,7 @@
         <v-icon color="grey">{{ icon }}</v-icon>
       </v-btn>
       <v-card>
-        <v-list>
+        <v-list dense expand>
           <v-list-tile v-for="field in fields" :key="field.value">
             <v-list-tile-action>
               <v-checkbox
@@ -50,6 +50,16 @@ const props = {
 export default {
   name: 'columnSelect',
   props,
+  mounted () {
+    this.fields.forEach(field => {
+      this.form[field.value] = {}
+      if (typeof field.type === 'Number') {
+        this.form[field.value].max = 0
+        this.form[field.value].mix = 0
+      }
+    })
+
+  },
   data () {
     return {
       visible: false

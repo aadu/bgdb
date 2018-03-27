@@ -1,43 +1,52 @@
 <template>
-  <v-container class="ma3">
-    <v-card>
-      <v-card-title>
-        <h2>{{ title }}</h2>
-        <ColumnSelect
-          :list="list"
-          @update:list="$emit('update:list', $event)"
-          :fields="fields">
-        </ColumnSelect>
-        <Search></Search>
-        <v-spacer></v-spacer>
-        <v-text-field
-          append-icon="search"
-          label="Search"
-          single-line
-          hide-details
-          v-model="search"
-          @input="onSearchChange($event)"
-          @keyup.enter="fetchData"
-        ></v-text-field>
-      </v-card-title>
-      <v-data-table
-        :headers="headers"
-        :items="items"
-        :loading="loading"
-        :pagination="pagination"
-        @update:pagination="onPageChange($event)"
-        :search="search"
-        :rows-per-page-items="rowsPerPage"
-        :total-items="count"
-        class="elevation-1"
-        >
-        <template slot="items" slot-scope="props">
-          <tr @click="onClickRow(props.item.id, props.index)">
-            <td v-for="field in headers" :key="field.value">{{ props.item[field.value] }}</td>
-          </tr>
-        </template>
-      </v-data-table>
-    </v-card>
+  <v-container fluid>
+    <v-layout row wrap>
+      <v-flex xs12 md9>
+      <v-card class="mr-1">
+        <v-card-title>
+          <h2>{{ title }}</h2>
+          <ColumnSelect
+            :list="list"
+            @update:list="$emit('update:list', $event)"
+            :fields="fields">
+          </ColumnSelect>
+          <v-btn icon @click.prevent.native="advancedSearch = !advancedSearch">
+            <v-icon color="grey">keyboard_arrow_right</v-icon>
+          </v-btn>
+          <v-spacer></v-spacer>
+          <v-text-field
+            append-icon="search"
+            label="Search"
+            single-line
+            hide-details
+            v-model="search"
+            @input="onSearchChange($event)"
+            @keyup.enter="fetchData"
+          ></v-text-field>
+        </v-card-title>
+        <v-data-table
+          :headers="headers"
+          :items="items"
+          :loading="loading"
+          :pagination="pagination"
+          @update:pagination="onPageChange($event)"
+          :search="search"
+          :rows-per-page-items="rowsPerPage"
+          :total-items="count"
+          class="elevation-1"
+          >
+          <template slot="items" slot-scope="props">
+            <tr @click="onClickRow(props.item.id, props.index)">
+              <td v-for="field in headers" :key="field.value">{{ props.item[field.value] }}</td>
+            </tr>
+          </template>
+        </v-data-table>
+      </v-card>
+    </v-flex>
+    <v-flex md3 v-if="advancedSearch">
+      <Search :fields="fields"></Search>
+    </v-flex>
+    </v-layout>
   </v-container>
 </template>
 
@@ -186,7 +195,8 @@ export default {
       },
       items: [],
       columnToggle: false,
-      selected: []
+      selected: [],
+      advancedSearch: true
     }
   },
   destroyed () {

@@ -7,6 +7,7 @@
     fixed
     @input="handleInput"
     width="220"
+    clipped
   >
     <v-list class="pt-0" dense>
       <v-divider light></v-divider>

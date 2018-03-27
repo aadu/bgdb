@@ -45,12 +45,13 @@ const fields = [
   {
     text: 'Name',
     align: 'left',
-    value: 'name'
+    value: 'name',
+    type: String
   },
-  { text: 'Year Published', value: 'year_published', sortable: true },
-  { text: 'Average Rating', value: 'average_rating', sortable: true },
-  { text: 'Number of Ratings', value: 'num_votes', sortable: true },
-  { text: 'Complexity', value: 'complexity', sortable: true },
+  { text: 'Year Published', value: 'year_published', sortable: true, type: Number },
+  { text: 'Average Rating', value: 'average_rating', sortable: true, type: Number },
+  { text: 'Number of Ratings', value: 'num_votes', sortable: true, type: Number },
+  { text: 'Complexity', value: 'complexity', sortable: true, type: Number },
   { text: 'Minimum Age', value: 'min_age', sortable: false },
   { text: 'Min Players', value: 'min_players', sortable: false },
   { text: 'Max Players', value: 'max_players', sortable: false },
