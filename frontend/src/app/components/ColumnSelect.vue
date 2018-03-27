@@ -1,7 +1,7 @@
 <template>
   <div>
-    <v-btn icon flat @click.stop="visible = !visible">
-      <v-icon>{{ icon }}</v-icon>
+    <v-btn icon @click.stop="visible = !visible">
+      <v-icon color="grey">{{ icon }}</v-icon>
     </v-btn>
     <v-fade-transition mode="out-in">
       <div v-if="visible" id="column-select-modal">
@@ -40,7 +40,7 @@ const props = {
     type: Array
   },
   icon: {
-    default: 'list',
+    default: 'view_column',
     type: String
   }
 }

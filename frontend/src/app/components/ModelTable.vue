@@ -8,6 +8,7 @@
           @update:list="$emit('update:list', $event)"
           :fields="fields">
         </ColumnSelect>
+        <Search></Search>
         <v-spacer></v-spacer>
         <v-text-field
           append-icon="search"
@@ -41,9 +42,11 @@
 </template>
 
 <script>
+import Search from './Search'
 import ColumnSelect from './ColumnSelect'
 
 const components = {
+  Search,
   ColumnSelect
 }
 
