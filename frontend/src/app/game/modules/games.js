@@ -5,10 +5,11 @@ const state = {
   count: 0,
   pagination: {
     page: 1,
-    rowsPerPage: 25,
-    sortBy: 'name',
-    descending: false
+    rowsPerPage: 50,
+    sortBy: 'num_votes',
+    descending: true
   },
+  listView: ['name', 'year_published', 'average_rating', 'num_votes', 'complexity'],
   params: {},
   items: [],
   sequence: [],
@@ -33,6 +34,9 @@ const mutations = {
   },
   clearSequence (state) {
     state.sequence = []
+  },
+  updateList (state, payload) {
+    state.listView = payload
   }
 }
 

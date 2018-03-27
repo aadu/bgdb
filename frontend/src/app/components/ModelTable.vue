@@ -13,10 +13,11 @@
             <v-divider></v-divider>
             <v-card-text>
               <v-checkbox
-                v-for="field in headers"
+                v-for="field in fields"
                 :label="field.text"
                 :key="field.value"
-                v-model="fields"
+                @change="$emit('update:list', $event)"
+                :inputValue="list"
                 :value="field.value">
                 </v-checkbox>
             </v-card-text>
@@ -50,7 +51,7 @@
         >
         <template slot="items" slot-scope="props">
           <tr @click="onClickRow(props.item.id, props.index)">
-            <slot :item="props.item"></slot>
+            <td v-for="field in headers" :key="field.value">{{ props.item[field.value] }}</td>
           </tr>
         </template>
         <v-alert slot="no-results" :value="true" color="error" icon="warning">
@@ -67,13 +68,17 @@ const props = {
     default: '',
     type: String
   },
-  headers: {
+  fields: {
     required: true,
     type: Array
   },
   fetch: {
     required: true,
     type: Function
+  },
+  list: {
+    required: true,
+    type: Array
   },
   rowsPerPage: {
     type: Array,
@@ -87,6 +92,9 @@ const props = {
     default: null
   },
   previous: {
+    default: null
+  },
+  initialPagination: {
     default: null
   }
 }
@@ -108,6 +116,9 @@ const computed = {
       output.name__icontains = this.search
     }
     return output
+  },
+  headers () {
+    return this.fields.filter(item => this.list.includes(item.value))
   }
 }
 
@@ -164,6 +175,12 @@ export default {
   methods,
   computed,
   mounted () {
+    this.loading = true
+    if (this.initialPagination !== null) {
+      this.pagination = this.initialPagination
+    }
+    this.loading = false
+    this.selected = this.list
     document.addEventListener('keyup', this.keyUp)
     this.fetchData()
   },
@@ -181,7 +198,7 @@ export default {
       },
       items: [],
       columnToggle: false,
-      fields: []
+      selected: []
     }
   },
   destroyed () {

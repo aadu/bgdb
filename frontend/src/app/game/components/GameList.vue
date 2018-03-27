@@ -1,26 +1,17 @@
 <template>
   <ModelTable
     :fetch="fetch"
-    :headers="headers"
+    :fields="fields"
+    :list="listView"
+    @update:list="$store.commit('entities/games/updateList', $event)"
     title="Games"
     :count="count"
     @click="onClick($event)"
     :next="next"
     :previous="previous"
     @fetch="onFetch($event)"
+    :initialPagination="initialPagination"
     >
-    <template slot="default" slot-scope="props">
-      <td>{{ props.item.name }}</td>
-      <td class="text-xs-right">{{ props.item.year_published }}</td>
-      <td class="text-xs-right">{{ props.item.average_rating }}</td>
-      <td class="text-xs-right">{{ props.item.num_votes }}</td>
-      <td class="text-xs-right">{{ props.item.complexity }}</td>
-      <td class="text-xs-right">{{ props.item.min_age }}</td>
-      <td class="text-xs-right">{{ props.item.min_players }}</td>
-      <td class="text-xs-right">{{ props.item.max_players }}</td>
-      <td class="text-xs-right">{{ props.item.min_play_time }}</td>
-      <td class="text-xs-right">{{ props.item.max_play_time }}</td>
-    </template>
   </ModelTable>
 </template>
 
@@ -34,7 +25,7 @@ const components = {
 
 const computed = {
   ...mapState(`entities/games`, [
-    `count`, `next`, `previous`
+    `count`, `next`, `previous`, `listView`
   ])
 }
 
@@ -50,7 +41,7 @@ const methods = {
   }
 }
 
-const headers = [
+const fields = [
   {
     text: 'Name',
     align: 'left',
@@ -74,7 +65,13 @@ export default {
   components,
   data () {
     return {
-      headers
+      fields,
+      initialPagination: {
+        page: 1,
+        rowsPerPage: 50,
+        sortBy: 'num_votes',
+        descending: true
+      }
     }
   }
 }
