@@ -1,5 +1,5 @@
 <template>
-<v-container>
+  <div>
     <v-btn icon flat @click.stop="visible = !visible">
       <v-icon>{{ icon }}</v-icon>
     </v-btn>
@@ -25,7 +25,7 @@
         </v-card>
         </div>
     </v-fade-transition>
-    </v-container>
+  </div>
 </template>
 
 
