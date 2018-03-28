@@ -15,6 +15,15 @@ class GameFilter(django_filters.FilterSet):
         fields = {
             'id': ['exact'],
             'name': ['exact', 'icontains'],
+            'year_published': ['lte', 'gte'],
+            'complexity': ['lte', 'gte'],
+            'average_rating': ['lte', 'gte'],
+            'num_votes': ['lte', 'gte'],
+            'min_players': ['lte', 'gte'],
+            'max_players': ['lte', 'gte'],
+            'min_play_time': ['lte', 'gte'],
+            'max_play_time': ['lte', 'gte'],
+            'min_age': ['lte', 'gte'],
         }
 
     order_by = CustomOrderingFilter(

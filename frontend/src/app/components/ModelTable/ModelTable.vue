@@ -44,7 +44,7 @@
       </v-card>
     </v-flex>
     <v-flex md3 v-if="advancedSearch">
-      <Search :fields="fields"></Search>
+      <Search :fields="fields" @update:params="onUpdateParams($event)"></Search>
     </v-flex>
     </v-layout>
   </v-container>
@@ -111,7 +111,7 @@ const computed = {
     if (this.search) {
       output.name__icontains = this.search
     }
-    return output
+    return {...output, ...this.params}
   },
   headers () {
     return this.fields.filter(item => this.list.includes(item.value))
@@ -141,6 +141,16 @@ const methods = {
     }
     this.pagination = { page, rowsPerPage, sortBy, descending }
     this.fetchData()
+  },
+  onUpdateParams (params) {
+    this.loading = true
+    if (this.paramDebounce !== null) {
+      clearTimeout(this.paramDebounce)
+    }
+    this.paramDebounce = setTimeout(() => {
+      this.params = params
+      this.fetchData()
+    }, 500)
   },
   fetchData () {
     this.loading = true
@@ -182,6 +192,11 @@ export default {
     this.fetchData()
   },
   props,
+  watch: {
+    queryParams () {
+      console.log('queryParams', this.queryParams)
+    }
+  },
   data () {
     return {
       loading: true,
@@ -196,7 +211,9 @@ export default {
       items: [],
       columnToggle: false,
       selected: [],
-      advancedSearch: true
+      advancedSearch: true,
+      paramDebounce: null,
+      params: {}
     }
   },
   destroyed () {
