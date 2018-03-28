@@ -5,6 +5,7 @@
       <v-slider
         :min="min.min"
         :max="min.max"
+        :step="step"
         hint="min"
         persistent-hint
         thumb-label
@@ -19,6 +20,7 @@
       thumb-label
       @input="onMax($event)"
       :value="max.value"
+      :step="step"
       ></v-slider>
     </v-card-text>
   </v-expansion-panel-content>
@@ -120,6 +122,7 @@ export default {
     }
     this.$set(this, 'min', min)
     this.$set(this, 'max', max)
+    this.step = this.field.step || 0
     setTimeout(() => {
       this.loading = false
     }, 200)
@@ -136,7 +139,8 @@ export default {
       value: 0
     },
     debounce: null,
-    loading: false
+    loading: false,
+    step: 1
   })
 }
 </script>
