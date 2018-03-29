@@ -4,8 +4,11 @@
       <v-flex xs12 md9>
       <v-card class="mr-1">
         <v-card-title>
-          <h2>{{ title }}</h2>
+          <slot name="title">
+            <h2>{{ title }}</h2>
+          </slot>
           <ColumnSelect
+            v-if="columnSelect"
             :list="list"
             @update:list="$emit('update:list', $event)"
             :fields="fields">
@@ -92,6 +95,10 @@ const props = {
   },
   initialPagination: {
     default: null
+  },
+  columnSelect: {
+    default: true,
+    type: Boolean
   }
 }
 

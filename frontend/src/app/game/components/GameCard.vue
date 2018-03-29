@@ -42,7 +42,7 @@ export default {
 
 <style scoped>
 .game {
-  background: grey%;
+  background: grey;
 }
 
 </style>

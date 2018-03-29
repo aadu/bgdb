@@ -17,11 +17,10 @@ const modules = { ...vuex }
 
 const store = new Vuex.Store({
   plugins: [
+    VuexORM.install(database),
     createPersistedState({
-      key: config.storageKey,
-      paths: ['ux']
-    }),
-    VuexORM.install(database)
+      key: config.storageKey
+    })
   ],
   modules
 })
