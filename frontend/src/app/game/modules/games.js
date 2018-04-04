@@ -18,6 +18,12 @@ const state = {
   previous: null
 }
 
+const getters = {
+  find: (state) => (id) => {
+    return state.items.find(item => item.id === id)
+  }
+}
+
 const mutations = {
   updatePagination (state, { page, rowsPerPage, sortBy, descending }) {
     state.pagination = { page, rowsPerPage, sortBy, descending }
@@ -56,6 +62,7 @@ const actions = {
 
 export default {
   namespaced: true,
+  getters,
   state,
   mutations,
   actions

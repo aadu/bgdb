@@ -9,7 +9,6 @@
     @click="onClick($event)"
     :next="next"
     :previous="previous"
-    @fetch="onFetch($event)"
     :initialPagination="initialPagination"
     >
   </ModelTable>
@@ -24,20 +23,17 @@ const components = {
 }
 
 const computed = {
-  ...mapState(`entities/games`, [
+  ...mapState(`game/games`, [
     `count`, `next`, `previous`, `listView`
   ])
 }
 
 const methods = {
-  ...mapActions(`entities/games`, [
-    `fetch`, `insertOrUpdate`
+  ...mapActions(`game/games`, [
+    `fetch`
   ]),
   onClick (params) {
     this.$router.push({ name: 'game', ...params })
-  },
-  onFetch (results) {
-    return this.insertOrUpdate({data: results})
   }
 }
 

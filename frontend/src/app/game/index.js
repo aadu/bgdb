@@ -1,5 +1,3 @@
 export { default as components } from './components'
-export { default as vuex } from './vuex'
 export { default as routes } from './routes'
-export * from './models'
-export * from './modules'
+export { default as modules } from './modules'
