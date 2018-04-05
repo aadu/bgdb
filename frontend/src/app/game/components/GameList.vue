@@ -17,6 +17,7 @@
 <script>
 import { mapActions, mapState } from 'vuex'
 import { ModelTable } from '@/app/components'
+import Fields from '@/plugins/fields'
 
 const components = {
   ModelTable
@@ -60,6 +61,16 @@ export default {
   methods,
   computed,
   components,
+  mounted () {
+    console.log(Fields)
+    const f = [
+      new Fields.StringField('name', {sortable: true}),
+      new Fields.StringField('description'),
+      new Fields.ChoicesField('type', {choices: {game: 'Board Game', expansion: 'Board Game Expansion'}})
+    ]
+    window.Fields = Fields
+    window.f = f
+  },
   data () {
     return {
       fields,
