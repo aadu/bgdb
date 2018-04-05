@@ -20,13 +20,20 @@ class Field {
       this.$validate()
     }
 
+    if (typeof this.class === 'undefined') {
+      this.class = this.constructor.name.replace('Field', '')
+    }
+
     // Ensure custom Field classes include defaults in override
     if (typeof this.protoIncluded === 'undefined') {
       throw Error('Field $defaults override should extend __proto__.$defaults')
     }
     delete this.protoIncluded
-
     this.$init()
+  }
+
+  $clone (prop, options = {}, validate = true) {
+    return new this.constructor(prop || this.prop, Object.assign({}, this._options, options), validate)
   }
 
   $repr () {
@@ -53,9 +60,7 @@ class Field {
   get $defaults () {
     return {
       protoIncluded: true,
-      default: undefined,
       sortable: false,
-      value: undefined,
       required: false,
       readonly: false,
       except: '',
@@ -78,16 +83,6 @@ class Field {
   }
 }
 
-  //   { text: 'Year Published', value: 'year_published', sortable: true, type: Number, min: 1980, max: 2020, step: 5 },
-// { text: 'Average Rating', value: 'average_rating', sortable: true, type: Number, min: 0, max: 10, step: 0.2 },
-// { text: 'Number of Ratings', value: 'num_votes', sortable: true, type: Number, min: 0, max: 1000, step: 10 },
-// { text: 'Complexity', value: 'complexity', sortable: true, type: Number, min: 0, max: 5, step: 0.1 },
-// { text: 'Minimum Age', value: 'min_age', sortable: false, type: Number, min: 4, max: 18, step: 1 },
-// { text: 'Min Players', value: 'min_players', sortable: false, type: Number, min: 1, max: 10, step: 1 },
-// { text: 'Max Players', value: 'max_players', sortable: false, type: Number, min: 1, max: 20, step: 1 },
-// { text: 'Min Play Time', value: 'min_play_time', sortable: false, type: Number, min: 1, max: 3 * 60, step: 15 },
-// { text: 'Max Play Time', value: 'max_play_time', sortable: false, type: Number, min: 1, max: 12 * 60, step: 15 }
-
 class StringField extends Field {
   get $defaults () {
     return {
@@ -101,7 +96,6 @@ class ChoicesField extends StringField {
   get $defaults () {
     return {
       ...Object.getPrototypeOf(this).$defaults,
-      class: 'ChoicesField',
       component: 'Choices'
     }
   }
@@ -117,10 +111,223 @@ class ChoicesField extends StringField {
   }
 }
 
+class TextField extends StringField {
+  get $defaults () {
+    return {
+      ...Object.getPrototypeOf(this).$defaults,
+      type: 'Text'
+    }
+  }
+}
+
+class PasswordField extends StringField {
+  get $defaults () {
+    return {
+      ...Object.getPrototypeOf(this).$defaults,
+      type: 'password',
+      readonly: true
+    }
+  }
+}
+
+class TimestampField extends StringField {
+  get $defaults () {
+    return {
+      ...Object.getPrototypeOf(this).$defaults,
+      formatter: (v) => {
+        if (v === undefined || v === null) {
+          return ''
+        }
+        const date = new Date(v * 1000)
+        return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`
+      }
+    }
+  }
+}
+
+class DateField extends StringField {
+  get $defaults () {
+    return {
+      ...Object.getPrototypeOf(this).$defaults,
+      formatter: (v) => {
+        if (v === undefined || v === null) {
+          return ''
+        }
+        const date = new Date(v)
+        return `${date.toLocaleDateString()}`
+      }
+    }
+  }
+}
+
+class DateTimeField extends StringField {
+  get $defaults () {
+    return {
+      ...Object.getPrototypeOf(this).$defaults,
+      formatter: (v) => {
+        if (v === undefined || v === null) {
+          return ''
+        }
+        const date = new Date(v)
+        return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`
+      }
+    }
+  }
+}
+
+class ModelField extends Field {
+  get $defaults () {
+    return {
+      ...Object.getPrototypeOf(this).$defaults,
+      type: Object,
+      required: true,
+      formatter: v => v ? v.name : undefined,
+      multiple: false,
+      disableLinks: false
+    }
+  }
+
+  get $requiredArguments () {
+    return [
+      'label', 'prop', 'source'
+    ]
+  }
+
+  $init () {
+    if (this.multiple === true && this.disableLinks === true) {
+      this.formatter = v => v ? v.map(o => o.name).join(', ') : v
+    } else if (this.multiple === true) {
+      this.formatter = v => v
+      this.component = 'LinkMultiple'
+    } else {
+      this.component = 'Link'
+    }
+  }
+}
+
+class KeyValueField extends Field {
+  get $defaults () {
+    return {
+      ...Object.getPrototypeOf(this).$defaults,
+      required: false,
+      type: Object,
+      default: {},
+      component: 'KeyValue'
+    }
+  }
+}
+
+class JSONField extends Field {
+  get $defaults () {
+    return {
+      ...Object.getPrototypeOf(this).$defaults,
+      type: 'JSON',
+      component: 'JSON',
+      default: {},
+      filterable: false
+    }
+  }
+}
+
+class BooleanField extends Field {
+  get $defaults () {
+    return {
+      ...Object.getPrototypeOf(this).$defaults,
+      type: Boolean,
+      component: 'Boolean',
+      default: false
+    }
+  }
+}
+
+class NumberField extends Field {
+  get $defaults () {
+    return {
+      ...Object.getPrototypeOf(this).$defaults,
+      type: Number
+    }
+  }
+}
+
+class ArrayField extends Field {
+  get $defaults () {
+    return {
+      ...Object.getPrototypeOf(this).$defaults,
+      default: [],
+      type: Array,
+      filterable: false
+    }
+  }
+}
+
+class DateTimeRangeField extends ArrayField {
+  get $defaults () {
+    return {
+      ...Object.getPrototypeOf(this).$defaults,
+      formatter: (range) => {
+        if (range === undefined || range === null) {
+          return []
+        } else {
+          return range
+        }
+      }
+    }
+  }
+}
+
+const ID = new Field('id', {readonly: true, label: 'ID'})
+
+const Name = new StringField('name', {
+  required: true,
+  sortable: true,
+  minWidth: 250
+})
+
+const Description = new StringField('description')
+
+const Project = new ModelField('project', {
+  source: 'projects',
+  required: true,
+  sortable: true
+})
+
+const Labels = new KeyValueField('labels')
+
+const Modified = new DateTimeField('modified', {
+  sortable: true,
+  readonly: true,
+  width: 180
+})
+
+const Created = new DateTimeField('created', {
+  sortable: true,
+  readonly: true,
+  width: 180
+})
+
 const types = [
   Field,
   StringField,
-  ChoicesField
+  ChoicesField,
+  TextField,
+  DateField,
+  TimestampField,
+  DateTimeField,
+  NumberField,
+  ModelField,
+  KeyValueField,
+  JSONField,
+  ArrayField,
+  BooleanField,
+  PasswordField,
+  DateTimeRangeField,
+  {ID},
+  {Name},
+  {Description},
+  {Project},
+  {Labels},
+  {Modified},
+  {Created}
 ]
 
 export default new Registry(types)
