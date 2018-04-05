@@ -1,6 +1,18 @@
-export default class Serializer {
-  constructor (registry = {}) {
-    this.registry = registry
+export default class Registry {
+  constructor (types = []) {
+    this.registry = {}
+    this.types = types
+    this.types.forEach(type => {
+      this.register(type)
+    })
+  }
+
+  register (Field) {
+    this.types.push(Field)
+    this.registry[Field.name] = Field
+    this[Field.name] = (prop, options = {}, validate = true) => {
+      return new Field(prop, options, validate)
+    }
   }
 
   serialize (object) {
@@ -16,7 +28,7 @@ export default class Serializer {
   deserialize (jstring) {
     let array = JSON.parse(jstring)
     let Type = this.registry[array[0]]
-    let object = new Type()
+    let object = new Type('', {}, false)
     array[1].map(e => {
       object[e[0]] = e[1]
     })

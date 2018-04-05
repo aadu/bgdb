@@ -64,9 +64,9 @@ export default {
   mounted () {
     console.log(Fields)
     const f = [
-      new Fields.StringField('name', {sortable: true}),
-      new Fields.StringField('description'),
-      new Fields.ChoicesField('type', {choices: {game: 'Board Game', expansion: 'Board Game Expansion'}})
+      Fields.StringField('name', {sortable: true}),
+      Fields.StringField('description'),
+      Fields.ChoicesField('type', {choices: {game: 'Board Game', expansion: 'Board Game Expansion'}})
     ]
     window.Fields = Fields
     window.f = f

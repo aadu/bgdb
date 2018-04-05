@@ -1,9 +1,5 @@
-const normalCase = (s) => {
-  return s
-    .replace(/([A-Z])/g, ' $1')
-    .replace(/^./, str => str.toUpperCase())
-}
-  // uppercase the first character
+import { normCase } from './utils'
+import Registry from './Registry'
 
 class Field {
   constructor (prop, options = {}, validate = true) {
@@ -16,7 +12,7 @@ class Field {
     })
 
     if (typeof options.label === 'undefined') {
-      options.label = normalCase(prop)
+      options.label = normCase(prop)
     }
 
     Object.assign(this, this.$defaults, options)
@@ -121,8 +117,10 @@ class ChoicesField extends StringField {
   }
 }
 
-export default {
+const types = [
   Field,
   StringField,
   ChoicesField
-}
+]
+
+export default new Registry(types)
