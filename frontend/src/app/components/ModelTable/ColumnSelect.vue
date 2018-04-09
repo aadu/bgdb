@@ -11,15 +11,15 @@
       </v-btn>
       <v-card>
         <v-list dense expand>
-          <v-list-tile v-for="field in fields" :key="field.value">
+          <v-list-tile v-for="field in fields" :key="field.prop">
             <v-list-tile-action>
               <v-checkbox
                 @change="$emit('update:list', $event)"
                 :inputValue="list"
-                :value="field.value">
+                :value="field.prop">
                 </v-checkbox>
             </v-list-tile-action>
-            <v-list-tile-title>{{ field.text }}</v-list-tile-title>
+            <v-list-tile-title>{{ field.label }}</v-list-tile-title>
           </v-list-tile>
         </v-list>
         <v-card-actions>

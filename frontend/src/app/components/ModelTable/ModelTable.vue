@@ -4,14 +4,14 @@
       <v-flex xs12 md9>
       <v-card class="mr-1">
         <v-card-title>
-          <slot name="title">
+            <slot name="title">
             <h2>{{ title }}</h2>
           </slot>
           <ColumnSelect
             v-if="columnSelect"
+            :fields="fields"
             :list="list"
-            @update:list="$emit('update:list', $event)"
-            :fields="fields">
+            @update:list="$emit('update:list', $event)">
           </ColumnSelect>
           <v-btn icon @click.prevent.native="advancedSearch = !advancedSearch">
             <v-icon color="grey">keyboard_arrow_right</v-icon>

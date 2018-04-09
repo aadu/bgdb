@@ -3,7 +3,7 @@
     :fetch="fetch"
     :fields="fields"
     :list="listView"
-    @update:list="$store.commit('entities/games/updateList', $event)"
+    @update:list="$store.commit('game/games/updateList', $event)"
     title="Games"
     :count="count"
     @click="onClick($event)"
