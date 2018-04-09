@@ -28,19 +28,20 @@
           ></v-text-field>
         </v-card-title>
         <v-data-table
+          class="elevation-1"
+          :loading="loading"
           :headers="headers"
           :items="items"
-          :loading="loading"
+          item-key="prop"
           :pagination="pagination"
           @update:pagination="onPageChange($event)"
           :search="search"
           :rows-per-page-items="rowsPerPage"
           :total-items="count"
-          class="elevation-1"
           >
           <template slot="items" slot-scope="props">
             <tr @click="onClickRow(props.item.id, props.index)">
-              <td v-for="field in headers" :key="field.value">{{ props.item[field.value] }}</td>
+              <td v-for="field in headers" :key="field.prop">{{ props.item[field.prop] }}</td>
             </tr>
           </template>
         </v-data-table>
@@ -121,7 +122,11 @@ const computed = {
     return {...output, ...this.params}
   },
   headers () {
-    return this.fields.filter(item => this.list.includes(item.value))
+    return this.fields.filter(item => this.list.includes(item.prop)).map(
+      field => {
+        return Object.assign({}, field, { value: field.prop, text: field.label })
+      }
+    )
   }
 }
 
