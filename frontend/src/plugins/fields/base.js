@@ -63,7 +63,8 @@ export default class Field {
       required: false,
       readonly: false,
       except: '',
-      minWidth: 120
+      minWidth: 120,
+      formatter: v => v
     }
   }
 

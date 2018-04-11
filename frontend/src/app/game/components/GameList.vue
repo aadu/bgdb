@@ -57,9 +57,9 @@ const methods = {
 // ]
 
 const fields = [
-  Fields.StringField('name', { sortable: true, align: 'left' }),
+  Fields.StringField('name', { sortable: true, align: 'left', link: { name: 'game' } }),
   Fields.StringField('description'),
-  Fields.NumberField('year_published', { sortable: true, min: 1980, max: 2020, step: 5 }),
+  Fields.NumberField('year_published', { sortable: true, min: 1980, max: 2020, step: 5, link: true }),
   Fields.NumberField('average_rating', { sortable: true, max: 10, step: 0.2 }),
   Fields.NumberField('num_votes', { sortable: true, max: 1000, step: 10 }),
   Fields.NumberField('complexity', { sortable: true, max: 5, step: 0.1 }),

@@ -12,6 +12,13 @@
         @update:params="updateParams($event)">
         </RangeInput>
       </v-expansion-panel>
+      <v-divider></v-divider>
+      <v-card-text>
+        <pre>
+          <code>{{ params }}</code>
+        </pre>
+      </v-card-text>
+
     </v-card>
   </v-slide-y-transition>
 </template>

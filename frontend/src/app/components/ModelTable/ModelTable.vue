@@ -41,7 +41,15 @@
           >
           <template slot="items" slot-scope="props">
             <tr @click="onClickRow(props.item.id, props.index)">
-              <td v-for="field in headers" :key="field.prop">{{ props.item[field.prop] }}</td>
+              <td v-for="field in headers" :key="field.prop">
+                {{ log(props.item)}}
+                <router-link
+                  v-if="typeof field.link !== 'undefined'"
+                  :to="{ name: field.link.name, params: { id: props.item.id }}"
+                  >{{ field.formatter(props.item[field.prop]) }}</router-link>
+                <span v-else-if="typeof field.component === 'undefined'">{{ field.formatter(props.item[field.prop]) }}</span>
+                <component v-else :is="field.component" :value="field.formatter(props.item[field.prop])"></component>
+              </td>
             </tr>
           </template>
         </v-data-table>
@@ -131,6 +139,9 @@ const computed = {
 }
 
 const methods = {
+  log (event) {
+    console.log(event)
+  },
   onSearchChange (text) {
     this.loading = true
     if (this.searchDebounce !== null) {
