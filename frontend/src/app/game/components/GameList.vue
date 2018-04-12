@@ -57,7 +57,7 @@ const methods = {
 // ]
 
 const fields = [
-  Fields.StringField('name', { sortable: true, align: 'left', link: { name: 'game' } }),
+  Fields.StringField('name', { sortable: true, align: 'left', link: { name: 'game' }, search: true }),
   Fields.StringField('description'),
   Fields.NumberField('year_published', { sortable: true, min: 1980, max: 2020, step: 5, link: true }),
   Fields.NumberField('average_rating', { sortable: true, max: 10, step: 0.2 }),
@@ -74,23 +74,6 @@ export default {
   methods,
   computed,
   components,
-  mounted () {
-    console.log(Fields)
-    const f = [
-      Fields.StringField('name', { sortable: true, align: 'left' }),
-      Fields.StringField('description'),
-      Fields.NumberField('year_published', { sortable: true, min: 1980, max: 2020, step: 5 }),
-      Fields.NumberField('average_rating', { sortable: true, max: 10, step: 0.2 }),
-      Fields.NumberField('num_votes', { sortable: true, max: 1000, step: 10 }),
-      Fields.NumberField('complexity', { sortable: true, max: 5, step: 0.1 }),
-      Fields.NumberField('min_players', { sortable: true, min: 1, max: 10 }),
-      Fields.NumberField('max_players', { sortable: true, min: 1, max: 20 }),
-      Fields.NumberField('min_play_time', { sortable: true, min: 1, max: 3 * 60, step: 15 }),
-      Fields.NumberField('max_play_time', { sortable: true, min: 1, max: 12 * 60, step: 15 })
-    ]
-    window.Fields = Fields
-    window.f = f
-  },
   data () {
     return {
       fields,

@@ -22,7 +22,7 @@
             label="Search"
             single-line
             hide-details
-            v-model="search"
+            :value="searchInput"
             @input="onSearchChange($event)"
             @keyup.enter="fetchData"
           ></v-text-field>
@@ -65,6 +65,7 @@
 <script>
 import Search from './Search'
 import ColumnSelect from './ColumnSelect'
+import queryMixin from './mixins/query'
 
 const components = {
   Search,
@@ -112,23 +113,6 @@ const props = {
 }
 
 const computed = {
-  queryParams () {
-    const { sortBy, descending, page, rowsPerPage } = this.pagination
-    const output = {}
-    if (sortBy) {
-      output['order_by'] = descending === true ? '-' + sortBy : sortBy
-    }
-    if (typeof page !== 'undefined') {
-      output.page = page
-    }
-    if (typeof rowsPerPage !== 'undefined') {
-      output.page_size = rowsPerPage
-    }
-    if (this.search) {
-      output.name__icontains = this.search
-    }
-    return {...output, ...this.params}
-  },
   headers () {
     return this.fields.filter(item => this.list.includes(item.prop)).map(
       field => {
@@ -140,15 +124,17 @@ const computed = {
 
 const methods = {
   log (event) {
-    console.log(event)
+    // console.log(event)
   },
   onSearchChange (text) {
     this.loading = true
+    this.searchInput = text
     if (this.searchDebounce !== null) {
       clearTimeout(this.searchDebounce)
     }
     this.searchDebounce = setTimeout(() => {
       this.search = text
+      console.log('onSearchChange')
       this.fetchData()
     }, 500)
   },
@@ -163,6 +149,7 @@ const methods = {
       return
     }
     this.pagination = { page, rowsPerPage, sortBy, descending }
+    console.log('onPageChange')
     this.fetchData()
   },
   onUpdateParams (params) {
@@ -172,10 +159,14 @@ const methods = {
     }
     this.paramDebounce = setTimeout(() => {
       this.params = params
+      console.log('onUpdateParams')
       this.fetchData()
     }, 500)
   },
   fetchData () {
+    this.$router.push({ query: this.queryParams })
+  },
+  loadData () {
     this.loading = true
     this.fetch(this.queryParams).then((results) => {
       this.loading = false
@@ -204,26 +195,24 @@ export default {
   methods,
   components,
   computed,
+  mixins: [queryMixin],
   mounted () {
-    this.loading = true
-    if (this.initialPagination !== null) {
-      this.pagination = this.initialPagination
-    }
-    this.loading = false
+    // this.loading = true
+    // // if (this.initialPagination !== null) {
+    // //   this.pagination = this.initialPagination
+    // // }
+    // this.loading = false
     this.selected = this.list
     document.addEventListener('keyup', this.keyUp)
-    this.fetchData()
+    console.log('mounted')
+    this.loadData()
   },
   props,
-  watch: {
-    queryParams () {
-      console.log('queryParams', this.queryParams)
-    }
-  },
   data () {
     return {
       loading: true,
-      search: '',
+      search: null,
+      searchInput: null,
       searchDebounce: null,
       pagination: {
         page: 1,
