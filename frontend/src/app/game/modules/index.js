@@ -1,2 +1,10 @@
-export { default as games } from './games'
-export { default as mechanics } from './mechanics'
+import { default as games } from './games'
+import { default as mechanics } from './mechanics'
+
+export default {
+  namespaced: true,
+  modules: {
+    games,
+    mechanics
+  }
+}

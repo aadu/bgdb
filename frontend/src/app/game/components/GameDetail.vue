@@ -45,9 +45,8 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapState, mapGetters } from 'vuex'
 import GameCard from './GameCard'
-import { Game } from '../models'
 const name = 'gameDetail'
 
 const components = {
@@ -59,7 +58,7 @@ const props = {
 }
 
 const methods = {
-  ...mapActions(`entities/games`, [
+  ...mapActions(`game/games`, [
     `fetch`
   ]),
   getPrevious () {
@@ -112,8 +111,11 @@ const methods = {
 }
 
 const computed = {
-  ...mapState(`entities/games`, [
+  ...mapState(`game/games`, [
     `sequence`, `next`, `previous`, `data`, `params`
+  ]),
+  ...mapGetters(`game/games`, [
+    `find`
   ]),
   nextItem () {
     if (typeof this.index === 'undefined') {
@@ -157,7 +159,7 @@ export default {
   mounted () {
     document.addEventListener('keyup', this.keyUp)
     this.index = this.$route.query.index
-    this.game = Game.getters('find')(this.id)
+    this.game = this.find(this.id)
     if (!this.game) {
       this.loading = true
       this.fetch({id: this.id}).then((results) => {

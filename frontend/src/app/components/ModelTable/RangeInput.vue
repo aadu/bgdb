@@ -1,33 +1,44 @@
 <template>
   <v-expansion-panel-content>
-    <div slot="header">{{ field.text }} {{ display }}</div>
+    <div slot="header">{{ field.label }} {{ display }}</div>
     <v-card-text>
-      <v-slider
-        :min="min.min"
-        :max="min.max"
-        :step="step"
-        hint="min"
-        persistent-hint
-        thumb-label
-        @input="onMin($event)"
-        :value="min.value"
-        ></v-slider>
-      <v-slider
-      :min="max.min"
-      :max="max.max"
-      hint="max"
-      persistent-hint
-      thumb-label
-      @input="onMax($event)"
-      :value="max.value"
-      :step="step"
-      ></v-slider>
+      <v-container fluid grid-list-sm>
+        <v-layout row wrap>
+          <v-flex d-flex xs5>
+            <v-text-field
+              type="number"
+              label="Min"
+              :clearable="true"
+              single-line
+              :value="min.value"
+              @input="onMin($event)"
+              :step="step"
+              :min="min.min"
+              :max="min.max">
+            </v-text-field>
+          </v-flex>
+          <v-flex d-flex xs2>
+          </v-flex>
+          <v-flex d-flex xs5>
+            <v-text-field
+              type="number"
+              label="Max"
+              :clearable="true"
+              single-line
+              :value="max.value"
+              @input="onMax($event)"
+              :step="step"
+              :min="max.min"
+              :max="max.max">
+            </v-text-field>
+          </v-flex>
+        </v-layout>
+      </v-container>
     </v-card-text>
   </v-expansion-panel-content>
 </template>
 
 <script>
-
 const props = {
   field: {
     required: true,
@@ -63,14 +74,14 @@ const computed = {
   },
   params () {
     const p = {
-      [`${this.field.value}__lte`]: null,
-      [`${this.field.value}__gte`]: null
+      [`${this.field.prop}__lte`]: null,
+      [`${this.field.prop}__gte`]: null
     }
     if (this.maxValue) {
-      p[`${this.field.value}__lte`] = this.maxValue
+      p[`${this.field.prop}__lte`] = this.maxValue
     }
     if (this.minValue) {
-      p[`${this.field.value}__gte`] = this.minValue
+      p[`${this.field.prop}__gte`] = this.minValue
     }
     return p
   }
@@ -113,12 +124,12 @@ export default {
     const min = {
       min: this.field.min || 0,
       max: this.field.max || 100,
-      value: this.field.defaultMin || this.field.min || 0
+      value: undefined
     }
     const max = {
       min: this.field.min || 0,
       max: this.field.max || 100,
-      value: this.field.defaultMax || this.field.max || 100
+      value: undefined
     }
     this.$set(this, 'min', min)
     this.$set(this, 'max', max)
@@ -131,12 +142,12 @@ export default {
     min: {
       min: 0,
       max: 100,
-      value: 0
+      value: undefined
     },
     max: {
       min: 0,
       max: 100,
-      value: 0
+      value: undefined
     },
     debounce: null,
     loading: false,
